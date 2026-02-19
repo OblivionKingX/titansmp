@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitanNetwork - Terms of Service</title>
+    <link rel="icon" href="supreme_logo.webp" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reuse standardized variables and base styles from index.html */
+        :root {
+            --primary-bg: #0f1720;
+            --secondary-bg: #0a1425;
+            --accent-color: #00bfff;
+            --accent-hover: #0088cc;
+            --text-color: #d9f3ff;
+            --text-secondary: #87b7d4;
+            --border-color: rgba(0, 180, 255, 0.2);
+            --card-bg: rgba(10, 20, 40, 0.95);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+            --radius-xl: 1rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --transition-base: 300ms ease;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 var(--space-md);
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background: var(--secondary-bg);
+            border-bottom: 2px solid var(--border-color);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-base);
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Content */
+        .policy-section {
+            padding: 4rem 0;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .policy-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: var(--space-xl);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .policy-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .policy-content h2 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin: 2rem 0 1rem;
+        }
+
+        .policy-content p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .policy-content ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        .policy-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-bg);
+            padding: 3rem 0;
+            margin-top: 4rem;
+            border-top: 2px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-base);
+        }
+
+        .footer-link:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .policy-title {
+                font-size: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none;">
+                    <h1>TitanNetwork</h1>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="forum.html">Forum</a></li>
+                <li><a href="rules.html">Rules</a></li>
+                <li><a href="team.html">Team</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="policy-section">
+        <div class="container">
+            <div class="policy-card">
+                <h1 class="policy-title">Terms of Service</h1>
+                <div class="policy-content">
+                    <p>Last Updated: February 13, 2026</p>
+
+                    <h2>1. Agreement to Terms</h2>
+                    <p>By accessing TitanNetwork (herein referred to as "the Server" or "the Service"), you agree to be
+                        bound by these Terms of Service, all applicable laws and regulations, and agree that you are
+                        responsible for compliance with any applicable local laws.</p>
+
+                    <h2>2. Use License</h2>
+                    <p>Permission is granted to access the Service for personal, non-commercial use. This license shall
+                        automatically terminate if you violate any of these restrictions or the community rules, and may
+                        be terminated by TitanNetwork administrators at any time.</p>
+
+                    <h2>3. User Conduct</h2>
+                    <p>As a member of the TitanNetwork community, you agree not to:</p>
+                    <ul>
+                        <li>Violate any of the official server rules listed on <a href="rules.html"
+                                style="color:var(--accent-color);">rules.html</a>.</li>
+                        <li>Engage in any form of harassment, hate speech, or toxic behavior.</li>
+                        <li>Use any cheats, hacks, or third-party software that grants an unfair advantage.</li>
+                        <li>Exploit bugs or glitches for personal gain or to harm the service.</li>
+                        <li>Impersonate staff members or other players.</li>
+                    </ul>
+
+                    <h2>4. Virtual Items and Donations</h2>
+                    <p>Any donations or purchases made to the Service are considered voluntary support. Virtual items,
+                        ranks, or currency received in return have no real-world value and may be revoked if you violate
+                        these Terms or the Server Rules. Refunds are not provided under any circumstances.</p>
+
+                    <h2>5. Disclaimer</h2>
+                    <p>The materials on TitanNetwork's Service are provided on an 'as is' basis. TitanNetwork makes no
+                        warranties, expressed or implied, and hereby disclaims and negates all other warranties
+                        including, without limitation, implied warranties or conditions of merchantability, fitness for
+                        a particular purpose, or non-infringement of intellectual property or other violation of rights.
+                    </p>
+
+                    <h2>6. Limitations</h2>
+                    <p>In no event shall TitanNetwork or its administrators be liable for any damages (including,
+                        without limitation, damages for loss of data or profit) arising out of the use or inability to
+                        use the Service.</p>
+
+                    <h2>7. Modifications</h2>
+                    <p>TitanNetwork may revise these Terms of Service for its Service at any time without notice. By
+                        using this Service you are agreeing to be bound by the then current version of these Terms of
+                        Service.</p>
+
+                    <h2>8. Governing Law</h2>
+                    <p>Any claim relating to TitanNetwork's Service shall be governed by the laws of the jurisdiction in
+                        which the server administrators reside, without regard to its conflict of law provisions.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home</a>
+                <a href="https://discord.gg/ExFhgvtFng" class="footer-link">Discord</a>
+                <a href="privacy.html" class="footer-link">Privacy Policy</a>
+                <a href="terms.html" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

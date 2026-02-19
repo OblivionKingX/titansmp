@@ -1,0 +1,36 @@
+mutation CreateNewUser($email: String!, $username: String!, $password: String!) @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  user_insert(data: {email: $email, username: $username, password: $password, createdAt_expr: "request.time", isAdmin: false})
+}
+
+query GetUserProfile @auth(level: USER) {
+  user(key: {id_expr: "auth.uid"}) {
+    id
+    username
+    email
+    avatarUrl
+    createdAt
+    isAdmin
+    lastLogin
+  }
+}
+
+mutation UpdateUserProfile($avatarUrl: String) @auth(level: USER) {
+  user_update(key: {id_expr: "auth.uid"}, data: {avatarUrl: $avatarUrl, lastLogin_expr: "request.time"})
+}
+
+query ListForumTopics @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+  forumTopics(orderBy: [{updatedAt: DESC}]) {
+    id
+    title
+    content
+    createdAt
+    updatedAt
+    author {
+      id
+      username
+      avatarUrl
+    }
+    isLocked
+    isPinned
+  }
+}

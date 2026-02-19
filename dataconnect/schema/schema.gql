@@ -1,0 +1,35 @@
+type User @table {
+  username: String!
+  password: String!
+  email: String!
+  createdAt: Timestamp!
+  avatarUrl: String
+  lastLogin: Timestamp
+  isAdmin: Boolean
+}
+
+type ForumTopic @table {
+  title: String!
+  content: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  isLocked: Boolean
+  isPinned: Boolean
+  author: User
+}
+
+type ForumPost @table {
+  content: String!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  author: User
+  topic: ForumTopic
+}
+
+type Announcement @table {
+  title: String!
+  content: String!
+  createdAt: Timestamp!
+  expiresAt: Timestamp
+  author: User
+}

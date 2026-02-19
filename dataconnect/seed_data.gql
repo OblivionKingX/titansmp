@@ -1,0 +1,78 @@
+mutation SeedDatabase @transaction @auth(level: USER, insecureReason: "This operation is used to seed the database with initial data.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      username: "demouser1",
+      email: "demouser1@example.com",
+      password: "password1",
+      createdAt: "2024-01-01T00:00:00Z",
+      isAdmin: false
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      username: "demouser2",
+      email: "demouser2@example.com",
+      password: "password2",
+      createdAt: "2024-01-01T00:00:00Z",
+      isAdmin: false
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440002",
+      username: "adminuser",
+      email: "adminuser@example.com",
+      password: "adminpassword",
+      createdAt: "2024-01-01T00:00:00Z",
+      isAdmin: true
+    }
+  ])
+  forumTopic_insertMany(data: [
+    {
+      id: "660e8400-e29b-41d4-a716-446655440000",
+      authorId: "550e8400-e29b-41d4-a716-446655440000",
+      title: "Example Topic 1",
+      content: "This is an example forum topic.",
+      createdAt: "2024-01-02T00:00:00Z",
+      updatedAt: "2024-01-02T00:00:00Z",
+      isLocked: false,
+      isPinned: false
+    },
+    {
+      id: "660e8400-e29b-41d4-a716-446655440001",
+      authorId: "550e8400-e29b-41d4-a716-446655440001",
+      title: "Example Topic 2",
+      content: "Another example forum topic for testing.",
+      createdAt: "2024-01-03T00:00:00Z",
+      updatedAt: "2024-01-03T00:00:00Z",
+      isLocked: false,
+      isPinned: false
+    }
+  ])
+  forumPost_insertMany(data: [
+    {
+      id: "770e8400-e29b-41d4-a716-446655440000",
+      topicId: "660e8400-e29b-41d4-a716-446655440000",
+      authorId: "550e8400-e29b-41d4-a716-446655440000",
+      content: "This is a reply to the first topic.",
+      createdAt: "2024-01-04T00:00:00Z",
+      updatedAt: "2024-01-04T00:00:00Z"
+    },
+    {
+      id: "770e8400-e29b-41d4-a716-446655440001",
+      topicId: "660e8400-e29b-41d4-a716-446655440001",
+      authorId: "550e8400-e29b-41d4-a716-446655440001",
+      content: "Another reply, this time to the second topic.",
+      createdAt: "2024-01-05T00:00:00Z",
+      updatedAt: "2024-01-05T00:00:00Z"
+    }
+  ])
+  announcement_insertMany(data: [
+    {
+      id: "880e8400-e29b-41d4-a716-446655440000",
+      authorId: "550e8400-e29b-41d4-a716-446655440002",
+      title: "Important Announcement",
+      content: "This is an important announcement for all users.",
+      createdAt: "2024-01-06T00:00:00Z",
+      expiresAt: "2024-01-13T00:00:00Z"
+    }
+  ])
+}

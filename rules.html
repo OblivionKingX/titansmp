@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Rules</title>
+  <link rel="icon" href="supreme_logo.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --card-bg: rgba(10, 20, 40, 0.95);
+      --success-color: #2ecc71;
+      --warning-color: #f39c12;
+      --error-color: #e74c3c;
+      --button-bg: rgba(255, 255, 255, 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background: var(--primary-bg); color: var(--text-color); }
+
+    .navbar { background: var(--secondary-bg); border-bottom: 2px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+    .nav-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; min-height: 70px; display: flex; justify-content: space-between; align-items: center; }
+    .logo h1 { color: var(--accent-color); text-shadow: 0 0 10px rgba(0,191,255,.35); font-size: 1.5rem; }
+    .mobile-menu-btn { display: none; background: none; border: none; color: var(--text-color); font-size: 1.5rem; }
+    .nav-links { list-style: none; display: flex; align-items: center; gap: .35rem; }
+    .nav-links a { color: var(--text-color); text-decoration: none; padding: .7rem 1rem; border-radius: 8px; font-weight: 700; display: flex; align-items: center; gap: .4rem; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-color); background: var(--button-bg); }
+    .more-btn { position: relative; }
+    .more-menu { display: none; position: absolute; top: 100%; left: 0; min-width: 200px; background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 12px; padding: .4rem; }
+    .more-menu.active { display: block; }
+    .more-menu li { list-style: none; }
+
+    .hero { text-align: center; max-width: 900px; margin: 2.2rem auto 1rem; padding: 0 1rem; }
+    .hero h1 { font-size: 2rem; margin-bottom: .4rem; }
+    .hero p { color: var(--text-secondary); }
+
+    .layout { max-width: 1200px; margin: 0 auto 2rem; padding: 0 1rem; display: grid; grid-template-columns: 1fr 320px; gap: 1rem; }
+    .rules-list { background: linear-gradient(180deg, rgba(12,25,44,.95), rgba(10,20,37,.98)); border: 2px solid var(--border-color); border-radius: 14px; padding: 1rem; }
+    details { border: 1px solid var(--border-color); border-left: 4px solid var(--accent-color); border-radius: 10px; padding: .75rem .9rem; background: rgba(255,255,255,.02); margin-bottom: .65rem; }
+    details.good { border-left-color: var(--success-color); }
+    details.mid { border-left-color: var(--warning-color); }
+    details.bad { border-left-color: var(--error-color); }
+    summary { cursor: pointer; color: #fff; font-weight: 800; }
+    .rule-body { margin-top: .5rem; color: var(--text-secondary); }
+
+    .sidebar { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: 14px; padding: 1rem; height: fit-content; }
+    .ip-box { background: rgba(0,191,255,.12); border: 1px solid rgba(0,191,255,.5); border-radius: 10px; padding: .8rem; margin-bottom: .9rem; }
+    .ip-box strong { color: #fff; }
+    .copy-btn { margin-top: .6rem; width: 100%; border: none; border-radius: 8px; padding: .65rem .8rem; font-weight: 800; background: var(--accent-color); color: #003366; cursor: pointer; }
+    .copy-btn:hover { background: var(--accent-hover); }
+
+    footer { border-top: 2px solid var(--border-color); background: var(--secondary-bg); text-align: center; padding: 1.2rem; color: var(--text-secondary); }
+
+    @media (max-width: 950px) {
+      .mobile-menu-btn { display: block; }
+      .nav-links { position: fixed; top: 70px; left: 0; right: 0; background: var(--secondary-bg); flex-direction: column; padding: .8rem; transform: translateY(-120%); opacity: 0; visibility: hidden; transition: .25s; }
+      .nav-links.active { transform: translateY(0); opacity: 1; visibility: visible; }
+      .nav-links li, .nav-links a { width: 100%; justify-content: center; }
+      .more-menu { position: static; width: 100%; }
+      .layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo"><h1>TitanNetwork</h1></div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forum.html"><i class="fas fa-newspaper"></i> Forum</a></li>
+        <li><a href="vote.html"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng"><i class="fab fa-discord"></i> Discord</a></li>
+        <li><a href="team.html"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html" class="active"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Server Rules</h1>
+    <p>Please follow these rules to keep TitanNetwork fair, competitive, and enjoyable for everyone.</p>
+  </section>
+
+  <main class="layout">
+    <section class="rules-list">
+      <details open class="mid"><summary>AFK Mining & Macros</summary><div class="rule-body">Using macros, scripts, or unattended farming/mining methods is not allowed.</div></details>
+      <details class="bad"><summary>Cheating / Hacked Clients</summary><div class="rule-body">Any unfair advantage tools (reach, killaura, xray, fly, etc.) are strictly forbidden.</div></details>
+      <details class="bad"><summary>Scamming & Theft</summary><div class="rule-body">Scamming players, fake trades, or stealing from trusted islands is prohibited.</div></details>
+      <details class="mid"><summary>Chat Conduct</summary><div class="rule-body">No harassment, hate speech, threats, or excessive spam in chat or private messages.</div></details>
+      <details class="bad"><summary>Bug / Exploit Abuse</summary><div class="rule-body">Report bugs instead of abusing them for items, money, or progression.</div></details>
+      <details class="mid"><summary>Alt Account Abuse</summary><div class="rule-body">Reasonable alt usage is allowed, but using alts to bypass punishments or economy rules is forbidden.</div></details>
+      <details class="good"><summary>Respect Staff Decisions</summary><div class="rule-body">If you disagree with a punishment, use the appeal page instead of arguing in public chat.</div></details>
+    </section>
+
+    <aside class="sidebar">
+      <div class="ip-box">
+        <div>Server IP</div>
+        <strong>titannetwork.run.place</strong>
+        <button class="copy-btn" onclick="copyIP()">Copy IP</button>
+      </div>
+      <p style="color: var(--text-secondary); font-size:.94rem;">Need help? Join our Discord and open a ticket for staff support.</p>
+    </aside>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 TitanNetwork — All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('nav-links').classList.toggle('active');
+    }
+    document.getElementById('moreBtn')?.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('moreMenu').classList.toggle('active');
+    });
+    function copyIP() {
+      navigator.clipboard.writeText('titannetwork.run.place');
+    }
+  </script>
+</body>
+
+</html>

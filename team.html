@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="google-site-verification" content="KAS-TH8AGGiHh5p2Y4ihkP_W0moOMd8QfTlpg7kUgWk" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="TitanNetwork Staff Team - Meet our dedicated team members">
+  <title>TitanNetwork - Staff Team</title>
+  <link rel="icon" href="supreme_logo.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== CSS RESET & PERFORMANCE OPTIMIZATIONS ===== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ===== CSS VARIABLES ===== */
+    :root {
+      /* Color Palette */
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --discord-color: #7289da;
+      --discord-hover: #5865f2;
+      --button-bg: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(10, 20, 40, 0.95);
+      --success-color: #2ecc71;
+      --error-color: #e74c3c;
+      --warning-color: #f39c12;
+
+      /* Role Colors */
+      --owner-color: #ffd700;
+      --admin-color: #ff6b81;
+      --mod-color: #00ced1;
+      --helper-color: #00ffea;
+      --member-color: #3498db;
+      --developer-color: #4ecdc4;
+
+      /* Spacing & Radius */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+      --transition-base: 300ms ease;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: rgba(15, 23, 32, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin: 0;
+      background: linear-gradient(135deg, #00bfff 0%, #0066ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 30px rgba(0, 191, 255, 0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: #00bfff;
+      background: rgba(0, 191, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .discord-nav {
+      color: #5865F2 !important;
+    }
+
+    .discord-nav:hover {
+      background: rgba(88, 101, 242, 0.1) !important;
+      text-shadow: 0 0 10px rgba(88, 101, 242, 0.5);
+    }
+
+    /* More Menu */
+    .more-btn {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .more-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: var(--secondary-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px;
+      min-width: 200px;
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      margin-top: 10px;
+    }
+
+    .more-menu.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .more-menu a {
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      justify-content: flex-start;
+    }
+
+    .more-menu a:hover {
+      background: var(--accent-color);
+      color: #003366;
+      transform: translateX(5px);
+    }
+
+    /* User Menu */
+    .user-menu {
+      position: relative;
+    }
+
+    .user-btn {
+      background: var(--button-bg);
+      color: var(--text-color);
+      border: 2px solid var(--border-color);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .user-btn:hover {
+      background: var(--accent-color);
+      color: #003366;
+      border-color: var(--accent-color);
+    }
+
+    .navbar-pfp {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--accent-color);
+      display: none;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 120%;
+      right: 0;
+      background: var(--secondary-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 15px;
+      width: 220px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+    }
+
+    .user-dropdown.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .user-info {
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+      margin-bottom: 5px;
+      text-align: center;
+    }
+
+    .user-name {
+      font-weight: 700;
+      color: var(--accent-color);
+      font-size: 1.1rem;
+    }
+
+    .user-role {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .user-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .user-dropdown a:hover {
+      background: var(--button-bg);
+      color: var(--accent-color);
+      transform: translateX(5px);
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 20, 37, 0.98);
+        backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px;
+        gap: 10px;
+        border-bottom: 1px solid var(--border-color);
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .nav-links.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+      }
+
+      .nav-links a {
+        width: 100%;
+        justify-content: center;
+        padding: 15px;
+        font-size: 1.1rem;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .more-menu {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        background: transparent;
+        border: none;
+        padding: 0 0 0 20px;
+        margin-top: 0;
+        border-left: 2px solid var(--border-color);
+        display: none !important;
+      }
+
+      .more-menu.active {
+        display: flex !important;
+      }
+
+      .user-dropdown {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        width: 90%;
+        max-width: 320px;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+      }
+
+      .user-dropdown.active {
+        opacity: 1;
+        pointer-events: all;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* ===== STAFF SPECIFIC CSS ===== */
+    #header-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.9)), url('photos/background.jpg') no-repeat center / cover;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 3px solid var(--accent-color);
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 1rem auto 0;
+    }
+
+    .main-content {
+      max-width: 1200px;
+      margin: 3rem auto;
+      padding: 0 20px;
+    }
+
+    .staff-controls {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .search-container {
+      flex: 1;
+      position: relative;
+      min-width: 250px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    #search {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 0.8rem 1rem 0.8rem 2.5rem;
+      border-radius: var(--radius-lg);
+      color: #fff;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    #search:focus {
+      border-color: var(--accent-color);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .filter-container {
+      position: relative;
+      min-width: 200px;
+    }
+
+    #roleFilter {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 0.8rem 1rem;
+      border-radius: var(--radius-lg);
+      color: #fff;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .staff-area {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .role-group {
+      animation: fadeIn 0.5s ease backwards;
+    }
+
+    .role-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .role-heading h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    .role-count {
+      background: var(--button-bg);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .member-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .member-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      padding: 1.2rem;
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: 0.3s;
+      cursor: default;
+    }
+
+    .member-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .member-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--border-color);
+      flex-shrink: 0;
+    }
+
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .member-info {
+      overflow: hidden;
+    }
+
+    .member-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .member-role {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    .role-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-top: 5px;
+    }
+
+    /* Role Specific colors */
+    .role-owner h2,
+    .role-badge.owner {
+      color: var(--owner-color);
+    }
+
+    .role-admin h2,
+    .role-badge.admin {
+      color: var(--admin-color);
+    }
+
+    .role-developer h2,
+    .role-badge.developer {
+      color: var(--developer-color);
+    }
+
+    .role-mod h2,
+    .role-badge.mod {
+      color: var(--mod-color);
+    }
+
+    .role-helper h2,
+    .role-badge.helper {
+      color: var(--helper-color);
+    }
+
+    .role-badge {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid currentColor;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== AUTH MODAL CSS ===== */
+    .auth-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(5px);
+    }
+
+    .auth-box {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      width: 90%;
+      max-width: 400px;
+      border: 1px solid var(--border-color);
+      position: relative;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .close-auth {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 1.5rem;
+      transition: 0.3s;
+    }
+
+    .close-auth:hover {
+      color: var(--error-color);
+    }
+
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .auth-tab {
+      flex: 1;
+      text-align: center;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      transition: 0.3s;
+    }
+
+    .auth-tab.active {
+      color: var(--accent-color);
+      border-bottom: 2px solid var(--accent-color);
+      font-weight: bold;
+    }
+
+    .auth-form {
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .auth-form.active {
+      display: flex;
+    }
+
+    .auth-form input {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 0.8rem;
+      border-radius: var(--radius-md);
+      color: var(--text-color);
+      outline: none;
+    }
+
+    .auth-form input:focus {
+      border-color: var(--accent-color);
+    }
+
+    .btn-submit {
+      background: var(--accent-color);
+      color: #003366;
+      border: none;
+      padding: 0.8rem;
+      border-radius: var(--radius-md);
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn-submit:hover {
+      background: var(--accent-hover);
+    }
+
+    .form-message {
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+      display: none;
+    }
+
+    .form-message.error {
+      color: var(--error-color);
+    }
+
+    .form-message.success {
+      color: var(--success-color);
+    }
+
+    /* ===== NOTIFICATION CSS ===== */
+    #notification-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+    }
+
+    .notification {
+      background: var(--success-color);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s ease;
+    }
+
+    .notification.error {
+      background: var(--error-color);
+    }
+
+    .notification.warning {
+      background: var(--warning-color);
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideOut {
+      from {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      to {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header id="header-bg">
+    <div class="header-content container">
+      <h1 class="page-title">Meet Our Team</h1>
+      <p class="page-subtitle">
+        Our dedicated team of staff members who work hard to keep the server running smoothly
+      </p>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <h1>TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forum.html" class="forum"><i class="fas fa-newspaper"></i> Forum</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+        </li>
+        <li><a href="team.html" class="staff active"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+        <li class="user-menu">
+          <button class="user-btn" id="userBtn" onclick="toggleUserMenu()">
+            <span id="user-btn-content" style="display: flex; align-items: center; gap: var(--space-xs);">
+              <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+              <i id="navbar-user-icon" class="fas fa-user"></i>
+              <span id="user-btn-text">Account</span>
+            </span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div class="user-name" id="user-name">Guest</div>
+              <div class="user-role" id="user-role">Guest</div>
+            </div>
+            <a href="#" onclick="showAuthModal()" id="login-link"><i class="fas fa-sign-in-alt"></i> Login /
+              Register</a>
+            <a href="#" onclick="showOwnerPanel()" id="owner-link" style="display:none;"><i class="fas fa-crown"></i>
+              Owner Panel</a>
+            <a href="#" onclick="logout()" id="logout-link" style="display:none;"><i class="fas fa-sign-out-alt"></i>
+              Logout</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content container">
+    <!-- Staff Controls -->
+    <div class="staff-controls">
+      <div class="controls-row">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input id="search" type="search" placeholder="Search staff members by name or role..."
+            aria-label="Search staff members">
+        </div>
+
+        <div class="filter-container">
+          <i class="fas fa-filter filter-arrow"></i>
+          <select id="roleFilter" aria-label="Filter staff by role">
+            <option value="all">All Roles</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Staff Area -->
+    <section id="staffArea" class="staff-area" aria-live="polite">
+      <!-- Staff members will be loaded here dynamically -->
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="max-width: 1100px; margin: 0 auto;">
+      <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+      <div class="footer-links">
+        <span class="footer-link" onclick="copyIP()">IP: titannetwork.run.place</span>
+        <a href="https://discord.gg/ExFhgvtFng" class="footer-link" target="_blank">Join Discord</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Notification Container -->
+  <div id="notification-container"></div>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="auth-modal">
+    <div class="auth-box">
+      <span class="close-auth" onclick="closeAuthModal()">&times;</span>
+      <h2 style="color:var(--accent-color); text-align:center; margin-bottom:1rem;">Account Access</h2>
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+        <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+      </div>
+      <!-- Login Form -->
+      <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+        <input type="email" id="login-email" placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Password" required>
+        <div id="login-message" class="form-message"></div>
+        <button type="submit" class="btn-submit" id="login-btn">Login</button>
+      </form>
+      <!-- Register Form -->
+      <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+        <input type="text" id="register-username" placeholder="Username" required>
+        <input type="email" id="register-email" placeholder="Email" required>
+        <input type="password" id="register-password" placeholder="Password" required>
+        <input type="password" id="register-confirm-password" placeholder="Confirm Password" required>
+        <div id="register-message" class="form-message"></div>
+        <button type="submit" class="btn-submit" id="register-btn">Register</button>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+    import { getDatabase, ref, get, set } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js';
+    import { firebaseConfig } from './firebase-config.js';
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Make available globally
+    window.firebaseApp = { auth, db, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, updateProfile, ref, set, get };
+
+    const OWNER_EMAIL = "oblivionkingx228@gmail.com";
+    const ADMIN_EMAILS = ["oblivionkingx228@gmail.com", "kanielpt038@gmail.com", "ahmadsangi234@gmail.com", "tadejmuhic8@gmail.com", "blowieknetwork@gmail.com"];
+
+    // Staff Data
+    const staff = [
+      { username: "OblivionKingX", role: "Owner" },
+      { username: "MHF_Redstone", role: "Admin" },
+      { username: "Kanielpt038", role: "Admin" },
+    ];
+
+    // Notification
+    let notificationTimer;
+    window.showNotification = function (message, type = "success") {
+      const container = document.getElementById('notification-container');
+      const notif = document.createElement('div');
+      notif.className = `notification ${type}`;
+      notif.textContent = message;
+      container.appendChild(notif);
+      setTimeout(() => {
+        notif.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notif.remove(), 300);
+      }, 3000);
+    }
+
+    // UI Functions
+    window.toggleMobileMenu = function () {
+      document.getElementById('nav-links').classList.toggle('active');
+    }
+    window.toggleUserMenu = function () {
+      document.getElementById('user-dropdown').classList.toggle('active');
+    }
+    window.closeUserMenu = function () {
+      document.getElementById('user-dropdown').classList.remove('active');
+    }
+    window.showAuthModal = function () {
+      document.getElementById('auth-modal').style.display = 'flex';
+      closeUserMenu();
+      if (document.getElementById('login-message')) document.getElementById('login-message').style.display = 'none';
+      if (document.getElementById('register-message')) document.getElementById('register-message').style.display = 'none';
+    }
+    window.closeAuthModal = function () {
+      document.getElementById('auth-modal').style.display = 'none';
+    }
+    window.switchAuthTab = function (tab) {
+      document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+
+      const tabs = document.querySelectorAll('.auth-tab');
+      if (tab === 'login') tabs[0].classList.add('active');
+      else tabs[1].classList.add('active');
+
+      document.getElementById(`${tab}-form`).classList.add('active');
+    }
+
+    window.logout = async function () {
+      try {
+        await signOut(auth);
+        showNotification('Logged out successfully');
+        closeUserMenu();
+      } catch (error) {
+        console.error(error);
+        showNotification('Logout failed', 'error');
+      }
+    }
+
+    window.copyIP = function () {
+      navigator.clipboard.writeText('titannetwork.run.place').then(() => {
+        showNotification('IP Copied: titannetwork.run.place');
+      }).catch(err => {
+        prompt("Copy IP:", "titannetwork.run.place");
+      });
+    }
+
+    // Auth Handlers
+    window.handleLogin = async function (e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+      const msg = document.getElementById('login-message');
+      const btn = document.getElementById('login-btn');
+
+      try {
+        btn.textContent = 'Logging in...';
+        btn.disabled = true;
+        await signInWithEmailAndPassword(auth, email, password);
+        msg.style.display = 'block';
+        msg.className = 'form-message success';
+        msg.textContent = 'Success!';
+        setTimeout(() => { closeAuthModal(); showNotification('Welcome back!'); }, 1000);
+      } catch (error) {
+        msg.style.display = 'block';
+        msg.className = 'form-message error';
+        msg.textContent = error.message;
+      } finally {
+        btn.textContent = 'Login';
+        btn.disabled = false;
+      }
+    }
+
+    window.handleRegister = async function (e) {
+      e.preventDefault();
+      const username = document.getElementById('register-username').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const confirm = document.getElementById('register-confirm-password').value;
+      const msg = document.getElementById('register-message');
+      const btn = document.getElementById('register-btn');
+
+      if (password !== confirm) {
+        msg.style.display = 'block';
+        msg.className = 'form-message error';
+        msg.textContent = 'Passwords do not match';
+        return;
+      }
+
+      try {
+        btn.textContent = 'Creating account...';
+        btn.disabled = true;
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: username });
+
+        // Save to DB
+        const emailKey = email.replace(/\./g, '_');
+        await set(ref(db, `users/${cred.user.uid}`), {
+          username, email, registeredAt: Date.now()
+        });
+        await set(ref(db, `ranks/${emailKey}`), ['member']);
+
+        msg.style.display = 'block';
+        msg.className = 'form-message success';
+        msg.textContent = 'Account created!';
+        setTimeout(() => { closeAuthModal(); showNotification('Welcome to TitanNetwork!'); }, 1000);
+      } catch (error) {
+        msg.style.display = 'block';
+        msg.className = 'form-message error';
+        msg.textContent = error.message;
+      } finally {
+        btn.textContent = 'Register';
+        btn.disabled = false;
+      }
+    }
+
+    // Update UI
+    function updateUIForUser(user) {
+      const userBtnText = document.getElementById('user-btn-text');
+      const userName = document.getElementById('user-name');
+      const userRole = document.getElementById('user-role');
+      const navbarPfp = document.getElementById('navbar-pfp');
+      const userBtnContent = document.getElementById('user-btn-content');
+      const navbarUserIcon = document.getElementById('navbar-user-icon');
+      const loginLink = document.getElementById('login-link');
+      const logoutLink = document.getElementById('logout-link');
+      const ownerLink = document.getElementById('owner-link');
+
+      if (user) {
+        const displayName = user.displayName || user.email.split('@')[0];
+        if (userBtnText) userBtnText.textContent = displayName;
+        if (userName) userName.textContent = displayName;
+
+        // Get PFP
+        get(ref(db, `pfp/${user.uid}`)).then(snap => {
+          if (snap.exists()) {
+            navbarPfp.src = snap.val();
+            navbarPfp.style.display = 'block';
+            userBtnContent.style.display = 'flex';
+            if (navbarUserIcon) navbarUserIcon.style.display = 'none';
+            document.querySelector('.user-btn').style.padding = '4px';
+          } else {
+            navbarPfp.style.display = 'none';
+            userBtnContent.style.display = 'flex';
+            if (navbarUserIcon) navbarUserIcon.style.display = 'inline-block';
+            document.querySelector('.user-btn').style.padding = '';
+          }
+        });
+
+        // Get Role
+        const emailKey = user.email.replace(/\./g, '_');
+        get(ref(db, `ranks/${emailKey}`)).then(snap => {
+          const ranks = snap.val() || ['member'];
+          let role = 'MEMBER';
+          if (ranks.includes('owner') || user.email === OWNER_EMAIL) role = 'OWNER';
+          else if (ranks.includes('admin')) role = 'ADMIN';
+          else if (ranks.includes('moderator')) role = 'MOD';
+
+          if (userRole) {
+            userRole.textContent = role;
+            userRole.className = `user-role role-${role.toLowerCase()}`;
+          }
+
+          if (ownerLink) ownerLink.style.display = (role === 'OWNER') ? 'block' : 'none';
+        });
+
+        if (loginLink) loginLink.style.display = 'none';
+        if (logoutLink) logoutLink.style.display = 'block';
+      } else {
+        if (userBtnText) userBtnText.textContent = 'Account';
+        if (userName) userName.textContent = 'Guest';
+        if (userRole) userRole.textContent = 'Guest';
+        if (navbarPfp) navbarPfp.style.display = 'none';
+        if (userBtnContent) userBtnContent.style.display = 'flex';
+        if (navbarUserIcon) navbarUserIcon.style.display = 'inline-block';
+        if (document.querySelector('.user-btn')) document.querySelector('.user-btn').style.padding = '';
+
+        if (loginLink) loginLink.style.display = 'block';
+        if (logoutLink) logoutLink.style.display = 'none';
+        if (ownerLink) ownerLink.style.display = 'none';
+      }
+    }
+
+    // Auth State Listener
+    onAuthStateChanged(auth, (user) => {
+      updateUIForUser(user);
+    });
+
+    // Staff Page Specific Logic
+    function avatarUrl(name) {
+      return `https://minotar.net/avatar/${encodeURIComponent(name)}/100.png`;
+    }
+
+    function groupByRole(arr) {
+      const grouped = {};
+      arr.forEach((s) => {
+        const role = s.role.toLowerCase();
+        if (!grouped[role]) grouped[role] = [];
+        grouped[role].push(s);
+      });
+      return grouped;
+    }
+
+    function getRoleBadgeClass(role) {
+      const roleLower = role.toLowerCase();
+      if (roleLower.includes('owner')) return 'role-badge owner';
+      if (roleLower.includes('admin')) return 'role-badge admin';
+      if (roleLower.includes('developer')) return 'role-badge developer';
+      if (roleLower.includes('mod')) return 'role-badge mod';
+      if (roleLower.includes('helper')) return 'role-badge helper';
+      return 'role-badge';
+    }
+
+    function getRoleGroupClass(role) {
+      const roleLower = role.toLowerCase();
+      if (roleLower.includes('owner')) return 'role-owner';
+      if (roleLower.includes('admin')) return 'role-admin';
+      if (roleLower.includes('developer')) return 'role-developer';
+      if (roleLower.includes('mod')) return 'role-mod';
+      if (roleLower.includes('helper')) return 'role-helper';
+      return '';
+    }
+
+    function renderStaff(search = "", roleFilter = "all") {
+      const area = document.getElementById("staffArea");
+      if (!area) return;
+      area.innerHTML = "";
+      const grouped = groupByRole(staff);
+      const order = ["owner", "admin", "lead developer", "developer", "moderator", "builder", "helper"];
+      const roles = Object.keys(grouped).sort((a, b) => {
+        const ai = order.indexOf(a);
+        const bi = order.indexOf(b);
+        if (ai === -1 && bi === -1) return a.localeCompare(b);
+        if (ai === -1) return 1;
+        if (bi === -1) return -1;
+        return ai - bi;
+      });
+
+      const query = search.toLowerCase().trim();
+      let hasResults = false;
+
+      roles.forEach((role) => {
+        if (roleFilter !== "all" && role !== roleFilter) return;
+        const members = grouped[role].filter(m => m.username.toLowerCase().includes(query) || m.role.toLowerCase().includes(query));
+        if (members.length === 0) return;
+        hasResults = true;
+
+        const group = document.createElement("div");
+        group.className = `role-group ${getRoleGroupClass(role)}`;
+
+        const heading = document.createElement("div");
+        heading.className = "role-heading";
+        const roleTitle = document.createElement("h2");
+        roleTitle.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        const count = document.createElement("div");
+        count.className = "role-count";
+        count.textContent = `${members.length} member${members.length !== 1 ? 's' : ''}`;
+        heading.appendChild(roleTitle);
+        heading.appendChild(count);
+        group.appendChild(heading);
+
+        const list = document.createElement("div");
+        list.className = "member-list";
+        members.forEach((member) => {
+          const memberDiv = document.createElement("div");
+          memberDiv.className = "member-card";
+          memberDiv.innerHTML = `
+            <div class="member-avatar">
+              <img src="${avatarUrl(member.username)}" alt="${member.username}" loading="lazy" onerror="this.src='https://minotar.net/avatar/steve/100.png'">
+            </div>
+            <div class="member-info">
+              <div class="member-name">${member.username}</div>
+              <div class="member-role">
+                <span class="${getRoleBadgeClass(member.role)}">${member.role}</span>
+              </div>
+            </div>
+          `;
+          list.appendChild(memberDiv);
+        });
+        group.appendChild(list);
+        area.appendChild(group);
+      });
+
+      if (!hasResults) {
+        area.innerHTML = `<div class="empty-state"><h3>No staff members found</h3><p>Try adjusting your search or filter</p></div>`;
+      }
+    }
+
+    function populateRoleFilter() {
+      const select = document.getElementById("roleFilter");
+      if (!select) return;
+      const uniqueRoles = [...new Set(staff.map(s => s.role.toLowerCase()))].sort();
+      uniqueRoles.forEach((role) => {
+        const opt = document.createElement("option");
+        opt.value = role;
+        opt.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        select.appendChild(opt);
+      });
+    }
+
+    // Event Listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      populateRoleFilter();
+      renderStaff();
+
+      const search = document.getElementById("search");
+      const roleFilter = document.getElementById("roleFilter");
+      if (search) search.addEventListener("input", () => renderStaff(search.value, roleFilter.value));
+      if (roleFilter) roleFilter.addEventListener("change", () => renderStaff(search.value, roleFilter.value));
+
+      document.addEventListener('click', (e) => {
+        const userDropdown = document.getElementById('user-dropdown');
+        const userBtn = document.getElementById('userBtn');
+        if (userDropdown && userDropdown.classList.contains('active') && !userDropdown.contains(e.target) && !userBtn.contains(e.target)) {
+          closeUserMenu();
+        }
+
+        const mobileMenu = document.getElementById('nav-links');
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        if (window.innerWidth <= 768 && mobileMenu && mobileMenu.classList.contains('active') && !mobileMenu.contains(e.target) && !mobileBtn.contains(e.target)) {
+          mobileMenu.classList.remove('active');
+        }
+
+        const moreMenu = document.getElementById('moreMenu');
+        const moreBtn = document.getElementById('moreBtn');
+        if (moreMenu && moreBtn && moreMenu.classList.contains('active') && !moreMenu.contains(e.target) && !moreBtn.contains(e.target)) {
+          moreMenu.classList.remove('active');
+        }
+      });
+
+      const moreBtn = document.getElementById('moreBtn');
+      const moreMenu = document.getElementById('moreMenu');
+      if (moreBtn && moreMenu) {
+        moreBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          moreMenu.classList.toggle('active');
+        });
+      }
+    });
+
+  </script>
+</body>
+
+</html>

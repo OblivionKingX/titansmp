@@ -1,0 +1,4421 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>TitanNetwork | Forum</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Color Palette */
+            --primary-bg: #0f1720;
+            --secondary-bg: #0a1425;
+            --accent-color: #00bfff;
+            --accent-hover: #0088cc;
+            --text-color: #d9f3ff;
+            --text-secondary: #87b7d4;
+            --border-color: rgba(0, 180, 255, 0.2);
+            --discord-color: #7289da;
+            --discord-hover: #5865f2;
+            --button-bg: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(10, 20, 40, 0.95);
+            --success-color: #2ecc71;
+            --error-color: #e74c3c;
+            --warning-color: #f39c12;
+
+            /* Role Colors */
+            --owner-color: #ffd700;
+            --admin-color: #ff6b81;
+            --mod-color: #00ced1;
+            --helper-color: #00ffea;
+            --member-color: #3498db;
+
+            /* Spacing */
+            --space-xs: 0.25rem;
+            --space-sm: 0.5rem;
+            --space-md: 1rem;
+            --space-lg: 1.5rem;
+            --space-xl: 2rem;
+            --space-2xl: 3rem;
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+            --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-base: 300ms ease;
+            --transition-slow: 500ms ease;
+
+            /* Legacy/Forum specific mappings */
+            --bg: var(--primary-bg);
+            --panel: var(--secondary-bg);
+            --accent: var(--accent-color);
+            --accent-dark: var(--accent-hover);
+            --text: var(--text-color);
+            --border: var(--border-color);
+            --shadow: var(--shadow-md);
+            --error: var(--error-color);
+            --success: var(--success-color);
+            --warning: var(--warning-color);
+            --discord: var(--discord-color);
+            --owner: var(--owner-color);
+            --admin: var(--admin-color);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .navbar {
+            background: var(--secondary-bg);
+            border-bottom: 2px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            padding: 0 20px;
+        }
+
+        .logo {
+            height: 50px;
+            padding: var(--space-xs) 0;
+        }
+
+        .logo img {
+            height: 100%;
+            border-radius: var(--radius-lg);
+            object-fit: contain;
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: var(--space-sm);
+            z-index: 1001;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: var(--space-xs);
+        }
+
+        .nav-links a {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: var(--space-md) var(--space-lg);
+            font-weight: 600;
+            font-size: 0.9375rem;
+            transition: all var(--transition-base);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus,
+        .nav-links a.active {
+            background: var(--button-bg);
+            color: var(--accent-color);
+        }
+
+        /* Navigation Color Variants */
+        .nav-links .home {
+            color: var(--accent-color);
+        }
+
+        .nav-links .news {
+            color: var(--helper-color);
+        }
+
+        .nav-links .forum {
+            color: var(--mod-color);
+        }
+
+        .nav-links .discord-nav {
+            color: var(--discord-color);
+        }
+
+        .nav-links .staff {
+            color: var(--admin-color);
+        }
+
+        /* ===== USER MENU ===== */
+        .user-menu {
+            position: relative;
+        }
+
+        .user-btn {
+            background: var(--button-bg);
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+            padding: var(--space-sm) var(--space-lg);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            transition: all var(--transition-base);
+        }
+
+        .user-btn:hover,
+        .user-btn:focus {
+            background: var(--accent-color);
+            color: #003366;
+            border-color: var(--accent-color);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            min-width: 220px;
+            display: none;
+            z-index: 1000;
+            margin-top: var(--space-xs);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .user-dropdown.active {
+            display: block;
+            animation: fadeIn var(--transition-base);
+        }
+
+        .user-info {
+            padding: var(--space-md);
+            border-bottom: 1px solid var(--border-color);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .user-name {
+            font-weight: 700;
+            color: white;
+            margin-bottom: var(--space-xs);
+            word-break: break-word;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            padding: var(--space-xs) var(--space-sm);
+            border-radius: 12px;
+            color: white;
+            font-weight: 800;
+            display: inline-block;
+            text-transform: uppercase;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: var(--space-md) var(--space-lg);
+            color: var(--text-color);
+            text-decoration: none;
+            border-bottom: 1px solid var(--border-color);
+            transition: all var(--transition-base);
+        }
+
+        .user-dropdown a:hover,
+        .user-dropdown a:focus {
+            background: var(--accent-color);
+            color: #003366;
+            padding-left: calc(var(--space-lg) + 5px);
+        }
+
+        .user-dropdown a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Notification Bell Integration */
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 10px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+
+        .notification-bell:hover {
+            background: var(--button-bg);
+        }
+
+        .navbar-pfp {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--accent);
+            display: none;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: var(--secondary-bg);
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+                border-bottom: 1px solid var(--border-color);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* .user-menu { } - Removed empty rule */
+        }
+
+        /* More Menu Styles from Index */
+        .more-btn {
+            position: relative;
+        }
+
+        .more-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--space-sm);
+            min-width: 220px;
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .more-menu.active {
+            display: block;
+            animation: fadeIn var(--transition-base);
+        }
+
+        .more-menu li {
+            list-style: none;
+        }
+
+        .more-menu a {
+            display: block;
+            padding: var(--space-sm) var(--space-md);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-base);
+            font-weight: 500;
+            font-size: 0.9375rem;
+        }
+
+        .more-menu a:hover {
+            background: var(--accent-color);
+            color: #003366;
+            padding-left: calc(var(--space-md) + 5px);
+        }
+
+        /* ===== PROFILE MENU ===== */
+        #profileMenu {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(8, 16, 33, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            width: 300px;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        #profileMenu[aria-hidden="true"] {
+            display: none;
+        }
+
+        #profileMenu.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .close-menu-desktop {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+        }
+
+        .profile-row {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        #menuPfp {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            object-fit: cover;
+        }
+
+        .profile-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .profile-info small {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* Bio Section */
+        .bio-section,
+        .ranks-section,
+        .logout-section {
+            margin: 0 0 15px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .bio-section h4,
+        .ranks-section h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bio-content {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+
+        .bio-edit textarea {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 10px;
+        }
+
+        .char-count {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        /* PFP Section */
+        .pfp-section {
+            margin: 0 0 15px 0;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .pfp-section h4 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pfp-preview {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #menuPfpPreview {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            object-fit: cover;
+            cursor: pointer;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        #menuPfpPreview:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+        }
+
+        #pfpUploadSection {
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Ranks */
+        .profile-ranks-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .profile-rank {
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .rank-member {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            box-shadow: 0px 0px 10px rgb(0, 191, 255);
+        }
+
+        .rank-royal {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+            box-shadow: 0px 0px 10px rgb(119, 0, 255);
+        }
+
+        .rank-vip {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            box-shadow: 0px 0px 10px rgb(255, 60, 0);
+        }
+
+        .rank-elite {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            box-shadow: 0px 0px 10px rgb(255, 149, 0);
+        }
+
+        .rank-admin {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0px 0px 10px rgb(34, 255, 0);
+        }
+
+        .rank-donator {
+            background: linear-gradient(135deg, #0033ff, #bb00ff);
+            box-shadow: 0px 0px 10px rgb(119, 0, 255);
+        }
+
+        .rank-moderator {
+            background: linear-gradient(135deg, #1abc9c, #16a085);
+            box-shadow: 0px 0px 10px rgb(0, 255, 13);
+        }
+
+        .rank-owner {
+            background: linear-gradient(135deg, #f7971e, #ffd200);
+            color: #2a0000;
+            box-shadow: 0px 0px 10px rgb(255, 153, 0);
+            text-shadow: 0px 0px 10px #ff9500;
+        }
+
+        .rank-known {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            box-shadow: 0px 0px 10px rgb(0, 255, 60);
+        }
+
+        .rank-builder {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            box-shadow: 0px 0px 10px rgba(34, 197, 94, 0.45);
+        }
+
+        .rank-pvper {
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+            box-shadow: 0px 0px 10px rgba(239, 68, 68, 0.45);
+        }
+
+        .rank-grinder {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            box-shadow: 0px 0px 10px rgba(245, 158, 11, 0.45);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px;
+            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 140, 255, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 0.85rem;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Menu Footer */
+        .menu-footer {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== CONTAINERS ===== */
+        .container {
+            max-width: 900px;
+            margin: 100px auto 30px;
+            padding: 0 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .error {
+            color: var(--error);
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            color: var(--success);
+            margin-top: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Auth Container */
+        #auth-container {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 100px;
+        }
+
+        #auth-container h1 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            background: linear-gradient(135deg, var(--accent), var(--discord));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        #auth-container h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        #auth-container input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        #auth-container input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* ===== HELP CENTER ===== */
+        #help-container h1 {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--accent), var(--discord));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 6px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab.active {
+            background: rgba(0, 191, 255, 0.1);
+            color: var(--accent);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Help Form */
+        #helpForm textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            margin-bottom: 15px;
+        }
+
+        #helpForm textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        /* Posts */
+        #posts {
+            margin-top: 30px;
+        }
+
+        .post {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .post:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .post .meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .post .meta img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid var(--accent);
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .nickname-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 2px solid transparent;
+            background:
+                linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+                linear-gradient(135deg, #00bfff, #7a5cff, #ff4d9d) border-box;
+            color: #e9f7ff;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin-right: 6px;
+            box-shadow: 0 0 12px rgba(0, 191, 255, 0.25);
+            vertical-align: middle;
+        }
+
+        .nickname-pill.compact {
+            font-size: 0.74rem;
+            padding: 3px 8px;
+        }
+
+        .post .meta strong {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .profile-info .nickname-pill {
+            margin-bottom: 8px;
+        }
+
+        .post .timestamp {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .ranks-container {
+            display: inline-flex;
+            gap: 5px;
+            margin-left: 8px;
+        }
+
+        .rank {
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .bio-badge {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        .bio-tooltip {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--panel);
+            border: 1px solid var(--border);
+            padding: 10px;
+            border-radius: 6px;
+            width: 250px;
+            z-index: 100;
+            box-shadow: 0 4px 12px var(--shadow);
+            font-size: 0.85rem;
+            white-space: pre-wrap;
+        }
+
+        .bio-badge:hover .bio-tooltip {
+            display: block;
+        }
+
+        .bio-preview {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 4px;
+            display: none;
+        }
+
+        .bio-preview.show {
+            display: block;
+        }
+
+        /* Reply Box */
+        .reply-box {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid var(--border);
+        }
+
+        .reply-box input {
+            width: calc(100% - 80px);
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            margin-right: 10px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .reply-box button {
+            padding: 10px 20px;
+            background: var(--accent);
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .reply {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .reply img {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 2px solid var(--warning);
+            object-fit: cover;
+            cursor: pointer;
+        }
+
+        .reply strong {
+            font-size: 0.9rem;
+        }
+
+        .reply .timestamp {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Reactions */
+        .reactions-container {
+            margin: 15px 0;
+            padding: 10px 0;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reactions-bar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .reaction-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .reaction-btn:hover {
+            background: rgba(0, 191, 255, 0.1);
+            transform: scale(1.05);
+        }
+
+        .reaction-btn.active {
+            background: rgba(0, 191, 255, 0.2);
+            border-color: var(--accent);
+        }
+
+        .reaction-btn .count {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .reaction-details {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .admin-reaction-controls {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+        }
+
+        .admin-reaction-controls h4 {
+            color: var(--admin);
+            margin-bottom: 8px;
+        }
+
+        .reaction-management {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .reaction-management-btn {
+            background: rgba(255, 107, 129, 0.1);
+            border: 1px solid var(--admin);
+            color: var(--admin);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+        }
+
+        .reaction-management-btn:hover {
+            background: rgba(255, 107, 129, 0.2);
+        }
+
+        /* Reaction Leaderboard */
+        .leaderboard-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .leaderboard-tab {
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .leaderboard-tab:hover {
+            background: rgba(0, 191, 255, 0.1);
+        }
+
+        .leaderboard-tab.active {
+            background: rgba(0, 191, 255, 0.2);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .leaderboard-content {
+            display: none;
+        }
+
+        .leaderboard-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .leaderboard-item:hover {
+            border-color: var(--accent);
+            background: rgba(0, 191, 255, 0.05);
+        }
+
+        .leaderboard-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .leaderboard-user .rank {
+            font-weight: 700;
+            color: var(--accent);
+            min-width: 25px;
+        }
+
+        .leaderboard-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .reaction-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 600;
+        }
+
+        /* Admin Panel */
+        .admin-controls-section {
+            background: rgba(255, 107, 129, 0.05);
+            border: 2px solid var(--admin);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .admin-controls-section h3 {
+            color: var(--admin);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .admin-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .admin-controls input,
+        .admin-controls select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .rank-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        .rank-checkboxes label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .rank-checkboxes input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .rank-list,
+        .nickname-list {
+            margin-top: 20px;
+        }
+
+        .rank-item,
+        .nickname-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .rank-badge {
+            font-size: 0.8rem;
+        }
+
+        /* Owner Panel */
+        .owner-section {
+            background: rgba(255, 215, 0, 0.05);
+            border: 2px solid var(--owner);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .owner-section h3 {
+            color: var(--owner);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .broadcast-controls textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        .broadcast-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        #broadcastStatus {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        /* Modals */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--panel);
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-header h2 {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .modal-pfp {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--accent);
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .modal-user-info {
+            margin-bottom: 20px;
+        }
+
+        .modal-user-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-user-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-ranks {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+
+        .modal-rank {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .modal-bio {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid var(--accent);
+        }
+
+        .modal-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .modal-stat {
+            text-align: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+        }
+
+        .modal-stat .value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .modal-stat .label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .modal-admin-controls {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .modal-admin-controls h4 {
+            color: var(--admin);
+            margin-bottom: 15px;
+        }
+
+        .admin-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .admin-buttons button {
+            padding: 10px;
+            border-radius: 6px;
+            border: none;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .admin-buttons button:nth-child(1) {
+            background: var(--success);
+        }
+
+        .admin-buttons button:nth-child(2) {
+            background: var(--warning);
+        }
+
+        .admin-buttons button:nth-child(3) {
+            background: var(--discord);
+        }
+
+        .admin-buttons button:nth-child(4) {
+            background: var(--error);
+        }
+
+        .admin-buttons button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 70px;
+            right: 20px;
+            background: rgba(8, 16, 33, 0.98);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            width: 350px;
+            max-height: 500px;
+            overflow-y: auto;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            display: none;
+        }
+
+        .notification-panel.show {
+            display: block;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .notification-header h3 {
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .notification-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .notification-item:hover {
+            background: rgba(0, 191, 255, 0.05);
+            border-color: var(--accent);
+        }
+
+        .notification-item.unread {
+            border-left: 3px solid var(--accent);
+        }
+
+        .notification-item.warning {
+            border-left: 3px solid var(--warning);
+        }
+
+        .notification-item.message {
+            border-left: 3px solid var(--discord);
+        }
+
+        .notification-content {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .notification-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+        }
+
+        .no-notifications {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* ===== RESPONSIVE DESIGN ===== */
+        @media (max-width: 768px) {
+            nav {
+                padding: 10px 15px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                background: rgba(5, 15, 35, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+                border-bottom: 1px solid var(--border);
+                box-shadow: 0 4px 20px var(--shadow);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .nav-links a {
+                width: 100%;
+                text-align: center;
+            }
+
+            .more-menu {
+                position: static;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            #profileMenu {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+
+            .notification-panel {
+                right: 10px;
+                left: 10px;
+                width: auto;
+            }
+
+            .container {
+                margin-top: 80px;
+                padding: 15px;
+            }
+
+            .tab {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+
+            .leaderboard-stats {
+                flex-direction: column;
+                gap: 5px;
+                align-items: flex-end;
+            }
+
+            .admin-controls input,
+            .admin-controls select {
+                min-width: 100%;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .admin-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-logo {
+                font-size: 1.1rem;
+            }
+
+            .tabs {
+                justify-content: center;
+            }
+
+            .tab {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            #auth-container h1 {
+                font-size: 1.5rem;
+            }
+
+            #help-container h1 {
+                font-size: 1.5rem;
+            }
+
+            .post .meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .reply-box input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .reply-box button {
+                width: 100%;
+            }
+
+            /* Mobile Profile Menu Fix */
+            #profileMenu {
+                width: 90%;
+                max-width: 320px;
+                right: 5%;
+                left: 5%;
+                padding: 15px;
+                max-height: 80vh;
+                overflow-y: auto;
+            }
+
+            /* Compact internals for mobile */
+            #profileMenu .profile-row {
+                margin-bottom: 10px;
+                padding-bottom: 10px;
+            }
+
+            #profileMenu .bio-section,
+            #profileMenu .ranks-section,
+            #profileMenu .pfp-section,
+            #profileMenu .logout-section {
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+
+            #menuPfp {
+                width: 50px;
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <h1
+                    style="position: relative; left: 0; color: #0088cc; text-shadow: 0px 0px 10px blue; font-size: 1.5rem; margin:0;">
+                    TitanNetwork</h1>
+            </div>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="forum.html" class="forum active"><i class="fas fa-newspaper"></i> Forum</a></li>
+                <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i>
+                        Discord</a></li>
+                <li><a href="team.html" class="staff"><i class="fas fa-users"></i> Team</a></li>
+                <li class="more-btn">
+                    <a href="#" id="moreBtn">More ▾</a>
+                    <ul class="more-menu" id="moreMenu">
+                        <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+                        <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+                        <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+                        <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+                    </ul>
+                </li>
+
+                <!-- Notification Bell Integration -->
+                <li style="display: flex; align-items: center;">
+                    <div class="notification-bell" id="notificationBell">
+                        🔔
+                        <span class="notification-count" id="notificationCount">0</span>
+                    </div>
+                </li>
+
+                <!-- User Menu (Adapting index.html style to trigger forum profile) -->
+                <!-- User Menu (Adapting index.html style to trigger forum profile) -->
+                <li class="user-menu">
+                    <button class="user-btn" id="profileBtn">
+                        <span id="user-btn-content" style="display: flex; align-items: center; gap: 8px;">
+                            <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+                            <i id="navbar-user-icon" class="fas fa-user"></i>
+                            <span id="user-btn-text">Account</span>
+                        </span>
+                    </button>
+                    <!-- We keep the profileMenu outside or trigger it via JS. 
+                The existing forum script expects a click on #profileBtn to open #profileMenu. 
+                We'll ensure that works. -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Profile menu -->
+    <div id="profileMenu" aria-hidden="true">
+        <button class="close-menu-desktop" id="closeProfileMenuBtn">✖</button>
+        <div class="menu-content">
+            <!-- Profile Header -->
+            <div class="profile-row">
+                <img id="menuPfp" src="https://i.imgur.com/4AiXzf8.jpeg" alt="Profile Picture">
+                <div class="profile-info">
+                    <div id="menuNicknameBadge" class="nickname-pill">Guest</div>
+                    <h3 id="menuName">Guest</h3>
+                    <small id="menuEmail">not logged in</small>
+                </div>
+            </div>
+            <!-- Bio Section -->
+            <div class="bio-section">
+                <h4>Bio</h4>
+                <div id="menuBio" class="bio-content">
+                    No bio yet. Add one below!
+                </div>
+                <div class="bio-edit" style="display: none;">
+                    <textarea id="bioInput" placeholder="Tell us about yourself... (max 250 characters)" maxlength="250"
+                        rows="3"></textarea>
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <button id="saveBioBtn" class="btn btn-sm" style="flex: 1;">Save Bio</button>
+                        <button id="cancelBioBtn" class="btn btn-secondary btn-sm" style="flex: 1;">Cancel</button>
+                    </div>
+                    <small class="char-count" style="display: block; text-align: center; margin-top: 4px;">
+                        <span id="charCount">0</span>/250
+                    </small>
+                </div>
+                <button id="editBioBtn" class="btn btn-secondary btn-sm" style="width: 100%; margin-top: 8px;">Edit
+                    Bio</button>
+            </div>
+            <!-- NEW: Profile Picture Section -->
+            <div class="pfp-section">
+                <h4>Profile Picture</h4>
+                <div class="pfp-preview">
+                    <img id="menuPfpPreview" src="https://i.imgur.com/4AiXzf8.jpeg" alt="Profile Picture">
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">Click to change</p>
+                </div>
+                <input type="file" id="pfpFileInput" accept="image/*" style="display: none;">
+                <div id="pfpUploadSection" style="display: none;">
+                    <div style="display: flex; gap: 8px; margin-top: 8px;">
+                        <button id="savePfpBtn" class="btn btn-sm" style="flex: 1;">Save Picture</button>
+                        <button id="cancelPfpBtn" class="btn btn-secondary btn-sm" style="flex: 1;">Cancel</button>
+                    </div>
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-align: center; margin-top: 4px;">
+                        Max size: 2MB • JPG, PNG, GIF
+                    </div>
+                </div>
+            </div>
+            <!-- Ranks Section -->
+            <div class="ranks-section">
+                <h4>Ranks</h4>
+                <div id="menuRanks" class="profile-ranks-container">
+                    <span class="profile-rank rank-member">Member</span>
+                </div>
+            </div>
+            <!-- Logout Button -->
+            <div class="logout-section">
+                <button id="logoutBtn" class="btn btn-danger btn-block">Logout</button>
+            </div>
+        </div>
+        <div class="menu-footer">
+            TitanNetwork Profile
+        </div>
+    </div>
+    <!-- Auth container -->
+    <div class="container" id="auth-container">
+        <h1>🔐 TitanNetwork | Forum</h1>
+        <div id="login-div">
+            <h2>Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email">
+            <input type="password" id="loginPassword" placeholder="Password">
+            <div style="display:flex;gap:8px;margin-top:8px">
+                <button id="loginBtn"
+                    style="background-color: #002855; border-radius: 10px; padding: 5px 5px; color: #00ced1;">Login</button>
+                <button id="showRegisterBtn"
+                    style="background:#2b2b2b; background-color: #002855; border-radius: 10px; padding: 5px 5px; color: #00ced1;">Register</button>
+            </div>
+            <p id="loginError" class="error hidden"></p>
+        </div>
+        <div id="register-div" class="hidden" style="margin-top:12px">
+            <h2>Register</h2>
+            <input type="email" id="registerEmail" placeholder="Email">
+            <input type="password" id="registerPassword" placeholder="Password">
+            <input type="text" id="registerUsername" placeholder="Minecraft Username">
+            <div style="display:flex;gap:8px;margin-top:8px">
+                <button id="registerBtn"
+                    style="background-color: #002855; border-radius: 10px; padding: 5px 5px; color: #00ced1;">Register</button>
+                <button id="showLoginBtn"
+                    style="background:#2b2b2b; background-color: #002855; border-radius: 10px; padding: 5px 5px; color: #00ced1;">Back
+                    to Login</button>
+            </div>
+            <p id="registerError" class="error hidden"></p>
+            <p id="registerSuccess" class="success hidden"></p>
+        </div>
+    </div>
+    <!-- Help container -->
+    <div class="container hidden" id="help-container">
+        <div class="tabs">
+            <div class="tab active" data-tab="help-tab">Forum</div>
+            <div class="tab" data-tab="admin-tab" id="admin-tab-btn">Admin Panel</div>
+            <div class="tab" data-tab="owner-tab" id="owner-tab-btn" style="display: none;">👑 Owner Panel</div>
+            <div class="tab" data-tab="reaction-leaderboard">🏆 Reaction Leaderboard</div>
+        </div>
+        <div class="tab-content active" id="help-tab">
+            <h1>💬 TitanNetwork Forum</h1>
+            <form id="helpForm" style="margin-top:12px">
+                <textarea id="question" rows="4" placeholder="What do you need help with?" required></textarea>
+                <button type="submit"
+                    style="margin-top:8px; background-color: #002855; border-radius: 10px; padding: 5px 5px; color: #00ced1;">📩
+                    Post Question</button>
+            </form>
+            <div id="posts" style="margin-top:18px"></div>
+        </div>
+        <!-- Admin Panel Content -->
+        <div class="tab-content" id="admin-tab">
+            <h1>🛠️ Admin Panel</h1>
+            <!-- Rank Management -->
+            <div class="admin-controls-section">
+                <h3>Manage Ranks</h3>
+                <div class="admin-controls">
+                    <input type="email" id="rankEmail" placeholder="User Email">
+                    <button id="assignRankBtn" class="btn">Assign Rank</button>
+                </div>
+                <div class="rank-checkboxes">
+                    <label><input type="checkbox" id="rankMember" checked> Member</label>
+                    <label><input type="checkbox" id="rankRoyal"> Royal</label>
+                    <label><input type="checkbox" id="rankVip"> VIP</label>
+                    <label><input type="checkbox" id="rankElite"> Elite</label>
+                    <label><input type="checkbox" id="rankBuilder"> Builder</label>
+                    <label><input type="checkbox" id="rankPvper"> PvPer</label>
+                    <label><input type="checkbox" id="rankGrinder"> Grinder</label>
+                    <label><input type="checkbox" id="rankModerator"> Moderator</label>
+                    <label><input type="checkbox" id="rankAdmin"> Admin</label>
+                    <label><input type="checkbox" id="rankDonator"> Donator</label>
+                    <label><input type="checkbox" id="rankKnown"> Known</label>
+                    <label><input type="checkbox" id="rankOwner"> Owner</label>
+                </div>
+                <div class="rank-list" id="rankList">
+                    <!-- Rank list will be loaded here -->
+                </div>
+            </div>
+            <!-- Nickname Management -->
+            <div class="admin-controls-section">
+                <h3>Manage Nicknames</h3>
+                <div class="admin-controls">
+                    <input type="email" id="nicknameEmail" placeholder="User Email">
+                    <input type="text" id="newNickname" placeholder="New Nickname">
+                    <button id="changeNicknameBtn" class="btn">Change Nickname</button>
+                </div>
+                <div class="nickname-list" id="nicknameList">
+                    <!-- Nickname list will be loaded here -->
+                </div>
+            </div>
+        </div>
+        <!-- Owner Panel Content -->
+        <div class="tab-content" id="owner-tab">
+            <h1>👑 Owner Panel</h1>
+            <!-- Statistics -->
+            <div class="owner-section">
+                <h3>📊 Statistics</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h4>Online Users</h4>
+                        <div class="stat-value" id="userCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Users</h4>
+                        <div class="stat-value" id="totalUsers">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Active Today</h4>
+                        <div class="stat-value" id="activeToday">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Posts</h4>
+                        <div class="stat-value" id="totalPosts">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Total Replies</h4>
+                        <div class="stat-value" id="totalReplies">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Database Size</h4>
+                        <div class="stat-value" id="dbSize">0 KB</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Last Backup</h4>
+                        <div class="stat-value" id="lastBackup">Never</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Broadcast System -->
+            <div class="owner-section">
+                <h3>📢 Broadcast System</h3>
+                <div class="broadcast-controls">
+                    <input type="text" id="broadcastSubject" placeholder="Email Subject"
+                        style="width:100%;margin-bottom:10px;">
+                    <textarea id="broadcastMessage" placeholder="Email Message..."></textarea>
+                    <div class="broadcast-buttons">
+                        <button id="testBroadcastBtn" class="btn btn-secondary">Test Broadcast</button>
+                        <button id="sendBroadcastBtn" class="btn btn-danger">Send to All Users</button>
+                    </div>
+                    <div id="broadcastStatus"></div>
+                </div>
+            </div>
+            <!-- Database Management -->
+            <div class="owner-section">
+                <h3>🗄️ Database Management</h3>
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <button id="exportDataBtn" class="btn">📥 Export All Data</button>
+                    <button id="clearOldPostsBtn" class="btn btn-warning">🗑️ Clear Old Posts (30+ days)</button>
+                    <button id="backupDatabaseBtn" class="btn btn-secondary">💾 Backup Database</button>
+                </div>
+            </div>
+        </div>
+        <!-- Reaction Leaderboard Content -->
+        <div class="tab-content" id="reaction-leaderboard">
+            <h1>🏆 Reaction Leaderboard</h1>
+            <div class="leaderboard-tabs">
+                <div class="leaderboard-tab active" data-leaderboard-tab="most-reactions">Most Reactions Received</div>
+                <div class="leaderboard-tab" data-leaderboard-tab="most-given">Most Reactions Given</div>
+                <div class="leaderboard-tab" data-leaderboard-tab="top-posts">Top Posts</div>
+            </div>
+            <div class="leaderboard-content active" id="most-reactions">
+                <h3>🏆 Users with Most Reactions Received</h3>
+                <div id="mostReactionsList">
+                    <!-- Most reactions received will be loaded here -->
+                </div>
+            </div>
+            <div class="leaderboard-content" id="most-given">
+                <h3>🎯 Users who Gave Most Reactions</h3>
+                <div id="mostGivenList">
+                    <!-- Most reactions given will be loaded here -->
+                </div>
+            </div>
+            <div class="leaderboard-content" id="top-posts">
+                <h3>🔥 Most Reacted Posts</h3>
+                <div id="topPostsList">
+                    <!-- Top posts will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- User Profile Modal -->
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>👤 User Profile</h2>
+                <button class="close-modal" id="closeUserProfileBtn">✖</button>
+            </div>
+            <div class="modal-body">
+                <div style="text-align: center;">
+                    <img id="modalPfp" src="https://i.imgur.com/4AiXzf8.jpeg" alt="Profile" class="modal-pfp">
+                    <div class="modal-user-info">
+                        <div id="modalNicknameBadge" class="nickname-pill">Unknown</div>
+                        <h3 id="modalUsername">Username</h3>
+                        <p id="modalUserEmail">email@example.com</p>
+                        <p id="modalUserId" style="font-size: 0.8rem; color: var(--text-secondary);">ID: loading...</p>
+                    </div>
+                </div>
+                <div class="modal-ranks" id="modalUserRanks">
+                    <span class="modal-rank rank-member">Member</span>
+                </div>
+                <div class="modal-bio">
+                    <h4>Bio</h4>
+                    <p id="modalUserBio">Loading bio...</p>
+                </div>
+                <div class="modal-stats">
+                    <div class="modal-stat">
+                        <div class="value" id="modalPostCount">0</div>
+                        <div class="label">Posts</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="value" id="modalReactionsCount">0</div>
+                        <div class="label">Reactions</div>
+                    </div>
+                    <div class="modal-stat">
+                        <div class="value" id="modalJoinDate">Unknown</div>
+                        <div class="label">Joined</div>
+                    </div>
+                </div>
+                <div class="modal-admin-controls" id="modalAdminControls" style="display: none;">
+                    <h4>Admin Controls</h4>
+                    <div class="admin-buttons">
+                        <button id="promoteUserBtn">Promote</button>
+                        <button id="warnUserBtn">Warn</button>
+                        <button id="messageUserBtn">Message</button>
+                        <button id="banUserBtn">Ban</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Notification Panel -->
+    <div id="notificationPanel" class="notification-panel">
+        <div class="notification-header">
+            <h3>🔔 Notifications</h3>
+            <div class="notification-actions">
+                <button class="btn btn-sm" id="markAllAsReadBtn">Mark All Read</button>
+                <button class="btn btn-danger btn-sm" id="clearAllNotificationsBtn">Clear All</button>
+            </div>
+        </div>
+        <div id="notificationList">
+            <div class="no-notifications">No notifications yet.</div>
+        </div>
+    </div>
+    <footer>© 2026 TitanNetwork — All Rights Reserved</footer>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getDatabase, ref, push, set, onValue, get, remove, update } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        import { firebaseConfig, ADMIN_EMAILS, OWNER_EMAIL } from "./firebase-config.js";
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+
+        const DEFAULT_PFP = "https://cdn.pfps.gg/pfps/2331-minecraft-cat.png";
+        const REACTION_TYPES = {
+            LIKE: '👍',
+            LOVE: '❤️',
+            LAUGH: '😂',
+            WOW: '😮',
+            SAD: '😢',
+            ANGRY: '😠'
+        };
+
+        // DOM Elements
+        const profileMenu = document.getElementById('profileMenu');
+        const profileBtn = document.getElementById('profileBtn');
+        const profileBtnMobile = document.getElementById('profileBtnMobile');
+        const navPfp = document.getElementById('navPfp');
+        const navPfpMobile = document.getElementById('navPfpMobile');
+        const menuPfp = document.getElementById('menuPfp');
+        const menuName = document.getElementById('menuName');
+        const menuNicknameBadge = document.getElementById('menuNicknameBadge');
+        const menuEmail = document.getElementById('menuEmail');
+        const menuBio = document.getElementById('menuBio');
+        const menuRanks = document.getElementById('menuRanks');
+        const bioInput = document.getElementById('bioInput');
+        const saveBioBtn = document.getElementById('saveBioBtn');
+        const editBioBtn = document.getElementById('editBioBtn');
+        const cancelBioBtn = document.getElementById('cancelBioBtn');
+        const charCount = document.getElementById('charCount');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginDiv = document.getElementById('login-div');
+        const registerDiv = document.getElementById('register-div');
+        const authContainer = document.getElementById('auth-container');
+        const helpContainer = document.getElementById('help-container');
+        const helpForm = document.getElementById('helpForm');
+        const postsEl = document.getElementById('posts');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const registerEmail = document.getElementById('registerEmail');
+        const registerPassword = document.getElementById('registerPassword');
+        const registerUsername = document.getElementById('registerUsername');
+        const registerBtn = document.getElementById('registerBtn');
+        const registerError = document.getElementById('registerError');
+        const registerSuccess = document.getElementById('registerSuccess');
+        const showRegisterBtn = document.getElementById('showRegisterBtn');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        const questionInput = document.getElementById('question');
+        // NEW PFP Elements
+        const menuPfpPreview = document.getElementById('menuPfpPreview');
+        const pfpFileInput = document.getElementById('pfpFileInput');
+        const savePfpBtn = document.getElementById('savePfpBtn');
+        const cancelPfpBtn = document.getElementById('cancelPfpBtn');
+        const pfpUploadSection = document.getElementById('pfpUploadSection');
+        // More menu elements
+        const moreBtn = document.getElementById('moreBtn');
+        const moreMenu = document.getElementById('moreMenu');
+        const adminTabBtn = document.getElementById('admin-tab-btn');
+        const ownerTabBtn = document.getElementById('owner-tab-btn');
+        // Admin panel elements
+        const rankEmail = document.getElementById('rankEmail');
+        const rankList = document.getElementById('rankList');
+        const nicknameEmail = document.getElementById('nicknameEmail');
+        const newNickname = document.getElementById('newNickname');
+        const changeNicknameBtn = document.getElementById('changeNicknameBtn');
+        const nicknameList = document.getElementById('nicknameList');
+        const notificationBell = document.getElementById('notificationBell');
+        const notificationPanel = document.getElementById('notificationPanel');
+        const notificationList = document.getElementById('notificationList');
+        const notificationCount = document.getElementById('notificationCount');
+        // Owner panel elements
+        const broadcastSubject = document.getElementById('broadcastSubject');
+        const broadcastMessage = document.getElementById('broadcastMessage');
+        const testBroadcastBtn = document.getElementById('testBroadcastBtn');
+        const sendBroadcastBtn = document.getElementById('sendBroadcastBtn');
+        const broadcastStatus = document.getElementById('broadcastStatus');
+        const userCountElement = document.getElementById('userCount');
+        const totalUsersElement = document.getElementById('totalUsers');
+        const activeTodayElement = document.getElementById('activeToday');
+        const totalPostsElement = document.getElementById('totalPosts');
+        const totalRepliesElement = document.getElementById('totalReplies');
+        const exportDataBtn = document.getElementById('exportDataBtn');
+        const clearOldPostsBtn = document.getElementById('clearOldPostsBtn');
+        const backupDatabaseBtn = document.getElementById('backupDatabaseBtn');
+        const dbSizeElement = document.getElementById('dbSize');
+        const lastBackupElement = document.getElementById('lastBackup');
+        // User Profile Modal elements
+        const userProfileModal = document.getElementById('userProfileModal');
+        const modalPfp = document.getElementById('modalPfp');
+        const modalUsername = document.getElementById('modalUsername');
+        const modalNicknameBadge = document.getElementById('modalNicknameBadge');
+        const modalUserEmail = document.getElementById('modalUserEmail');
+        const modalUserRanks = document.getElementById('modalUserRanks');
+        const modalUserBio = document.getElementById('modalUserBio');
+        const modalPostCount = document.getElementById('modalPostCount');
+        const modalReactionsCount = document.getElementById('modalReactionsCount');
+        const modalJoinDate = document.getElementById('modalJoinDate');
+        const modalAdminControls = document.getElementById('modalAdminControls');
+        const modalUserId = document.getElementById('modalUserId');
+        const closeUserProfileBtn = document.getElementById('closeUserProfileBtn');
+        const promoteUserBtn = document.getElementById('promoteUserBtn');
+        const warnUserBtn = document.getElementById('warnUserBtn');
+        const messageUserBtn = document.getElementById('messageUserBtn');
+        const banUserBtn = document.getElementById('banUserBtn');
+        // Reaction leaderboard elements
+        const mostReactionsList = document.getElementById('mostReactionsList');
+        const mostGivenList = document.getElementById('mostGivenList');
+        const topPostsList = document.getElementById('topPostsList');
+        // Tab elements
+        const tabElements = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const leaderboardTabElements = document.querySelectorAll('.leaderboard-tab');
+        const leaderboardContents = document.querySelectorAll('.leaderboard-content');
+        // Mobile menu
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navLinks = document.getElementById('nav-links');
+        const closeProfileMenuBtn = document.getElementById('closeProfileMenuBtn');
+
+        // Global Variables
+        let lastScrollY = window.scrollY;
+        let currentViewingUserId = null;
+        let notificationPanelOpen = false;
+        let selectedPfpFile = null;
+        let selectedPfpPreview = null;
+
+        // ====================================
+        // NEW PFP FUNCTIONS
+        // ====================================
+        // Setup PFP click to open file dialog
+        if (menuPfpPreview) {
+            menuPfpPreview.addEventListener('click', () => {
+                pfpFileInput.click();
+            });
+        }
+
+        // Preview PFP when file is selected
+        if (pfpFileInput) {
+            pfpFileInput.addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('Image must be less than 2MB');
+                    pfpFileInput.value = '';
+                    return;
+                }
+                // Validate file type
+                if (!file.type.match('image.*')) {
+                    alert('Please select an image file (JPG, PNG, GIF)');
+                    pfpFileInput.value = '';
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    selectedPfpFile = file;
+                    selectedPfpPreview = e.target.result;
+                    // Show preview
+                    menuPfpPreview.src = e.target.result;
+                    pfpUploadSection.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Save PFP to Firebase
+        async function saveProfilePicture() {
+            const user = auth.currentUser;
+            if (!user || !selectedPfpFile || !selectedPfpPreview) {
+                alert('Please select an image first');
+                return;
+            }
+            try {
+                const uid = user.uid;
+                // Convert to base64
+                const base64Image = selectedPfpPreview;
+                // Save to Firebase
+                await set(ref(db, `pfp/${uid}`), base64Image);
+                // Update all profile pictures
+                syncProfilePfp(base64Image);
+                // Show success
+                alert('✅ Profile picture updated successfully!');
+                // Reset file input
+                pfpFileInput.value = '';
+                pfpUploadSection.style.display = 'none';
+                selectedPfpFile = null;
+                selectedPfpPreview = null;
+            } catch (error) {
+                console.error('Error saving profile picture:', error);
+                alert('Failed to update profile picture. Error: ' + error.message);
+            }
+        }
+
+        // Cancel PFP upload
+        function cancelPfpUpload() {
+            pfpFileInput.value = '';
+            pfpUploadSection.style.display = 'none';
+            selectedPfpFile = null;
+            selectedPfpPreview = null;
+            // Reset to current PFP
+            const user = auth.currentUser;
+            if (user) {
+                get(ref(db, `pfp/${user.uid}`)).then((snap) => {
+                    if (snap.exists()) {
+                        menuPfpPreview.src = snap.val();
+                    } else {
+                        menuPfpPreview.src = DEFAULT_PFP;
+                    }
+                });
+            }
+        }
+
+        // ====================================
+        // UPDATED SYNC PROFILE PFP FUNCTION
+        // ====================================
+        function syncProfilePfp(src) {
+            // Update navigation
+            if (navPfp) navPfp.src = src;
+            if (navPfpMobile) navPfpMobile.src = src;
+            // Update profile menu
+            if (menuPfp) menuPfp.src = src;
+            if (menuPfpPreview) {
+                menuPfpPreview.src = src;
+            }
+            // Update user profile modal
+            if (modalPfp) modalPfp.src = src;
+        }
+
+        // ====================================
+        // UTILITY FUNCTIONS
+        // ====================================
+        function escapeHtml(str = '') {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function truncateText(text, maxLength = 100) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function getTimeAgo(timestamp) {
+            if (!timestamp) return 'Unknown';
+            const now = Date.now();
+            const diff = now - timestamp;
+            const seconds = Math.floor(diff / 1000);
+            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+            if (days > 0) return `${days}d ago`;
+            if (hours > 0) return `${hours}h ago`;
+            if (minutes > 0) return `${minutes}m ago`;
+            return 'Just now';
+        }
+
+        // Rank Management
+        function getRankDisplayName(rank) {
+            const rankNames = {
+                'member': 'Member',
+                'royal': 'Royal',
+                'vip': 'VIP',
+                'elite': 'Elite',
+                'builder': 'Builder',
+                'pvper': 'PvPer',
+                'grinder': 'Grinder',
+                'moderator': 'Moderator',
+                'admin': 'Admin',
+                'donator': 'Donator',
+                'known': 'Known',
+                'owner': 'Owner'
+            };
+            return rankNames[rank] || 'Member';
+        }
+
+        function getRankClass(rank) {
+            return `rank rank-${rank}`;
+        }
+
+        function displayRank(rank) {
+            return `<span class="${getRankClass(rank)}">${getRankDisplayName(rank)}</span>`;
+        }
+
+        function displayMultipleRanks(ranks) {
+            if (!ranks || ranks.length === 0) return displayRank('member');
+            return `<div class="ranks-container">${ranks.map(rank => displayRank(rank)).join('')}</div>`;
+        }
+
+        function displayProfileRanks(ranks) {
+            if (!ranks || ranks.length === 0) return '<span class="profile-rank rank-member">Member</span>';
+            return ranks.map(rank => `<span class="profile-rank rank-${rank}">${getRankDisplayName(rank)}</span>`).join('');
+        }
+
+        function getSelectedRanks() {
+            const ranks = [];
+            if (document.getElementById('rankMember')?.checked) ranks.push('member');
+            if (document.getElementById('rankRoyal')?.checked) ranks.push('royal');
+            if (document.getElementById('rankVip')?.checked) ranks.push('vip');
+            if (document.getElementById('rankElite')?.checked) ranks.push('elite');
+            if (document.getElementById('rankBuilder')?.checked) ranks.push('builder');
+            if (document.getElementById('rankPvper')?.checked) ranks.push('pvper');
+            if (document.getElementById('rankGrinder')?.checked) ranks.push('grinder');
+            if (document.getElementById('rankModerator')?.checked) ranks.push('moderator');
+            if (document.getElementById('rankAdmin')?.checked) ranks.push('admin');
+            if (document.getElementById('rankOwner')?.checked) ranks.push('owner');
+            if (document.getElementById('rankDonator')?.checked) ranks.push('donator');
+            if (document.getElementById('rankKnown')?.checked) ranks.push('known');
+            return ranks;
+        }
+
+        // ====================================
+        // TAB MANAGEMENT
+        // ====================================
+        function switchTab(tabName) {
+            console.log('Switching to tab:', tabName);
+            if (tabName === 'admin-tab') {
+                const user = auth.currentUser;
+                if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                    alert('Access denied! Admin panel is only available for administrators.');
+                    return;
+                }
+            }
+            if (tabName === 'owner-tab') {
+                const user = auth.currentUser;
+                if (!user || user.email !== OWNER_EMAIL) {
+                    alert('Access denied! Owner panel is only available for the server owner.');
+                    return;
+                }
+                loadOwnerStatistics();
+            }
+            if (tabName === 'reaction-leaderboard') {
+                loadReactionLeaderboard();
+            }
+
+            // Update tab UI
+            tabElements.forEach(tab => tab.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            const activeTab = document.querySelector(`.tab[data-tab="${tabName}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+
+            const activeContent = document.getElementById(tabName);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+        }
+
+        function switchLeaderboardTab(tabName) {
+            leaderboardTabElements.forEach(tab => tab.classList.remove('active'));
+            leaderboardContents.forEach(content => content.classList.remove('active'));
+
+            const activeTab = document.querySelector(`.leaderboard-tab[data-leaderboard-tab="${tabName}"]`);
+            if (activeTab) {
+                activeTab.classList.add('active');
+            }
+
+            const activeContent = document.getElementById(tabName);
+            if (activeContent) {
+                activeContent.classList.add('active');
+            }
+        }
+
+        // ====================================
+        // OWNER STATISTICS
+        // ====================================
+        async function loadOwnerStatistics() {
+            try {
+                const usersSnapshot = await get(ref(db, 'users'));
+                const users = usersSnapshot.val() || {};
+                const userCount = Object.keys(users).length;
+                if (userCountElement) userCountElement.textContent = userCount;
+                if (totalUsersElement) totalUsersElement.textContent = userCount;
+
+                const today = new Date().setHours(0, 0, 0, 0);
+                let activeToday = 0;
+                Object.values(users).forEach(user => {
+                    if (user.lastLogin && user.lastLogin > today) {
+                        activeToday++;
+                    }
+                });
+                if (activeTodayElement) activeTodayElement.textContent = activeToday;
+
+                const postsSnapshot = await get(ref(db, 'posts'));
+                const posts = postsSnapshot.val() || {};
+                let totalReplies = 0;
+                Object.values(posts).forEach(post => {
+                    if (post.replies) {
+                        totalReplies += Object.keys(post.replies).length;
+                    }
+                });
+                if (totalPostsElement) totalPostsElement.textContent = Object.keys(posts).length;
+                if (totalRepliesElement) totalRepliesElement.textContent = totalReplies;
+
+                const dbSize = JSON.stringify({ users, posts }).length;
+                const sizeInKB = Math.round(dbSize / 1024);
+                if (dbSizeElement) dbSizeElement.textContent = `${sizeInKB} KB`;
+
+                const backupsSnapshot = await get(ref(db, 'backups'));
+                if (backupsSnapshot.exists()) {
+                    const backups = backupsSnapshot.val();
+                    const backupTimes = Object.values(backups).map(b => b.timestamp);
+                    const lastBackup = Math.max(...backupTimes);
+                    if (lastBackupElement) {
+                        lastBackupElement.textContent = new Date(lastBackup).toLocaleString();
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading owner statistics:', error);
+            }
+        }
+
+        // ====================================
+        // OWNER BROADCAST FUNCTIONS
+        // ====================================
+        async function testBroadcast() {
+            const user = auth.currentUser;
+            if (!user || user.email !== OWNER_EMAIL) {
+                alert('❌ Owner access required!');
+                return;
+            }
+            const subject = broadcastSubject?.value.trim() || 'Test Broadcast';
+            const message = broadcastMessage?.value.trim() || 'This is a test email from SupremeMC.';
+            await sendBroadcastEmail(subject, message, true);
+        }
+
+        async function sendBroadcast() {
+            const user = auth.currentUser;
+            if (!user || user.email !== OWNER_EMAIL) {
+                alert('❌ Owner access required!');
+                return;
+            }
+            const subject = broadcastSubject?.value.trim();
+            const message = broadcastMessage?.value.trim();
+            if (!subject || !message) {
+                alert('Please enter both subject and message');
+                return;
+            }
+            if (!confirm(`⚠️ This will send an email to ALL registered users.
+Subject: ${subject}
+Are you sure?`)) {
+                return;
+            }
+            await sendBroadcastEmail(subject, message, false);
+        }
+
+        async function sendBroadcastEmail(subject, message, testOnly = false) {
+            const user = auth.currentUser;
+            if (!user || user.email !== OWNER_EMAIL) {
+                alert("❌ Access denied! Only the owner can send broadcasts.");
+                return;
+            }
+            if (broadcastStatus) {
+                broadcastStatus.innerHTML = '<div class="success">📧 Preparing broadcast...</div>';
+            }
+            try {
+                const usersSnapshot = await get(ref(db, 'users'));
+                const users = usersSnapshot.val() || {};
+                let emails = [];
+                Object.values(users).forEach(userData => {
+                    if (userData && userData.email && userData.email.includes('@')) {
+                        emails.push(userData.email);
+                    }
+                });
+                if (testOnly) {
+                    emails = [user.email];
+                    if (broadcastStatus) {
+                        broadcastStatus.innerHTML = '<div class="success">📧 Sending test email to yourself...</div>';
+                    }
+                } else {
+                    emails = emails.filter(email => email !== user.email);
+                    if (broadcastStatus) {
+                        broadcastStatus.innerHTML = `<div class="success">📧 Preparing to send to ${emails.length} users...</div>`;
+                    }
+                }
+                const broadcastId = Date.now().toString();
+                await set(ref(db, `broadcasts/${broadcastId}`), {
+                    subject,
+                    message,
+                    sentBy: user.email,
+                    sentTo: emails.length,
+                    timestamp: Date.now(),
+                    testMode: testOnly
+                });
+                if (broadcastStatus) {
+                    broadcastStatus.innerHTML = `
+<div class="success">
+📧 Broadcast ${testOnly ? 'test ' : ''}ready!
+<br>Would send to ${emails.length} users
+<br><small>(Email feature requires EmailJS setup)</small>
+</div>
+`;
+                }
+                console.log('Broadcast details (EmailJS required):', { subject, message, emails });
+                alert('Email broadcasting requires EmailJS setup. Check console for details.');
+            } catch (error) {
+                console.error('Error in broadcast:', error);
+                if (broadcastStatus) {
+                    broadcastStatus.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+                }
+            }
+        }
+
+        // ====================================
+        // DATABASE MANAGEMENT FUNCTIONS
+        // ====================================
+        async function exportAllData() {
+            try {
+                const [usersSnapshot, postsSnapshot, ranksSnapshot] = await Promise.all([
+                    get(ref(db, 'users')),
+                    get(ref(db, 'posts')),
+                    get(ref(db, 'ranks'))
+                ]);
+                const data = {
+                    users: usersSnapshot.val() || {},
+                    posts: postsSnapshot.val() || {},
+                    ranks: ranksSnapshot.val() || {},
+                    exportedAt: new Date().toISOString()
+                };
+                const dataStr = JSON.stringify(data, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+                const exportFileDefaultName = `suprememc-backup-${new Date().toISOString().split('T')[0]}.json`;
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                await set(ref(db, `backups/${Date.now()}`), {
+                    timestamp: Date.now(),
+                    exportedBy: auth.currentUser.email,
+                    fileSize: dataStr.length
+                });
+                alert(`✅ Data exported successfully! Downloaded: ${exportFileDefaultName}`);
+            } catch (error) {
+                console.error('Error exporting data:', error);
+                alert('❌ Error exporting data: ' + error.message);
+            }
+        }
+
+        async function clearOldPosts() {
+            if (!confirm('Are you sure you want to clear posts older than 30 days? This cannot be undone.')) {
+                return;
+            }
+            try {
+                const postsSnapshot = await get(ref(db, 'posts'));
+                const posts = postsSnapshot.val() || {};
+                const thirtyDaysAgo = Date.now() - (30 * 24 * 60 * 60 * 1000);
+                let deletedCount = 0;
+                const updates = {};
+                Object.entries(posts).forEach(([postId, post]) => {
+                    if (post.timestamp && post.timestamp < thirtyDaysAgo) {
+                        updates[`posts/${postId}`] = null;
+                        deletedCount++;
+                    }
+                });
+                if (deletedCount > 0) {
+                    await update(ref(db), updates);
+                    alert(`✅ Deleted ${deletedCount} old posts.`);
+                    loadPosts();
+                } else {
+                    alert('No posts older than 30 days found.');
+                }
+            } catch (error) {
+                console.error('Error clearing old posts:', error);
+                alert('❌ Error clearing old posts: ' + error.message);
+            }
+        }
+
+        async function backupDatabase() {
+            try {
+                const snapshot = await get(ref(db));
+                const data = snapshot.val();
+                const backupId = Date.now().toString();
+                await set(ref(db, `backups/${backupId}`), {
+                    data: data,
+                    timestamp: Date.now(),
+                    backedUpBy: auth.currentUser.email,
+                    size: JSON.stringify(data).length
+                });
+                alert('✅ Database backup created successfully!');
+                if (lastBackupElement) {
+                    lastBackupElement.textContent = new Date().toLocaleString();
+                }
+            } catch (error) {
+                console.error('Error backing up database:', error);
+                alert('❌ Error backing up database: ' + error.message);
+            }
+        }
+
+        // ====================================
+        // NAVBAR SCROLL BEHAVIOR
+        // ====================================
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('nav');
+            if (!navbar) return;
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                navbar.classList.add('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        // ====================================
+        // MOBILE MENU TOGGLE
+        // ====================================
+        function toggleMenu() {
+            // Legacy function support
+            toggleMobileMenu();
+            if (profileMenu?.classList.contains('show')) {
+                closeProfileMenu();
+            }
+        }
+
+        // ====================================
+        // PROFILE MENU FUNCTIONS
+        // ====================================
+        function openProfileMenu() {
+            if (!profileMenu) return;
+            profileMenu.setAttribute('aria-hidden', 'false');
+            profileMenu.classList.add('show');
+        }
+
+        function closeProfileMenu() {
+            if (!profileMenu) return;
+            profileMenu.classList.remove('show');
+            setTimeout(() => {
+                profileMenu.setAttribute('aria-hidden', 'true');
+            }, 250);
+        }
+
+        // ====================================
+        // BIO CHARACTER COUNTER
+        // ====================================
+        if (bioInput && charCount) {
+            bioInput.addEventListener('input', () => {
+                const length = bioInput.value.length;
+                charCount.textContent = length;
+                if (length > 240) {
+                    charCount.style.color = 'var(--error)';
+                } else if (length > 200) {
+                    charCount.style.color = 'var(--warning)';
+                } else {
+                    charCount.style.color = 'var(--text-secondary)';
+                }
+            });
+        }
+
+        // ====================================
+        // GET USER BIO
+        // ====================================
+        async function getUserBio(user) {
+            if (!user) return null;
+            try {
+                const bioSnap = await get(ref(db, `bios/${user.uid}`));
+                return bioSnap.exists() ? bioSnap.val() : null;
+            } catch (error) {
+                console.error('Error getting bio:', error);
+                return null;
+            }
+        }
+
+        // ====================================
+        // GET DISPLAY NAME WITH NICKNAME SUPPORT
+        // ====================================
+        async function getDisplayName(user) {
+            if (!user) return 'Unknown User';
+            try {
+                const emailKey = user.email.replace('.', '_');
+                const nicknameSnap = await get(ref(db, `nicknames/${emailKey}`));
+                if (nicknameSnap.exists()) {
+                    return nicknameSnap.val();
+                }
+                return user.displayName || user.email.split('@')[0];
+            } catch (error) {
+                console.error('Error getting display name:', error);
+                return user.displayName || user.email?.split('@')[0] || 'Unknown User';
+            }
+        }
+
+        // ====================================
+        // GET USER RANK
+        // ====================================
+        async function getUserRank(user) {
+            if (!user) return 'member';
+            try {
+                const emailKey = user.email.replace('.', '_');
+                const rankSnap = await get(ref(db, `ranks/${emailKey}`));
+                if (!rankSnap.exists()) return 'member';
+                const ranks = rankSnap.val();
+                return Array.isArray(ranks) ? ranks[0] : ranks;
+            } catch (error) {
+                console.error('Error getting user rank:', error);
+                return 'member';
+            }
+        }
+
+        // ====================================
+        // GET ALL USER RANKS
+        // ====================================
+        async function getUserRanks(user) {
+            if (!user) return ['member'];
+            try {
+                const emailKey = user.email.replace('.', '_');
+                const rankSnap = await get(ref(db, `ranks/${emailKey}`));
+                if (!rankSnap.exists()) return ['member'];
+                const ranks = rankSnap.val();
+                return Array.isArray(ranks) ? ranks : [ranks];
+            } catch (error) {
+                console.error('Error getting user ranks:', error);
+                return ['member'];
+            }
+        }
+
+        // ====================================
+        // STORE USER DATA WHEN THEY REGISTER
+        // ====================================
+        async function storeUserData(user, username) {
+            try {
+                await set(ref(db, `users/${user.uid}`), {
+                    email: user.email,
+                    username: username,
+                    registeredAt: Date.now(),
+                    lastLogin: Date.now(),
+                    uid: user.uid
+                });
+            } catch (error) {
+                console.error('Error storing user data:', error);
+            }
+        }
+
+        // ====================================
+        // UPDATE LAST LOGIN TIME
+        // ====================================
+        async function updateLastLogin(user) {
+            try {
+                await update(ref(db, `users/${user.uid}`), {
+                    lastLogin: Date.now()
+                });
+            } catch (error) {
+                console.error('Error updating last login:', error);
+            }
+        }
+
+        // ====================================
+        // USER PROFILE MODAL FUNCTIONS
+        // ====================================
+        async function openUserProfile(userId, username, pfp) {
+            if (!userId || !username) return;
+            currentViewingUserId = userId;
+            if (modalPfp) modalPfp.src = pfp || DEFAULT_PFP;
+            if (modalUsername) modalUsername.textContent = username || 'Unknown User';
+            if (modalNicknameBadge) modalNicknameBadge.textContent = username || 'Unknown';
+            if (modalUserId) modalUserId.textContent = `ID: ${userId.substring(0, 8)}...`;
+            if (modalUserBio) modalUserBio.textContent = 'Loading bio...';
+            if (modalPostCount) modalPostCount.textContent = '0';
+            if (modalReactionsCount) modalReactionsCount.textContent = '0';
+            if (modalJoinDate) modalJoinDate.textContent = 'Unknown';
+            if (modalUserRanks) modalUserRanks.innerHTML = '<span class="modal-rank rank-member">Member</span>';
+
+            try {
+                const bioSnap = await get(ref(db, `bios/${userId}`));
+                if (modalUserBio) {
+                    modalUserBio.textContent = bioSnap.exists() && bioSnap.val() ? bioSnap.val() : 'No bio available.';
+                }
+
+                const postsSnap = await get(ref(db, 'posts'));
+                const posts = postsSnap.val() || {};
+                let userRanks = ['member'];
+                Object.values(posts).forEach(post => {
+                    if (post.uid === userId && post.ranks) {
+                        userRanks = post.ranks;
+                    }
+                });
+
+                try {
+                    let userEmail = null;
+                    Object.values(posts).forEach(post => {
+                        if (post.uid === userId && post.email) {
+                            userEmail = post.email;
+                        }
+                    });
+                    if (userEmail) {
+                        const emailKey = userEmail.replace('.', '_');
+                        const rankSnap = await get(ref(db, `ranks/${emailKey}`));
+                        if (rankSnap.exists()) {
+                            const dbRanks = rankSnap.val();
+                            userRanks = Array.isArray(dbRanks) ? dbRanks : [dbRanks];
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading ranks:', error);
+                }
+
+                if (modalUserRanks) {
+                    modalUserRanks.innerHTML = userRanks.map(rank =>
+                        `<span class="modal-rank rank-${rank}">${getRankDisplayName(rank)}</span>`
+                    ).join('');
+                }
+
+                let postCount = 0;
+                Object.values(posts).forEach(post => {
+                    if (post.uid === userId) postCount++;
+                });
+                if (modalPostCount) modalPostCount.textContent = postCount;
+
+                const reactionsSnap = await get(ref(db, 'reactions'));
+                const reactions = reactionsSnap.val() || {};
+                let reactionCount = 0;
+                const userPostIds = [];
+                Object.entries(posts).forEach(([postId, post]) => {
+                    if (post.uid === userId) userPostIds.push(postId);
+                });
+                Object.values(reactions).forEach(reaction => {
+                    if (userPostIds.includes(reaction.postId)) reactionCount++;
+                });
+                if (modalReactionsCount) modalReactionsCount.textContent = reactionCount;
+
+                let earliestPost = null;
+                Object.values(posts).forEach(post => {
+                    if (post.uid === userId && post.timestamp) {
+                        if (!earliestPost || post.timestamp < earliestPost) {
+                            earliestPost = post.timestamp;
+                        }
+                    }
+                });
+                if (modalJoinDate) {
+                    if (earliestPost) {
+                        const joinDate = new Date(earliestPost);
+                        modalJoinDate.textContent = joinDate.toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                        });
+                    } else {
+                        modalJoinDate.textContent = 'Unknown';
+                    }
+                }
+
+                const currentUser = auth.currentUser;
+                if (modalAdminControls) {
+                    modalAdminControls.style.display = currentUser && ADMIN_EMAILS.includes(currentUser.email) ? 'block' : 'none';
+                }
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+            }
+
+            if (userProfileModal) {
+                userProfileModal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closeUserProfile() {
+            if (userProfileModal) {
+                userProfileModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+                currentViewingUserId = null;
+            }
+        }
+
+        // ====================================
+        // ADMIN FUNCTIONS FOR USER PROFILE MODAL
+        // ====================================
+        async function promoteUser() {
+            if (!currentViewingUserId) return;
+            const rank = prompt('Enter rank to assign (member, vip, elite, moderator, admin, owner, donator, royal, known, builder, pvper, grinder):', 'vip');
+            if (!rank || !['member', 'vip', 'elite', 'moderator', 'admin', 'owner', 'donator', 'royal', 'known', 'builder', 'pvper', 'grinder'].includes(rank.toLowerCase())) {
+                return;
+            }
+            try {
+                const postsSnap = await get(ref(db, 'posts'));
+                const posts = postsSnap.val() || {};
+                let userEmail = null;
+                Object.values(posts).forEach(post => {
+                    if (post.uid === currentViewingUserId && post.email) {
+                        userEmail = post.email;
+                    }
+                });
+                if (!userEmail) {
+                    alert('Cannot promote: User email not available');
+                    return;
+                }
+                const emailKey = userEmail.replace('.', '_');
+                const rankSnap = await get(ref(db, `ranks/${emailKey}`));
+                let existingRanks = [];
+                if (rankSnap.exists()) {
+                    const ranks = rankSnap.val();
+                    existingRanks = Array.isArray(ranks) ? ranks : [ranks];
+                }
+                if (!existingRanks.includes(rank)) {
+                    existingRanks.push(rank);
+                }
+                await set(ref(db, `ranks/${emailKey}`), existingRanks);
+                alert(`✅ User promoted to ${rank}!`);
+                if (modalUserRanks) {
+                    modalUserRanks.innerHTML = existingRanks.map(r =>
+                        `<span class="modal-rank rank-${r}">${getRankDisplayName(r)}</span>`
+                    ).join('');
+                }
+            } catch (error) {
+                alert('Error promoting user: ' + error.message);
+            }
+        }
+
+        async function warnUser() {
+            if (!currentViewingUserId) return;
+            const reason = prompt('Enter warning reason:');
+            if (!reason) return;
+            try {
+                const warningId = Date.now().toString();
+                const currentUser = auth.currentUser;
+                const fromName = await getDisplayName(currentUser);
+                await set(ref(db, `notifications/${currentViewingUserId}/${warningId}`), {
+                    type: 'warning',
+                    message: `⚠️ Warning from ${fromName}: ${reason}`,
+                    reason: reason,
+                    from: currentUser.email,
+                    fromName: fromName,
+                    timestamp: Date.now(),
+                    read: false
+                });
+                alert(`⚠️ Warning sent to user!`);
+            } catch (error) {
+                alert('Error sending warning: ' + error.message);
+            }
+        }
+
+        async function messageUser() {
+            if (!currentViewingUserId) return;
+            const message = prompt('Enter your message:');
+            if (!message) return;
+            try {
+                const messageId = Date.now().toString();
+                const currentUser = auth.currentUser;
+                const fromName = await getDisplayName(currentUser);
+                await set(ref(db, `notifications/${currentViewingUserId}/${messageId}`), {
+                    type: 'message',
+                    message: `💬 Message from ${fromName}: ${message}`,
+                    content: message,
+                    from: currentUser.email,
+                    fromName: fromName,
+                    timestamp: Date.now(),
+                    read: false
+                });
+                alert(`💬 Message sent to user!`);
+            } catch (error) {
+                alert('Error sending message: ' + error.message);
+            }
+        }
+
+        async function banUser() {
+            if (!currentViewingUserId) return;
+            const reason = prompt('Enter ban reason:');
+            if (!reason) return;
+            if (confirm(`Are you sure you want to ban this user?
+Reason: ${reason}`)) {
+                try {
+                    await set(ref(db, `bans/${currentViewingUserId}`), {
+                        reason: reason,
+                        bannedBy: auth.currentUser.email,
+                        timestamp: Date.now()
+                    });
+                    alert(`🚫 User banned.
+Reason: ${reason}`);
+                } catch (error) {
+                    alert('Error banning user: ' + error.message);
+                }
+            }
+        }
+
+        // ====================================
+        // SETUP PROFILE PICTURE CLICKS
+        // ====================================
+        function setupProfilePictureClicks() {
+            document.addEventListener('click', function (e) {
+                if (e.target.tagName === 'IMG' &&
+                    (e.target.closest('.post .meta') || e.target.closest('.reply'))) {
+                    e.preventDefault();
+                    const img = e.target;
+                    const postElement = img.closest('.post, .reply');
+                    const userId = postElement.getAttribute('data-user-id');
+                    const username = postElement.querySelector('strong')?.textContent?.split(' ')[0] || 'User';
+                    const pfpSrc = img.src;
+                    if (userId && userId !== 'undefined' && userId !== 'null') {
+                        openUserProfile(userId, username, pfpSrc);
+                    }
+                }
+            });
+        }
+
+        // ====================================
+        // AUTHENTICATION FUNCTIONS
+        // ====================================
+        // Register
+        if (registerBtn) {
+            registerBtn.onclick = async () => {
+                if (!registerError || !registerSuccess) return;
+                registerError.classList.add('hidden');
+                registerSuccess.classList.add('hidden');
+                const email = registerEmail?.value.trim() || '';
+                const pass = registerPassword?.value.trim() || '';
+                const username = registerUsername?.value.trim() || '';
+                if (!email || !pass || !username) {
+                    if (registerError) {
+                        registerError.textContent = '❌ Fill all fields.';
+                        registerError.classList.remove('hidden');
+                    }
+                    return;
+                }
+                try {
+                    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                    await updateProfile(cred.user, { displayName: username });
+                    await storeUserData(cred.user, username);
+                    if (registerSuccess) {
+                        registerSuccess.textContent = '✅ Registered successfully!';
+                        registerSuccess.classList.remove('hidden');
+                    }
+                    if (registerDiv && loginDiv) {
+                        registerDiv.classList.add('hidden');
+                        loginDiv.classList.remove('hidden');
+                    }
+                } catch (err) {
+                    if (registerError) {
+                        registerError.textContent = '❌ ' + err.message;
+                        registerError.classList.remove('hidden');
+                    }
+                }
+            };
+        }
+
+        // Show Register Form
+        if (showRegisterBtn && loginDiv && registerDiv) {
+            showRegisterBtn.onclick = e => {
+                e.preventDefault();
+                loginDiv.classList.add('hidden');
+                registerDiv.classList.remove('hidden');
+            };
+        }
+
+        // Show Login Form
+        if (showLoginBtn && loginDiv && registerDiv) {
+            showLoginBtn.onclick = e => {
+                e.preventDefault();
+                registerDiv.classList.add('hidden');
+                loginDiv.classList.remove('hidden');
+            };
+        }
+
+        // Login
+        if (loginBtn) {
+            loginBtn.onclick = async () => {
+                if (!loginError) return;
+                loginError.classList.add('hidden');
+                const email = loginEmail?.value.trim() || '';
+                const pass = loginPassword?.value.trim() || '';
+                if (!email || !pass) {
+                    loginError.textContent = '❌ Enter email and password.';
+                    loginError.classList.remove('hidden');
+                    return;
+                }
+                try {
+                    await signInWithEmailAndPassword(auth, email, pass);
+                } catch (err) {
+                    loginError.textContent = '❌ Wrong email or password!';
+                    loginError.classList.remove('hidden');
+                }
+            };
+        }
+
+        // Logout
+        if (logoutBtn) {
+            logoutBtn.onclick = async () => {
+                await signOut(auth);
+                closeProfileMenu();
+            };
+        }
+
+        // ====================================
+        // ASSIGN RANK
+        // ====================================
+        async function assignRank() {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can assign ranks.');
+                return;
+            }
+            const email = rankEmail?.value.trim() || '';
+            const selectedRanks = getSelectedRanks();
+            if (!email) {
+                alert('Please enter an email address');
+                return;
+            }
+            if (selectedRanks.length === 0) {
+                alert('Please select at least one rank');
+                return;
+            }
+            try {
+                await set(ref(db, `ranks/${email.replace('.', '_')}`), selectedRanks);
+                if (rankEmail) rankEmail.value = '';
+                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                const rankMember = document.getElementById('rankMember');
+                if (rankMember) rankMember.checked = true;
+                alert(`✅ Ranks assigned successfully!`);
+                loadRanks();
+            } catch (error) {
+                alert('Error assigning ranks: ' + error.message);
+            }
+        }
+
+        // ====================================
+        // CHANGE NICKNAME
+        // ====================================
+        async function changeNickname() {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can change nicknames.');
+                return;
+            }
+            const email = nicknameEmail?.value.trim() || '';
+            const nickname = newNickname?.value.trim() || '';
+            if (!email || !nickname) {
+                alert('Please enter both email and nickname');
+                return;
+            }
+            try {
+                await set(ref(db, `nicknames/${email.replace('.', '_')}`), nickname);
+                if (nicknameEmail) nicknameEmail.value = '';
+                if (newNickname) newNickname.value = '';
+                alert(`✅ Nickname changed successfully!`);
+                loadNicknames();
+            } catch (error) {
+                alert('Error changing nickname: ' + error.message);
+            }
+        }
+
+        // ====================================
+        // REACTION SYSTEM FUNCTIONS
+        // ====================================
+        async function addReaction(postId, reactionType) {
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please login to react to posts');
+                return;
+            }
+            try {
+                const reactionKey = `${user.uid}_${postId}`;
+                await set(ref(db, `reactions/${reactionKey}`), {
+                    type: reactionType,
+                    userId: user.uid,
+                    postId: postId,
+                    timestamp: Date.now(),
+                    username: await getDisplayName(user),
+                    userEmail: user.email
+                });
+            } catch (error) {
+                console.error('Error adding reaction:', error);
+                alert('Failed to add reaction');
+            }
+        }
+
+        async function removeReaction(postId) {
+            const user = auth.currentUser;
+            if (!user) return;
+            try {
+                const reactionKey = `${user.uid}_${postId}`;
+                await remove(ref(db, `reactions/${reactionKey}`));
+            } catch (error) {
+                console.error('Error removing reaction:', error);
+            }
+        }
+
+        async function getPostReactions(postId) {
+            try {
+                const reactionsRef = ref(db, 'reactions');
+                const snapshot = await get(reactionsRef);
+                const allReactions = snapshot.val() || {};
+                return Object.values(allReactions).filter(reaction => reaction.postId === postId);
+            } catch (error) {
+                console.error('Error getting post reactions:', error);
+                return [];
+            }
+        }
+
+        async function loadPostReactions(postId, container) {
+            if (!container) return;
+            try {
+                const reactions = await getPostReactions(postId);
+                const user = auth.currentUser;
+                const userReaction = user ? reactions.find(r => r.userId === user.uid) : null;
+                const reactionCounts = {};
+                reactions.forEach(reaction => {
+                    reactionCounts[reaction.type] = (reactionCounts[reaction.type] || 0) + 1;
+                });
+                const reactionsHTML = `
+<div class="reactions-container">
+<div class="reactions-bar">
+${Object.entries(REACTION_TYPES).map(([key, emoji]) => `
+<button class="reaction-btn ${userReaction?.type === emoji ? 'active' : ''}"
+data-post-id="${postId}"
+data-reaction-type="${emoji}">
+${emoji} <span class="count">${reactionCounts[emoji] || 0}</span>
+</button>
+`).join('')}
+</div>
+${reactions.length > 0 ? `
+<div class="reaction-details">
+${Object.entries(reactionCounts).map(([emoji, count]) => `
+<span class="reaction-user">
+${emoji} ${count}
+</span>
+`).join('')}
+</div>
+` : ''}
+${user && ADMIN_EMAILS.includes(user.email) ? `
+<div class="admin-reaction-controls">
+<h4>Admin Controls</h4>
+<div class="reaction-management">
+<button class="reaction-management-btn" data-post-id="${postId}" id="removeAllReactionsBtn">
+Remove All Reactions
+</button>
+<button class="reaction-management-btn" data-post-id="${postId}" id="viewReactionDetailsBtn">
+View Reaction Details
+</button>
+</div>
+</div>
+` : ''}
+</div>
+`;
+                container.innerHTML = reactionsHTML;
+
+                // Add event listeners for reaction buttons
+                container.querySelectorAll('.reaction-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const postId = e.currentTarget.getAttribute('data-post-id');
+                        const reactionType = e.currentTarget.getAttribute('data-reaction-type');
+                        handleReaction(postId, reactionType);
+                    });
+                });
+
+                // Add event listeners for admin buttons
+                const removeAllBtn = container.querySelector('#removeAllReactionsBtn');
+                if (removeAllBtn) {
+                    removeAllBtn.addEventListener('click', () => {
+                        const postId = removeAllBtn.getAttribute('data-post-id');
+                        removeAllReactions(postId);
+                    });
+                }
+
+                const viewDetailsBtn = container.querySelector('#viewReactionDetailsBtn');
+                if (viewDetailsBtn) {
+                    viewDetailsBtn.addEventListener('click', () => {
+                        const postId = viewDetailsBtn.getAttribute('data-post-id');
+                        viewReactionDetails(postId);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading post reactions:', error);
+                container.innerHTML = '<div class="error">Error loading reactions</div>';
+            }
+        }
+
+        // Handle Reaction Click
+        async function handleReaction(postId, reactionType) {
+            const user = auth.currentUser;
+            if (!user) return;
+            const currentReactions = await getPostReactions(postId);
+            const userReaction = currentReactions.find(r => r.userId === user.uid);
+            if (userReaction) {
+                if (userReaction.type === reactionType) {
+                    await removeReaction(postId);
+                } else {
+                    await removeReaction(postId);
+                    await addReaction(postId, reactionType);
+                }
+            } else {
+                await addReaction(postId, reactionType);
+            }
+            const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+            if (postElement) {
+                const reactionContainer = postElement.querySelector('.reactions-container');
+                if (reactionContainer) {
+                    await loadPostReactions(postId, reactionContainer);
+                }
+            }
+        }
+
+        // Remove All Reactions (Admin)
+        async function removeAllReactions(postId) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can remove reactions.');
+                return;
+            }
+            if (!confirm('Are you sure you want to remove all reactions from this post?')) return;
+            try {
+                const reactionsRef = ref(db, 'reactions');
+                const snapshot = await get(reactionsRef);
+                const allReactions = snapshot.val() || {};
+                const removalPromises = [];
+                Object.entries(allReactions).forEach(([key, reaction]) => {
+                    if (reaction.postId === postId) {
+                        removalPromises.push(remove(ref(db, `reactions/${key}`)));
+                    }
+                });
+                await Promise.all(removalPromises);
+                alert('All reactions removed successfully');
+                const postElement = document.querySelector(`[data-post-id="${postId}"]`);
+                if (postElement) {
+                    const reactionContainer = postElement.querySelector('.reactions-container');
+                    if (reactionContainer) {
+                        await loadPostReactions(postId, reactionContainer);
+                    }
+                }
+            } catch (error) {
+                console.error('Error removing reactions:', error);
+                alert('Failed to remove reactions');
+            }
+        }
+
+        // View Reaction Details (Admin)
+        async function viewReactionDetails(postId) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can view reaction details.');
+                return;
+            }
+            const reactions = await getPostReactions(postId);
+            let detailsMessage = 'Reaction Details:\n';
+            reactions.forEach(reaction => {
+                detailsMessage += `${reaction.type} - ${reaction.username} (${new Date(reaction.timestamp).toLocaleString()})\n`;
+            });
+            alert(detailsMessage || 'No reactions yet');
+        }
+
+        // ====================================
+        // LOAD REACTION LEADERBOARD
+        // ====================================
+        async function loadReactionLeaderboard() {
+            try {
+                const [reactionsSnap, postsSnap] = await Promise.all([
+                    get(ref(db, 'reactions')),
+                    get(ref(db, 'posts'))
+                ]);
+                const allReactions = reactionsSnap.val() || {};
+                const allPosts = postsSnap.val() || {};
+
+                const userReactionsReceived = {};
+                const userReactionsGiven = {};
+                const postReactions = {};
+
+                Object.values(allReactions).forEach(reaction => {
+                    const post = allPosts[reaction.postId];
+                    if (post) {
+                        userReactionsReceived[post.uid] = userReactionsReceived[post.uid] || { total: 0, reactions: {}, username: post.username };
+                        userReactionsReceived[post.uid].total++;
+                        userReactionsReceived[post.uid].reactions[reaction.type] = (userReactionsReceived[post.uid].reactions[reaction.type] || 0) + 1;
+                    }
+                    userReactionsGiven[reaction.userId] = userReactionsGiven[reaction.userId] || { total: 0, reactions: {}, username: reaction.username };
+                    userReactionsGiven[reaction.userId].total++;
+                    userReactionsGiven[reaction.userId].reactions[reaction.type] = (userReactionsGiven[reaction.userId].reactions[reaction.type] || 0) + 1;
+                    postReactions[reaction.postId] = postReactions[reaction.postId] || { total: 0, reactions: {}, post: allPosts[reaction.postId] };
+                    postReactions[reaction.postId].total++;
+                    postReactions[reaction.postId].reactions[reaction.type] = (postReactions[reaction.postId].reactions[reaction.type] || 0) + 1;
+                });
+
+                displayMostReactionsReceived(userReactionsReceived);
+                displayMostReactionsGiven(userReactionsGiven);
+                displayTopPosts(postReactions);
+            } catch (error) {
+                console.error('Error loading leaderboard:', error);
+            }
+        }
+
+        function displayMostReactionsReceived(userReactions) {
+            const element = document.getElementById('mostReactionsList');
+            if (!element) return;
+            const sortedUsers = Object.entries(userReactions)
+                .sort(([, a], [, b]) => b.total - a.total)
+                .slice(0, 10);
+            const html = sortedUsers.map(([userId, data], index) => {
+                return `
+<div class="leaderboard-item">
+<div class="leaderboard-user">
+<span class="rank">${index + 1}.</span>
+<strong>${escapeHtml(data.username)}</strong>
+</div>
+<div class="leaderboard-stats">
+<div class="reaction-stat">🏆 ${data.total}</div>
+${Object.entries(data.reactions).map(([emoji, count]) => `
+<div class="reaction-stat">${emoji} ${count}</div>
+`).join('')}
+</div>
+</div>
+`;
+            }).join('') || '<p>No reactions yet</p>';
+            element.innerHTML = html;
+        }
+
+        function displayMostReactionsGiven(userReactions) {
+            const element = document.getElementById('mostGivenList');
+            if (!element) return;
+            const sortedUsers = Object.entries(userReactions)
+                .sort(([, a], [, b]) => b.total - a.total)
+                .slice(0, 10);
+            const html = sortedUsers.map(([userId, data], index) => {
+                return `
+<div class="leaderboard-item">
+<div class="leaderboard-user">
+<span class="rank">${index + 1}.</span>
+<strong>${escapeHtml(data.username)}</strong>
+</div>
+<div class="leaderboard-stats">
+<div class="reaction-stat">🎯 ${data.total}</div>
+${Object.entries(data.reactions).map(([emoji, count]) => `
+<div class="reaction-stat">${emoji} ${count}</div>
+`).join('')}
+</div>
+</div>
+`;
+            }).join('') || '<p>No reactions given yet</p>';
+            element.innerHTML = html;
+        }
+
+        function displayTopPosts(postReactions) {
+            const element = document.getElementById('topPostsList');
+            if (!element) return;
+            const sortedPosts = Object.entries(postReactions)
+                .sort(([, a], [, b]) => b.total - a.total)
+                .slice(0, 10);
+            const html = sortedPosts.map(([postId, data], index) => {
+                const post = data.post;
+                const preview = post?.text ? (post.text.length > 50 ? post.text.substring(0, 50) + '...' : post.text) : '';
+                const username = post?.username || 'Unknown';
+                return `
+<div class="leaderboard-item">
+<div class="leaderboard-user">
+<span class="rank">${index + 1}.</span>
+<div>
+<strong>${escapeHtml(username)}</strong>
+<div style="font-size: 0.8rem; color: var(--muted);">${escapeHtml(preview)}</div>
+</div>
+</div>
+<div class="leaderboard-stats">
+<div class="reaction-stat">🔥 ${data.total}</div>
+${Object.entries(data.reactions).map(([emoji, count]) => `
+<div class="reaction-stat">${emoji} ${count}</div>
+`).join('')}
+</div>
+</div>
+`;
+            }).join('') || '<p>No reacted posts yet</p>';
+            element.innerHTML = html;
+        }
+
+        // ====================================
+        // POST SYSTEM
+        // ====================================
+        if (helpForm && questionInput) {
+            helpForm.addEventListener('submit', async e => {
+                e.preventDefault();
+                const text = questionInput.value.trim();
+                if (!text) return;
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Please login to post');
+                    return;
+                }
+                try {
+                    const pfpSnap = await get(ref(db, `pfp/${user.uid}`));
+                    const pfp = pfpSnap.exists() ? pfpSnap.val() : DEFAULT_PFP;
+                    const userRank = await getUserRank(user);
+                    const userRanks = await getUserRanks(user);
+                    const displayName = await getDisplayName(user);
+                    const userBio = await getUserBio(user);
+                    await push(ref(db, 'posts'), {
+                        uid: user.uid,
+                        username: displayName,
+                        email: user.email,
+                        text,
+                        timestamp: Date.now(),
+                        pfp,
+                        rank: userRank,
+                        ranks: userRanks,
+                        bio: userBio || null
+                    });
+                    questionInput.value = '';
+                } catch (error) {
+                    console.error('Error posting:', error);
+                    alert('Failed to post. Error: ' + error.message);
+                }
+            });
+        }
+
+        // ====================================
+        // LOAD POSTS
+        // ====================================
+        let postsListenerLoaded = false;
+        function loadPosts() {
+            if (postsListenerLoaded) return;
+            postsListenerLoaded = true;
+            console.log('loadPosts (listener setup) called');
+            if (!postsEl) {
+                console.error('postsEl not found');
+                return;
+            }
+            const postsRef = ref(db, 'posts');
+            onValue(postsRef, async (snapshot) => {
+                const data = snapshot.val();
+                postsEl.innerHTML = '';
+                if (!data) {
+                    postsEl.innerHTML = '<p>No posts yet. Be the first to ask a question!</p>';
+                    return;
+                }
+                const entries = Object.entries(data).map(([id, val]) => ({ id, ...val }));
+                entries.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+                for (const post of entries) {
+                    const postDiv = document.createElement('div');
+                    postDiv.className = 'post';
+                    postDiv.setAttribute('data-post-id', post.id);
+                    postDiv.setAttribute('data-user-id', post.uid);
+                    const user = auth.currentUser;
+                    const isAdmin = user && ADMIN_EMAILS.includes(user.email);
+                    let authorBio = post.bio || null;
+                    if (!authorBio) {
+                        try {
+                            const bioSnap = await get(ref(db, `bios/${post.uid}`));
+                            if (bioSnap.exists()) {
+                                authorBio = bioSnap.val();
+                            }
+                        } catch (error) {
+                            console.error('Error getting bio:', error);
+                        }
+                    }
+                    const bioBadge = authorBio ?
+                        `<span class="bio-badge" title="View Bio">📝
+<div class="bio-tooltip">${escapeHtml(authorBio)}</div>
+</span>` : '';
+                    let repliesHtml = '';
+                    if (post.replies) {
+                        repliesHtml = Object.entries(post.replies).map(([rid, r]) => {
+                            const replyRank = r.rank || 'member';
+                            const replyRanks = r.ranks || [replyRank];
+                            return `
+<div class="reply" data-user-id="${r.uid || post.uid}">
+<img src="${r.pfp || DEFAULT_PFP}" alt="" class="reply-pfp">
+<div>
+<strong><span class="nickname-pill compact">${escapeHtml(r.username)}</span> ${displayMultipleRanks(replyRanks)}</strong>
+<div class="timestamp">${new Date(r.timestamp || 0).toLocaleString()}</div>
+<div>${escapeHtml(r.text)}</div>
+${isAdmin ? `<button class="delete-reply-btn" data-post-id="${post.id}" data-reply-id="${rid}">🗑️ Delete</button>` : ''}
+</div>
+</div>`;
+                        }).join('');
+                    }
+                    const adminControls = isAdmin ? `
+<div style="margin-top:6px;">
+<button class="edit-post-btn" data-post-id="${post.id}">✏️ Edit</button>
+<button class="delete-post-btn" data-post-id="${post.id}">🗑️ Delete</button>
+</div>` : '';
+                    const postRank = post.rank || 'member';
+                    const postRanks = post.ranks || [postRank];
+                    postDiv.innerHTML = `
+<div class="meta">
+<img src="${escapeHtml(post.pfp || DEFAULT_PFP)}" alt="" class="post-pfp">
+<div>
+<strong><span class="nickname-pill">${escapeHtml(post.username)}</span> ${displayMultipleRanks(postRanks)} ${bioBadge}</strong>
+${authorBio ? `<div class="bio-preview show">${truncateText(authorBio, 80)}</div>` : ''}
+</div>
+</div>
+<div class="timestamp">${new Date(post.timestamp || 0).toLocaleString()}</div>
+<div id="post-text-${post.id}">${escapeHtml(post.text)}</div>
+<!-- Reactions Container -->
+<div id="reactions-${post.id}" class="reactions-container"></div>
+<div class="reply-box">
+<input type="text" id="reply-${post.id}" placeholder="Reply...">
+<button class="send-reply-btn" data-post-id="${post.id}">Reply</button>
+${repliesHtml}
+</div>
+${adminControls}
+`;
+                    postsEl.appendChild(postDiv);
+                    const reactionContainer = document.getElementById(`reactions-${post.id}`);
+                    if (reactionContainer) {
+                        await loadPostReactions(post.id, reactionContainer);
+                    }
+                }
+                // Add event listeners for reply buttons
+                document.querySelectorAll('.send-reply-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const postId = e.currentTarget.getAttribute('data-post-id');
+                        sendReply(postId);
+                    });
+                });
+                // Add event listeners for delete post buttons
+                document.querySelectorAll('.delete-post-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const postId = e.currentTarget.getAttribute('data-post-id');
+                        deletePost(postId);
+                    });
+                });
+                // Add event listeners for edit post buttons
+                document.querySelectorAll('.edit-post-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const postId = e.currentTarget.getAttribute('data-post-id');
+                        editPost(postId);
+                    });
+                });
+                // Add event listeners for delete reply buttons
+                document.querySelectorAll('.delete-reply-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const postId = e.currentTarget.getAttribute('data-post-id');
+                        const replyId = e.currentTarget.getAttribute('data-reply-id');
+                        deleteReply(postId, replyId);
+                    });
+                });
+                // Add event listeners for profile pictures
+                document.querySelectorAll('.post-pfp, .reply-pfp').forEach(img => {
+                    img.addEventListener('click', (e) => {
+                        const postElement = e.currentTarget.closest('.post, .reply');
+                        const userId = postElement.getAttribute('data-user-id');
+                        const username = postElement.querySelector('strong')?.textContent?.split(' ')[0] || 'User';
+                        const pfpSrc = e.currentTarget.src;
+                        if (userId && userId !== 'undefined' && userId !== 'null') {
+                            openUserProfile(userId, username, pfpSrc);
+                        }
+                    });
+                });
+            });
+        }
+
+        // ====================================
+        // SEND REPLY
+        // ====================================
+        async function sendReply(postId) {
+            const inp = document.getElementById(`reply-${postId}`);
+            if (!inp) return;
+            const text = inp.value.trim();
+            if (!text) return;
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please login to reply');
+                return;
+            }
+            try {
+                const pfpSnap = await get(ref(db, `pfp/${user.uid}`));
+                const pfp = pfpSnap.exists() ? pfpSnap.val() : DEFAULT_PFP;
+                const userRank = await getUserRank(user);
+                const userRanks = await getUserRanks(user);
+                const displayName = await getDisplayName(user);
+                const userBio = await getUserBio(user);
+                const postRef = ref(db, `posts/${postId}/replies`);
+                await push(postRef, {
+                    uid: user.uid,
+                    username: displayName,
+                    email: user.email,
+                    text,
+                    timestamp: Date.now(),
+                    pfp,
+                    rank: userRank,
+                    ranks: userRanks,
+                    bio: userBio || null
+                });
+                inp.value = '';
+            } catch (error) {
+                console.error('Error sending reply:', error);
+                alert('Failed to send reply. Error: ' + error.message);
+            }
+        }
+
+        // ====================================
+        // ADMIN POST FUNCTIONS
+        // ====================================
+        async function deletePost(postId) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can delete posts.');
+                return;
+            }
+            if (confirm('Are you sure you want to delete this post?')) {
+                try {
+                    await set(ref(db, `posts/${postId}`), null);
+                } catch (error) {
+                    alert('Error deleting post: ' + error.message);
+                }
+            }
+        }
+
+        async function editPost(postId) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can edit posts.');
+                return;
+            }
+            const postTextEl = document.getElementById(`post-text-${postId}`);
+            if (!postTextEl) return;
+            const newText = prompt('Edit the post:', postTextEl.textContent);
+            if (newText !== null && newText.trim() !== '') {
+                try {
+                    await set(ref(db, `posts/${postId}/text`), newText.trim());
+                } catch (error) {
+                    alert('Error editing post: ' + error.message);
+                }
+            }
+        }
+
+        async function deleteReply(postId, replyId) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can delete replies.');
+                return;
+            }
+            if (confirm('Delete this reply?')) {
+                try {
+                    await set(ref(db, `posts/${postId}/replies/${replyId}`), null);
+                } catch (error) {
+                    alert('Error deleting reply: ' + error.message);
+                }
+            }
+        }
+
+        // ====================================
+        // RANK LIST MANAGEMENT
+        // ====================================
+        async function loadRanks() {
+            if (!rankList) return;
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                rankList.innerHTML = '<p>Admin access required</p>';
+                return;
+            }
+            const ranksRef = ref(db, 'ranks');
+            onValue(ranksRef, snapshot => {
+                const data = snapshot.val();
+                rankList.innerHTML = '';
+                if (!data) {
+                    rankList.innerHTML = '<p>No rank assignments found.</p>';
+                    return;
+                }
+                Object.entries(data).forEach(([emailKey, ranks]) => {
+                    const email = emailKey.replace('_', '.');
+                    const rankItem = document.createElement('div');
+                    rankItem.className = 'rank-item';
+                    rankItem.innerHTML = `
+<div class="email">${escapeHtml(email)}</div>
+<div class="rank-badge">${Array.isArray(ranks) ? displayMultipleRanks(ranks) : displayRank(ranks)}</div>
+<button class="remove-rank-btn" data-email-key="${emailKey}">Remove</button>
+`;
+                    rankList.appendChild(rankItem);
+                });
+                // Add event listeners for remove rank buttons
+                document.querySelectorAll('.remove-rank-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const emailKey = e.currentTarget.getAttribute('data-email-key');
+                        removeRank(emailKey);
+                    });
+                });
+            });
+        }
+
+        async function removeRank(emailKey) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can remove ranks.');
+                return;
+            }
+            if (confirm('Are you sure you want to remove all ranks from this user?')) {
+                try {
+                    await remove(ref(db, `ranks/${emailKey}`));
+                } catch (error) {
+                    alert('Error removing ranks: ' + error.message);
+                }
+            }
+        }
+
+        // ====================================
+        // NICKNAME MANAGEMENT
+        // ====================================
+        async function loadNicknames() {
+            if (!nicknameList) return;
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                nicknameList.innerHTML = '<p>Admin access required</p>';
+                return;
+            }
+            const nicknamesRef = ref(db, 'nicknames');
+            onValue(nicknamesRef, snapshot => {
+                const data = snapshot.val();
+                nicknameList.innerHTML = '';
+                if (!data) {
+                    nicknameList.innerHTML = '<p>No custom nicknames found.</p>';
+                    return;
+                }
+                Object.entries(data).forEach(([emailKey, nickname]) => {
+                    const email = emailKey.replace('_', '.');
+                    const nicknameItem = document.createElement('div');
+                    nicknameItem.className = 'nickname-item';
+                    nicknameItem.innerHTML = `
+<div class="email">${escapeHtml(email)}</div>
+<div class="nickname">${escapeHtml(nickname)}</div>
+<button class="remove-nickname-btn" data-email-key="${emailKey}">Remove</button>
+`;
+                    nicknameList.appendChild(nicknameItem);
+                });
+                // Add event listeners for remove nickname buttons
+                document.querySelectorAll('.remove-nickname-btn').forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const emailKey = e.currentTarget.getAttribute('data-email-key');
+                        removeNickname(emailKey);
+                    });
+                });
+            });
+        }
+
+        async function removeNickname(emailKey) {
+            const user = auth.currentUser;
+            if (!user || !ADMIN_EMAILS.includes(user.email)) {
+                alert('Access denied! Only administrators can remove nicknames.');
+                return;
+            }
+            if (confirm('Are you sure you want to remove this nickname?')) {
+                try {
+                    await remove(ref(db, `nicknames/${emailKey}`));
+                } catch (error) {
+                    alert('Error removing nickname: ' + error.message);
+                }
+            }
+        }
+
+        // ====================================
+        // NOTIFICATION SYSTEM
+        // ====================================
+        function openNotifications() {
+            if (!notificationPanel) return;
+            notificationPanel.classList.add('show');
+            notificationPanelOpen = true;
+            loadNotifications();
+        }
+
+        function closeNotifications() {
+            if (!notificationPanel) return;
+            notificationPanel.classList.remove('show');
+            notificationPanelOpen = false;
+        }
+
+        function toggleNotifications() {
+            if (notificationPanelOpen) {
+                closeNotifications();
+            } else {
+                openNotifications();
+            }
+        }
+
+        async function loadNotifications() {
+            const user = auth.currentUser;
+            if (!user || !notificationList || !notificationCount) return;
+            try {
+                const notificationsRef = ref(db, `notifications/${user.uid}`);
+                const snapshot = await get(notificationsRef);
+                const notifications = snapshot.val() || {};
+                let unreadCount = 0;
+                const notificationItems = [];
+                Object.entries(notifications).forEach(([id, notif]) => {
+                    if (!notif.read) unreadCount++;
+                    const timeAgo = getTimeAgo(notif.timestamp);
+                    const isUnread = !notif.read ? 'unread' : 'read';
+                    const typeClass = notif.type === 'warning' ? 'warning' : 'message';
+                    const fromDisplay = notif.fromName || notif.from?.split('@')[0] || 'Admin';
+                    notificationItems.push(`
+<div class="notification-item ${isUnread} ${typeClass}" data-notification-id="${id}">
+<div class="notification-content">
+${notif.type === 'warning' ? '⚠️' : '💬'}
+<strong>${fromDisplay}:</strong> ${escapeHtml(notif.message || notif.content)}
+</div>
+<div class="notification-time">${timeAgo}</div>
+${!notif.read ? '<div class="notification-badge"></div>' : ''}
+</div>
+`);
+                });
+                notificationCount.textContent = unreadCount;
+                notificationCount.style.display = unreadCount > 0 ? 'flex' : 'none';
+                if (notificationItems.length > 0) {
+                    notificationList.innerHTML = notificationItems.join('');
+                    // Add event listeners for notification items
+                    document.querySelectorAll('.notification-item').forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            const notificationId = e.currentTarget.getAttribute('data-notification-id');
+                            markNotificationAsRead(notificationId);
+                        });
+                    });
+                } else {
+                    notificationList.innerHTML = '<div class="no-notifications">No notifications yet.</div>';
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                if (notificationList) {
+                    notificationList.innerHTML = '<div class="error">Error loading notifications</div>';
+                }
+            }
+        }
+
+        async function markNotificationAsRead(notificationId) {
+            const user = auth.currentUser;
+            if (!user) return;
+            try {
+                await update(ref(db, `notifications/${user.uid}/${notificationId}`), {
+                    read: true
+                });
+                loadNotifications();
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+        }
+
+        async function markAllAsRead() {
+            const user = auth.currentUser;
+            if (!user) return;
+            if (!confirm('Mark all notifications as read?')) return;
+            try {
+                const notificationsRef = ref(db, `notifications/${user.uid}`);
+                const snapshot = await get(notificationsRef);
+                const notifications = snapshot.val() || {};
+                const updates = {};
+                Object.keys(notifications).forEach(id => {
+                    updates[`notifications/${user.uid}/${id}/read`] = true;
+                });
+                await update(ref(db), updates);
+                loadNotifications();
+                alert('All notifications marked as read!');
+            } catch (error) {
+                console.error('Error marking all as read:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        async function clearAllNotifications() {
+            const user = auth.currentUser;
+            if (!user) return;
+            if (!confirm('Clear all notifications? This cannot be undone.')) return;
+            try {
+                await remove(ref(db, `notifications/${user.uid}`));
+                loadNotifications();
+                alert('All notifications cleared!');
+            } catch (error) {
+                console.error('Error clearing notifications:', error);
+                alert('Error: ' + error.message);
+            }
+        }
+
+        // ====================================
+        // AUTH STATE MANAGEMENT
+        // ====================================
+        onAuthStateChanged(auth, async user => {
+            if (user) {
+                console.log('User logged in:', user.email);
+                if (authContainer) authContainer.classList.add('hidden');
+                if (helpContainer) helpContainer.classList.remove('hidden');
+                const displayName = await getDisplayName(user);
+                if (menuName) menuName.textContent = displayName;
+                if (menuNicknameBadge) menuNicknameBadge.textContent = displayName;
+                if (menuEmail) menuEmail.textContent = user.email;
+                const userRanks = await getUserRanks(user);
+                if (menuRanks) {
+                    menuRanks.innerHTML = displayProfileRanks(userRanks);
+                }
+                const userBio = await getUserBio(user);
+                if (menuBio) {
+                    menuBio.textContent = userBio || 'No bio yet. Add one below!';
+                }
+                try {
+                    const snap = await get(ref(db, `pfp/${user.uid}`));
+                    const pfp = snap.exists() ? snap.val() : DEFAULT_PFP;
+                    syncProfilePfp(pfp);
+                    updateNavbarPfp(pfp);
+                } catch (error) {
+                    console.error('Error loading profile picture:', error);
+                    syncProfilePfp(DEFAULT_PFP);
+                    updateNavbarPfp(DEFAULT_PFP);
+                }
+                await updateLastLogin(user);
+                loadPosts();
+                await loadReactionLeaderboard();
+                const isAdmin = ADMIN_EMAILS.includes(user.email);
+                console.log('Is admin:', isAdmin, 'Email:', user.email);
+                if (adminTabBtn) {
+                    adminTabBtn.style.display = isAdmin ? 'block' : 'none';
+                }
+                const isOwner = user.email === OWNER_EMAIL;
+                console.log('Is owner:', isOwner, 'Email:', user.email);
+                if (ownerTabBtn) {
+                    ownerTabBtn.style.display = isOwner ? 'block' : 'none';
+                }
+                if (isAdmin) {
+                    console.log('Loading admin data...');
+                    loadRanks();
+                    loadNicknames();
+                } else {
+                    const adminTab = document.getElementById('admin-tab');
+                    if (adminTab && adminTab.classList.contains('active')) {
+                        switchTab('help-tab');
+                    }
+                }
+                if (isOwner) {
+                    console.log('Loading owner data...');
+                    const ownerTab = document.getElementById('owner-tab');
+                    if (ownerTab && ownerTab.classList.contains('active')) {
+                        loadOwnerStatistics();
+                    }
+                }
+                loadNotifications();
+                const notificationsRef = ref(db, `notifications/${user.uid}`);
+                onValue(notificationsRef, () => {
+                    loadNotifications();
+                });
+            } else {
+                console.log('User logged out');
+                if (authContainer) authContainer.classList.remove('hidden');
+                if (helpContainer) helpContainer.classList.add('hidden');
+                if (authContainer) authContainer.classList.remove('hidden');
+                if (helpContainer) helpContainer.classList.add('hidden');
+                syncProfilePfp(DEFAULT_PFP);
+                updateNavbarPfp(null);
+                if (menuName) menuName.textContent = 'Guest';
+                if (menuNicknameBadge) menuNicknameBadge.textContent = 'Guest';
+                if (menuEmail) menuEmail.textContent = 'not logged in';
+                if (menuRanks) {
+                    menuRanks.innerHTML = displayProfileRanks(['member']);
+                }
+                if (menuBio) {
+                    menuBio.textContent = 'No bio yet. Add one below!';
+                }
+                if (adminTabBtn) adminTabBtn.style.display = 'none';
+                if (ownerTabBtn) ownerTabBtn.style.display = 'none';
+                if (notificationCount) notificationCount.style.display = 'none';
+            }
+        });
+
+        // ====================================
+        // PROFILE BUTTON VISIBILITY
+        // ====================================
+        // PROFILE BUTTON VISIBILITY
+        // ====================================
+        function updateProfileButtonVisibility() {
+            // No-op for new navbar
+        }
+
+        function updateNavbarPfp(url) {
+            const navbarPfp = document.getElementById('navbar-pfp');
+            const userBtnContent = document.getElementById('user-btn-content');
+            const userBtnText = document.getElementById('user-btn-text');
+            const navbarUserIcon = document.getElementById('navbar-user-icon');
+            const btn = document.getElementById('profileBtn');
+            const currentUser = auth.currentUser;
+            const nick = currentUser ? (currentUser.displayName || currentUser.email?.split('@')[0] || 'Account') : 'Account';
+
+            if (userBtnText) userBtnText.textContent = nick;
+
+            if (url) {
+                if (navbarPfp) {
+                    navbarPfp.src = url;
+                    navbarPfp.style.display = 'block';
+                }
+                if (navbarUserIcon) navbarUserIcon.style.display = 'none';
+                if (userBtnContent) userBtnContent.style.display = 'flex';
+                if (btn) btn.style.padding = '4px';
+            } else {
+                if (navbarPfp) navbarPfp.style.display = 'none';
+                if (navbarUserIcon) navbarUserIcon.style.display = 'inline-block';
+                if (userBtnContent) userBtnContent.style.display = 'flex';
+                if (btn) btn.style.padding = '';
+            }
+        }
+
+        // ====================================
+        // EVENT LISTENERS
+        // ====================================
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            if (navLinks) {
+                navLinks.classList.toggle('active');
+            }
+            const moreMenu = document.getElementById('moreMenu');
+            if (moreMenu && moreMenu.classList.contains('active')) {
+                moreMenu.classList.remove('active');
+            }
+        }
+
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+        }
+
+        // Close profile menu button
+        if (closeProfileMenuBtn) {
+            closeProfileMenuBtn.addEventListener('click', closeProfileMenu);
+        }
+
+        // Profile buttons
+        if (profileBtn) {
+            profileBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openProfileMenu();
+            });
+        }
+        if (profileBtnMobile) {
+            profileBtnMobile.addEventListener('click', (e) => {
+                e.preventDefault();
+                openProfileMenu();
+            });
+        }
+
+        // More menu toggle (Adapted from index.html)
+        if (moreBtn && moreMenu) {
+            moreBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+                event.stopPropagation();
+
+                // Close other menus
+                if (typeof closeProfileMenu === 'function') closeProfileMenu();
+                if (typeof closeNotifications === 'function') closeNotifications();
+
+                moreMenu.classList.toggle('active');
+            });
+
+            // Prevent closing when clicking inside the more menu
+            moreMenu.addEventListener('click', (event) => {
+                event.stopPropagation();
+            });
+        }
+
+        // Global click handler for closing menus
+        document.addEventListener('click', (event) => {
+            // Close More Menu
+            if (moreMenu && moreMenu.classList.contains('active')) {
+                if (!moreMenu.contains(event.target) && !moreBtn.contains(event.target)) {
+                    moreMenu.classList.remove('active');
+                }
+            }
+
+            // Close Mobile Menu if clicking outside
+            const navLinks = document.getElementById('nav-links');
+            const mobileBtn = document.querySelector('.mobile-menu-btn');
+            if (window.innerWidth <= 768 && navLinks && navLinks.classList.contains('active')) {
+                if (!navLinks.contains(event.target) && (!mobileBtn || !mobileBtn.contains(event.target))) {
+                    navLinks.classList.remove('active');
+                }
+            }
+        });
+
+        // Notification bell
+        if (notificationBell) {
+            notificationBell.addEventListener('click', toggleNotifications);
+        }
+        document.addEventListener('click', (e) => {
+            if (notificationPanel && notificationPanel.classList.contains('show') &&
+                !notificationPanel.contains(e.target) &&
+                notificationBell && !notificationBell.contains(e.target)) {
+                closeNotifications();
+            }
+        });
+        document.addEventListener('click', (e) => {
+            if (profileMenu && profileMenu.classList.contains('show') &&
+                !profileMenu.contains(e.target) &&
+                profileBtn && !profileBtn.contains(e.target) &&
+                profileBtnMobile && !profileBtnMobile.contains(e.target)) {
+                closeProfileMenu();
+            }
+        });
+
+        // Tab switching
+        tabElements.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-tab');
+                switchTab(tabName);
+            });
+        });
+
+        // Leaderboard tab switching
+        leaderboardTabElements.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabName = tab.getAttribute('data-leaderboard-tab');
+                switchLeaderboardTab(tabName);
+            });
+        });
+
+        // Bio edit/save/cancel buttons
+        if (editBioBtn) {
+            editBioBtn.addEventListener('click', () => {
+                const editSection = document.querySelector('.bio-edit');
+                if (editSection) {
+                    editSection.style.display = 'block';
+                    editBioBtn.style.display = 'none';
+                    if (bioInput && menuBio) {
+                        bioInput.value = menuBio.textContent === 'No bio yet. Add one below!' ? '' : menuBio.textContent;
+                        bioInput.focus();
+                        const length = bioInput.value.length;
+                        if (charCount) {
+                            charCount.textContent = length;
+                            if (length > 240) {
+                                charCount.style.color = 'var(--error)';
+                            } else if (length > 200) {
+                                charCount.style.color = 'var(--warning)';
+                            } else {
+                                charCount.style.color = 'var(--text-secondary)';
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        if (cancelBioBtn) {
+            cancelBioBtn.addEventListener('click', () => {
+                const editSection = document.querySelector('.bio-edit');
+                if (editSection) {
+                    editSection.style.display = 'none';
+                    editBioBtn.style.display = 'block';
+                    if (bioInput) bioInput.value = '';
+                    if (charCount) {
+                        charCount.textContent = '0';
+                        charCount.style.color = 'var(--text-secondary)';
+                    }
+                }
+            });
+        }
+        if (saveBioBtn && bioInput) {
+            saveBioBtn.addEventListener('click', async () => {
+                const bio = bioInput.value.trim();
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Please login to update your bio');
+                    return;
+                }
+                if (bio.length > 250) {
+                    alert('Bio must be 250 characters or less');
+                    return;
+                }
+                try {
+                    const uid = user.uid;
+                    await set(ref(db, `bios/${uid}`), bio);
+                    if (menuBio) {
+                        menuBio.textContent = bio || 'No bio yet. Add one below!';
+                    }
+                    const editSection = document.querySelector('.bio-edit');
+                    if (editSection) {
+                        editSection.style.display = 'none';
+                    }
+                    if (editBioBtn) {
+                        editBioBtn.style.display = 'block';
+                    }
+                    bioInput.value = '';
+                } catch (error) {
+                    console.error('Error saving bio:', error);
+                    alert('Failed to save bio. Error: ' + error.message);
+                }
+            });
+        }
+
+        // PFP save/cancel buttons
+        if (savePfpBtn) {
+            savePfpBtn.addEventListener('click', saveProfilePicture);
+        }
+        if (cancelPfpBtn) {
+            cancelPfpBtn.addEventListener('click', cancelPfpUpload);
+        }
+
+        // Admin panel buttons
+        const assignRankBtn = document.getElementById('assignRankBtn');
+        if (assignRankBtn) {
+            assignRankBtn.addEventListener('click', assignRank);
+        }
+        if (changeNicknameBtn) {
+            changeNicknameBtn.addEventListener('click', changeNickname);
+        }
+
+        // Owner panel buttons
+        if (testBroadcastBtn) {
+            testBroadcastBtn.addEventListener('click', testBroadcast);
+        }
+        if (sendBroadcastBtn) {
+            sendBroadcastBtn.addEventListener('click', sendBroadcast);
+        }
+        if (exportDataBtn) {
+            exportDataBtn.addEventListener('click', exportAllData);
+        }
+        if (clearOldPostsBtn) {
+            clearOldPostsBtn.addEventListener('click', clearOldPosts);
+        }
+        if (backupDatabaseBtn) {
+            backupDatabaseBtn.addEventListener('click', backupDatabase);
+        }
+
+        // User profile modal buttons
+        if (closeUserProfileBtn) {
+            closeUserProfileBtn.addEventListener('click', closeUserProfile);
+        }
+        if (promoteUserBtn) {
+            promoteUserBtn.addEventListener('click', promoteUser);
+        }
+        if (warnUserBtn) {
+            warnUserBtn.addEventListener('click', warnUser);
+        }
+        if (messageUserBtn) {
+            messageUserBtn.addEventListener('click', messageUser);
+        }
+        if (banUserBtn) {
+            banUserBtn.addEventListener('click', banUser);
+        }
+
+        // Notification panel buttons
+        const markAllAsReadBtn = document.getElementById('markAllAsReadBtn');
+        const clearAllNotificationsBtn = document.getElementById('clearAllNotificationsBtn');
+        if (markAllAsReadBtn) {
+            markAllAsReadBtn.addEventListener('click', markAllAsRead);
+        }
+        if (clearAllNotificationsBtn) {
+            clearAllNotificationsBtn.addEventListener('click', clearAllNotifications);
+        }
+
+        // Initialize
+        updateProfileButtonVisibility();
+        window.addEventListener('resize', updateProfileButtonVisibility);
+        setupProfilePictureClicks();
+    </script>
+</body>
+
+</html>
