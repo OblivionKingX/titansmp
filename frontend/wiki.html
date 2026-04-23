@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Wiki</title>
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="bbcode.css">
+  <style>
+    :root {
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --card-bg: rgba(10, 20, 40, 0.95);
+      --button-bg: rgba(255, 255, 255, 0.1);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Barlow', sans-serif; background: var(--primary-bg); color: var(--text-color); min-height: 100vh; }
+
+    .navbar { background: var(--secondary-bg); border-bottom: 2px solid var(--border-color); position: sticky; top: 0; z-index: 1000; }
+    .nav-container { max-width: 1200px; margin: 0 auto; min-height: 70px; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
+    .logo h1 { color: var(--accent-color); font-size: 1.5rem; text-shadow: 0 0 10px rgba(0, 191, 255, .35); }
+    .mobile-menu-btn { display: none; border: none; background: none; color: var(--text-color); font-size: 1.5rem; }
+
+    .nav-links { list-style: none; display: flex; align-items: center; gap: .35rem; }
+    .nav-links a { color: var(--text-color); text-decoration: none; padding: .7rem 1rem; border-radius: 8px; font-weight: 700; display: flex; align-items: center; gap: .4rem; }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent-color); background: var(--button-bg); }
+
+    .more-btn { position: relative; }
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      min-width: 200px;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: .4rem;
+      z-index: 1000;
+    }
+    .more-menu.active { display: block; }
+    .more-menu li { list-style: none; }
+
+    .hero {
+      text-align: center;
+      max-width: 1000px;
+      margin: 2.4rem auto 1.2rem;
+      padding: 0 1rem;
+    }
+    .hero h1 { color: #fff; font-size: 2.1rem; margin-bottom: .5rem; }
+    .hero p { color: var(--text-secondary); }
+
+    .wiki-layout {
+      max-width: 1200px;
+      margin: 0 auto 2rem;
+      padding: 0 1rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1rem;
+    }
+
+    .wiki-nav, .wiki-content {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+
+    .wiki-nav h3 { color: #fff; margin-bottom: .75rem; }
+    .wiki-nav a {
+      display: block;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: .45rem .55rem;
+      border-radius: 8px;
+      font-weight: 600;
+      margin-bottom: .25rem;
+    }
+    .wiki-nav a:hover { color: var(--accent-color); background: var(--button-bg); }
+
+    .wiki-section { margin-bottom: 1.25rem; }
+    .wiki-section:last-child { margin-bottom: 0; }
+    .wiki-section h2 {
+      color: #fff;
+      font-size: 1.3rem;
+      margin-bottom: .5rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: .35rem;
+    }
+    .wiki-section p, .wiki-section li { color: var(--text-secondary); line-height: 1.65; }
+    .wiki-section ul { padding-left: 1.15rem; margin-top: .4rem; }
+
+    footer { border-top: 2px solid var(--border-color); background: var(--secondary-bg); text-align: center; padding: 1.2rem; color: var(--text-secondary); }
+
+    @media (max-width: 950px) {
+      .mobile-menu-btn { display: block; }
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--secondary-bg);
+        flex-direction: column;
+        padding: .8rem;
+        transform: translateY(-120%);
+        opacity: 0;
+        visibility: hidden;
+        transition: .25s;
+      }
+      .nav-links.active { transform: translateY(0); opacity: 1; visibility: visible; }
+      .nav-links li, .nav-links a { width: 100%; justify-content: center; }
+      .more-menu { position: static; width: 100%; }
+      .wiki-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo"><h1>TitanNetwork</h1></div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forums.html"><i class="fas fa-newspaper"></i> Forums</a></li>
+        <li><a href="vote.html"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng"><i class="fab fa-discord"></i> Discord</a></li>
+        <li><a href="team.html"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More â–¾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html" class="active"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>TitanNetwork Wiki</h1>
+    <p>Your official knowledge base for server information, gameplay systems, and quick help.</p>
+  </section>
+
+  <main class="wiki-layout">
+    <aside class="wiki-nav">
+      <h3>Quick Navigation</h3>
+      <a href="#getting-started"><i class="fas fa-rocket"></i> Getting Started</a>
+      <a href="#server-features"><i class="fas fa-star"></i> Server Features</a>
+      <a href="#economy"><i class="fas fa-coins"></i> Economy & Progress</a>
+      <a href="#voting"><i class="fas fa-vote-yea"></i> Voting Rewards</a>
+      <a href="#formatting"><i class="fas fa-pencil-alt"></i> Text Formatting</a>
+      <a href="#support"><i class="fas fa-life-ring"></i> Support & Appeals</a>
+    </aside>
+
+    <section class="wiki-content">
+      <article class="wiki-section" id="getting-started">
+        <h2>Getting Started</h2>
+        <p>Join TitanNetwork using <strong>titannetwork.eu</strong>. New players should read the rules first,
+          then visit the forum for announcements and support threads.</p>
+      </article>
+
+      <article class="wiki-section" id="server-features">
+        <h2>Server Features</h2>
+        <ul>
+          <li>Custom Skyblock progression and island improvements</li>
+          <li>Competitive PvP events and weekly activities</li>
+          <li>Community-driven updates announced through the homepage news and forum</li>
+        </ul>
+      </article>
+
+      <article class="wiki-section" id="economy">
+        <h2>Economy & Progress</h2>
+        <p>Participate in gameplay modes, events, and quests to improve your rank and resources.
+          Follow official announcements for seasonal economy resets and balancing changes.</p>
+      </article>
+
+      <article class="wiki-section" id="formatting">
+        <h2>Text Formatting (BBCode)</h2>
+        <p>TitanNetwork supports a powerful, forgiving BBCode system across the news and forums. You can use standard tags or our unique "fuzzy" system.</p>
+        
+        <h3 style="color: #fff; margin: 1rem 0 0.5rem; font-size: 1.1rem;">Basic Formatting</h3>
+        <div class="bb-table-wrapper">
+          <table class="bb-table">
+            <thead><tr><th>Style</th><th>Tag</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>Bold</td><td>[B]text[/B]</td><td><strong>Bold Text</strong></td></tr>
+              <tr><td>Italic</td><td>[I]text[/I]</td><td><em>Italic Text</em></td></tr>
+              <tr><td>Underline</td><td>[U]text[/U]</td><td><u>Underlined Text</u></td></tr>
+              <tr><td>Strikethrough</td><td>[S]text[/S]</td><td><strike>Strikethrough Text</strike></td></tr>
+              <tr><td>Color</td><td>[COLOR=red]text[/COLOR]</td><td><span style="color: red;">Red Text</span></td></tr>
+              <tr><td>Font Size</td><td>[SIZE=24]text[/SIZE]</td><td><span style="font-size: 24px;">Large Text</span></td></tr>
+              <tr><td>Font Type</td><td>[FONT=Courier]text[/FONT]</td><td><span style="font-family: Courier;">Custom Font</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="color: #fff; margin: 1.5rem 0 0.5rem; font-size: 1.1rem;">Links & Media</h3>
+        <div class="bb-table-wrapper">
+          <table class="bb-table">
+            <thead><tr><th>Type</th><th>Tag</th><th>Usage</th></tr></thead>
+            <tbody>
+              <tr><td>Link</td><td>[URL]url[/URL]</td><td>Auto-clickable link</td></tr>
+              <tr><td>Named Link</td><td>[URL=url]text[/URL]</td><td>Clickable text</td></tr>
+              <tr><td>Image</td><td>[IMG]url[/IMG]</td><td>Displays an image</td></tr>
+              <tr><td>YouTube</td><td>[MEDIA=youtube]ID[/MEDIA]</td><td>Embeds a video</td></tr>
+              <tr><td>User Link</td><td>[USER=id]Name[/USER]</td><td>Link to a profile</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 style="color: #fff; margin: 1.5rem 0 0.5rem; font-size: 1.1rem;">Layout & Organization</h3>
+        <div class="bb-table-wrapper">
+          <table class="bb-table">
+            <thead><tr><th>Layout</th><th>Tag</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td>Center</td><td>[CENTER]text[/CENTER]</td><td>Centered Content</td></tr>
+              <tr><td>Right</td><td>[RIGHT]text[/RIGHT]</td><td>Right Aligned</td></tr>
+              <tr><td>Indent</td><td>[INDENT]text[/INDENT]</td><td>Indented Text</td></tr>
+              <tr><td>Heading</td><td>[HEADING=1]text[/HEADING]</td><td>Section Header</td></tr>
+              <tr><td>Quote</td><td>[QUOTE=User]text[/QUOTE]</td><td>Message Quote</td></tr>
+              <tr><td>Spoiler</td><td>[SPOILER]text[/SPOILER]</td><td>Hidden Content</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+      </article>
+
+      <article class="wiki-section" id="support">
+        <h2>Support, Reports & Appeals</h2>
+        <ul>
+          <li>Use the <strong>Forum</strong> for general help and public questions</li>
+          <li>Use the <strong>Apply</strong> page for staff applications</li>
+          <li>Use the <strong>Appeal</strong> page for punishment appeals</li>
+          <li>Join Discord for fast staff communication and live updates</li>
+        </ul>
+      </article>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 TitanNetwork â€” All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('nav-links').classList.toggle('active');
+    }
+
+    document.getElementById('moreBtn')?.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('moreMenu').classList.toggle('active');
+    });
+  </script>
+</body>
+
+</html>
+

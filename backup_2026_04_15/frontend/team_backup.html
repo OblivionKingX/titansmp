@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="google-site-verification" content="KAS-TH8AGGiHh5p2Y4ihkP_W0moOMd8QfTlpg7kUgWk" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="TitanNetwork Staff Team - Meet our dedicated team members">
+  <title>TitanNetwork - Staff Team</title>
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* ===== CSS VARIABLES (Match Homepage) ===== */
+    :root {
+      /* Color Palette */
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --discord-color: #7289da;
+      --discord-hover: #5865f2;
+      --button-bg: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(10, 20, 40, 0.95);
+      --success-color: #2ecc71;
+      --error-color: #e74c3c;
+      --warning-color: #f39c12;
+
+      /* Role Colors - Match your homepage */
+      --owner-color: #ffd700;
+      --admin-color: #ff6b81;
+      --mod-color: #00ced1;
+      --helper-color: #00ffea;
+      --member-color: #3498db;
+      --developer-color: #4ecdc4;
+
+      /* Spacing */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+
+      /* Border Radius */
+      --radius-sm: 0.25rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+
+      /* Shadows */
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+      --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+      /* Transitions */
+      --transition-fast: 150ms ease;
+      --transition-base: 300ms ease;
+      --transition-slow: 500ms ease;
+    }
+
+    /* ===== CSS RESET ===== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* ===== CONTAINER ===== */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* ===== HEADER BACKGROUND ===== */
+    #header-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95)),
+        url('photos/background.jpg') no-repeat center / cover;
+      min-height: 200px;
+      position: relative;
+      border-bottom: 3px solid var(--accent-color);
+      box-shadow: inset 0px 0px 50px rgb(9, 75, 151);
+    }
+
+    .header-content {
+      padding: var(--space-2xl) var(--space-md);
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .page-title {
+      color: white;
+      font-size: 2.5rem;
+      margin-bottom: var(--space-md);
+      font-weight: 800;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ===== NAVBAR (Match Homepage) ===== */
+    .navbar {
+      background: var(--secondary-bg);
+      border-bottom: 2px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .logo {
+      height: 50px;
+      padding: var(--space-xs) 0;
+    }
+
+    .logo h1 {
+      color: #0088cc;
+      text-shadow: 0px 0px 10px blue;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+
+    /* Mobile Menu Button */
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: var(--space-sm);
+      z-index: 1001;
+    }
+
+    /* Navigation Links */
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: var(--space-xs);
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: var(--space-md) var(--space-lg);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      transition: all var(--transition-base);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus,
+    .nav-links a.active {
+      background: var(--button-bg);
+      color: var(--accent-color);
+    }
+
+    /* Navigation Color Variants */
+    .nav-links .home {
+      color: var(--accent-color);
+    }
+
+    .nav-links .news {
+      color: var(--helper-color);
+    }
+
+    .nav-links .forum {
+      color: var(--mod-color);
+    }
+
+    .nav-links .discord-nav {
+      color: var(--discord-color);
+    }
+
+    .nav-links .staff {
+      color: var(--admin-color);
+    }
+
+    /* ===== MORE DROPDOWN ===== */
+    .more-btn {
+      position: relative;
+      list-style: none;
+    }
+
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-sm);
+      min-width: 220px;
+      z-index: 1000;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .more-menu.active {
+      display: block;
+      animation: fadeIn var(--transition-base);
+    }
+
+    .more-menu li {
+      list-style: none;
+    }
+
+    .more-menu a {
+      display: block;
+      padding: var(--space-sm) var(--space-md);
+      color: var(--text-color);
+      text-decoration: none;
+      border-radius: var(--radius-sm);
+      transition: all var(--transition-base);
+      font-weight: 500;
+      font-size: 0.9375rem;
+    }
+
+    .more-menu a:hover,
+    .more-menu a:focus {
+      background: var(--accent-color);
+      color: #003366;
+      padding-left: calc(var(--space-md) + 5px);
+    }
+
+    /* ===== MAIN CONTENT ===== */
+    .main-content {
+      padding: var(--space-2xl) 0;
+    }
+
+    /* ===== STAFF CONTROLS ===== */
+    .staff-controls {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .controls-row {
+      display: flex;
+      gap: var(--space-md);
+      align-items: center;
+    }
+
+    .search-container {
+      flex: 1;
+      position: relative;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: var(--space-md);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    #search {
+      width: 100%;
+      padding: var(--space-md) var(--space-md) var(--space-md) 3rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      color: white;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      transition: all var(--transition-base);
+    }
+
+    #search:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+    }
+
+    .filter-container {
+      position: relative;
+    }
+
+    #roleFilter {
+      padding: var(--space-md) 3rem var(--space-md) var(--space-lg);
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      color: white;
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      appearance: none;
+      min-width: 200px;
+    }
+
+    .filter-arrow {
+      position: absolute;
+      right: var(--space-md);
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    #roleFilter:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+    }
+
+    /* ===== STAFF AREA ===== */
+    .staff-area {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xl);
+      margin-bottom: var(--space-2xl);
+    }
+
+    .role-group {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: var(--space-xl);
+      box-shadow: var(--shadow-lg);
+      animation: fadeIn 0.6s ease;
+    }
+
+    .role-heading {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-md);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .role-heading h2 {
+      color: white;
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      font-weight: 700;
+    }
+
+    .role-count {
+      background: var(--button-bg);
+      color: var(--text-secondary);
+      padding: var(--space-xs) var(--space-md);
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-left: auto;
+    }
+
+    /* Role Title Colors */
+    .role-owner h2 {
+      color: var(--owner-color);
+    }
+
+    .role-admin h2 {
+      color: var(--admin-color);
+    }
+
+    .role-developer h2 {
+      color: var(--developer-color);
+    }
+
+    .role-mod h2 {
+      color: var(--mod-color);
+    }
+
+    .role-helper h2 {
+      color: var(--helper-color);
+    }
+
+    /* ===== STAFF MEMBER CARDS ===== */
+    .member-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .member-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: var(--space-lg);
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      transition: all var(--transition-base);
+      cursor: pointer;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .member-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-color);
+      box-shadow: var(--shadow-md);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .member-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid var(--border-color);
+      background: var(--secondary-bg);
+    }
+
+    .member-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .member-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .member-name {
+      color: white;
+      font-size: 1.125rem;
+      font-weight: 700;
+      margin-bottom: var(--space-xs);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .member-role {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+    }
+
+    /* Role Badges */
+    .role-badge {
+      display: inline-block;
+      padding: var(--space-xs) var(--space-md);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: white;
+    }
+
+    .role-badge.owner {
+      background: linear-gradient(45deg, var(--owner-color), #ff9900);
+      color: #003366;
+    }
+
+    .role-badge.admin {
+      background: linear-gradient(45deg, #ff242b, var(--admin-color));
+    }
+
+    .role-badge.developer {
+      background: linear-gradient(45deg, #00AAAA, var(--developer-color));
+    }
+
+    .role-badge.mod {
+      background: linear-gradient(45deg, #00AAAA, var(--mod-color));
+    }
+
+    .role-badge.helper {
+      background: linear-gradient(45deg, #55ffff, var(--helper-color));
+      color: #005555;
+    }
+
+    /* ===== EMPTY STATE ===== */
+    .empty-state {
+      text-align: center;
+      padding: var(--space-2xl);
+      background: var(--card-bg);
+      border: 2px dashed var(--border-color);
+      border-radius: var(--radius-xl);
+      margin: var(--space-xl) 0;
+    }
+
+    .empty-state h3 {
+      color: var(--accent-color);
+      margin-bottom: var(--space-md);
+      font-size: 1.5rem;
+    }
+
+    .empty-state p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: var(--secondary-bg);
+      padding: var(--space-xl) 0;
+      text-align: center;
+      border-top: 2px solid var(--border-color);
+      margin-top: var(--space-2xl);
+    }
+
+    footer p {
+      margin: var(--space-sm) 0;
+      color: var(--text-secondary);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-lg);
+      margin-top: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: var(--accent-color);
+      text-decoration: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color var(--transition-base);
+      padding: var(--space-xs) 0;
+    }
+
+    .footer-link:hover,
+    .footer-link:focus {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
+
+    /* Tablets */
+    @media (max-width: 768px) {
+      .member-list {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+
+      .controls-row {
+        flex-direction: column;
+        gap: var(--space-md);
+      }
+
+      #roleFilter {
+        width: 100%;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .role-heading h2 {
+        font-size: 1.25rem;
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      .member-list {
+        grid-template-columns: 1fr;
+      }
+
+      .member-card {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--space-lg);
+      }
+
+      .member-avatar {
+        width: 80px;
+        height: 80px;
+      }
+
+      .header-content {
+        padding: var(--space-xl) var(--space-md);
+      }
+
+      .page-title {
+        font-size: 1.75rem;
+      }
+
+      .staff-controls {
+        padding: var(--space-lg);
+      }
+
+      .role-group {
+        padding: var(--space-lg);
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: var(--space-sm);
+        align-items: center;
+      }
+    }
+
+    /* Mobile Navigation */
+    @media (max-width: 767px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--secondary-bg);
+        flex-direction: column;
+        padding: 1rem 0;
+        box-shadow: var(--shadow-lg);
+        border-top: 2px solid var(--border-color);
+        z-index: 999;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-base);
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links li {
+        width: 100%;
+        text-align: center;
+      }
+
+      .nav-links a {
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 0;
+        justify-content: center;
+      }
+
+      .more-menu {
+        position: fixed;
+        top: 70px;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+
+      .more-menu.active {
+        display: block;
+      }
+    }
+
+    /* Desktop More Menu */
+    @media (min-width: 768px) {
+      .more-menu {
+        top: 100%;
+        left: 0;
+        min-width: 220px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header id="header-bg">
+    <div class="header-content container">
+      <h1 class="page-title">Meet Our Team</h1>
+      <p class="page-subtitle">
+        Our dedicated team of staff members who work hard to keep the server running smoothly
+      </p>
+    </div>
+  </header>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-container container">
+      <div class="logo">
+        <h1>TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forum.html" class="forum"><i class="fas fa-newspaper"></i> Forum</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+        </li>
+        <li><a href="jrstaff.html" class="staff active"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn" onclick="toggleMoreMenu(event)">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a style="color: red;" href="#">Coming soon...</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content container">
+    <!-- Staff Controls -->
+    <div class="staff-controls">
+      <div class="controls-row">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input id="search" type="search" placeholder="Search staff members by name or role..."
+            aria-label="Search staff members">
+        </div>
+
+        <div class="filter-container">
+          <i class="fas fa-filter filter-arrow"></i>
+          <select id="roleFilter" aria-label="Filter staff by role">
+            <option value="all">All Roles</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Staff Area -->
+    <section id="staffArea" class="staff-area" aria-live="polite">
+      <!-- Staff members will be loaded here dynamically -->
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+      <div class="footer-links">
+        <span class="footer-link" onclick="copyIP()">IP: titannetwork.run.place</span>
+        <a href="https://discord.gg/ExFhgvtFng" class="footer-link" onclick="joinDiscord()">Join Discord</a>
+        <a href="#" class="footer-link" onclick="showPrivacyPolicy()">Privacy Policy</a>
+        <a href="#" class="footer-link" onclick="showTerms()">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Staff Data
+    const staff = [
+      { username: "OblivionKingX", role: "Owner" },
+      { username: "Blowiek3008", role: "Owner" },
+      { username: "talha420", role: "Admin" },
+      { username: "CBIHOTA_182", role: "Admin" },
+      { username: "MHF_Redstone", role: "Admin" },
+      { username: "Trivexium", role: "Admin" },
+      { username: "MeN47", role: "Admin" },
+      { username: "MHF_YouTube", role: "Admin" },
+      { username: "Kanielpt038", role: "Lead Developer" },
+      { username: "OnlyRaid", role: "Moderator" },
+    ];
+
+    // Generate avatar URL
+    function avatarUrl(name) {
+      return `https://minotar.net/avatar/${encodeURIComponent(name)}/100.png`;
+    }
+
+    // Group staff by role
+    function groupByRole(arr) {
+      const grouped = {};
+      arr.forEach((s) => {
+        const role = s.role.toLowerCase();
+        if (!grouped[role]) grouped[role] = [];
+        grouped[role].push(s);
+      });
+      return grouped;
+    }
+
+    // Get role badge class
+    function getRoleBadgeClass(role) {
+      const roleLower = role.toLowerCase();
+      if (roleLower.includes('owner')) return 'role-badge owner';
+      if (roleLower.includes('admin')) return 'role-badge admin';
+      if (roleLower.includes('developer')) return 'role-badge developer';
+      if (roleLower.includes('mod')) return 'role-badge mod';
+      if (roleLower.includes('helper')) return 'role-badge helper';
+      return 'role-badge';
+    }
+
+    // Get role group class
+    function getRoleGroupClass(role) {
+      const roleLower = role.toLowerCase();
+      if (roleLower.includes('owner')) return 'role-owner';
+      if (roleLower.includes('admin')) return 'role-admin';
+      if (roleLower.includes('developer')) return 'role-developer';
+      if (roleLower.includes('mod')) return 'role-mod';
+      if (roleLower.includes('helper')) return 'role-helper';
+      return '';
+    }
+
+    // Render staff members
+    function renderStaff(search = "", roleFilter = "all") {
+      const area = document.getElementById("staffArea");
+
+      // Clear area
+      area.innerHTML = "";
+
+      // Get grouped staff
+      const grouped = groupByRole(staff);
+
+      // Role display order
+      const order = [
+        "owner",
+        "admin",
+        "lead developer",
+        "developer",
+        "moderator",
+        "builder",
+        "helper"
+      ];
+
+      // Sort roles according to order
+      const roles = Object.keys(grouped).sort((a, b) => {
+        const ai = order.indexOf(a);
+        const bi = order.indexOf(b);
+        if (ai === -1 && bi === -1) return a.localeCompare(b);
+        if (ai === -1) return 1;
+        if (bi === -1) return -1;
+        return ai - bi;
+      });
+
+      const query = search.toLowerCase().trim();
+      let hasResults = false;
+
+      // Render each role group
+      roles.forEach((role) => {
+        if (roleFilter !== "all" && role !== roleFilter) return;
+
+        // Filter members based on search
+        const members = grouped[role].filter(
+          (m) =>
+            m.username.toLowerCase().includes(query) ||
+            m.role.toLowerCase().includes(query)
+        );
+
+        if (members.length === 0) return;
+
+        hasResults = true;
+
+        // Create role group container
+        const group = document.createElement("div");
+        group.className = `role-group ${getRoleGroupClass(role)}`;
+        group.setAttribute("role", "region");
+        group.setAttribute("aria-label", `${role} team members`);
+
+        // Role heading with count
+        const heading = document.createElement("div");
+        heading.className = "role-heading";
+
+        const roleTitle = document.createElement("h2");
+        roleTitle.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+
+        const count = document.createElement("div");
+        count.className = "role-count";
+        count.textContent = `${members.length} member${members.length !== 1 ? 's' : ''}`;
+
+        heading.appendChild(roleTitle);
+        heading.appendChild(count);
+        group.appendChild(heading);
+
+        // Create member list
+        const list = document.createElement("div");
+        list.className = "member-list";
+
+        // Add each member
+        members.forEach((member) => {
+          const memberDiv = document.createElement("div");
+          memberDiv.className = "member-card";
+          memberDiv.setAttribute("role", "article");
+
+          // Avatar
+          const avatarDiv = document.createElement("div");
+          avatarDiv.className = "member-avatar";
+
+          const avatarImg = document.createElement("img");
+          avatarImg.src = avatarUrl(member.username);
+          avatarImg.alt = `${member.username}'s avatar`;
+          avatarImg.loading = "lazy";
+          avatarImg.onerror = function () {
+            this.src = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 24 24' fill='%239aa5b1'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>";
+          };
+
+          avatarDiv.appendChild(avatarImg);
+
+          // Member info
+          const infoDiv = document.createElement("div");
+          infoDiv.className = "member-info";
+
+          const nameDiv = document.createElement("div");
+          nameDiv.className = "member-name";
+          nameDiv.textContent = member.username;
+
+          const roleDiv = document.createElement("div");
+          roleDiv.className = "member-role";
+          roleDiv.innerHTML = `
+            ${member.role} 
+            <span class="${getRoleBadgeClass(member.role)}">${member.role}</span>
+          `;
+
+          infoDiv.appendChild(nameDiv);
+          infoDiv.appendChild(roleDiv);
+
+          // Assemble member card
+          memberDiv.appendChild(avatarDiv);
+          memberDiv.appendChild(infoDiv);
+          list.appendChild(memberDiv);
+        });
+
+        group.appendChild(list);
+        area.appendChild(group);
+      });
+
+      // Show empty state if no results
+      if (!hasResults) {
+        const emptyState = document.createElement("div");
+        emptyState.className = "empty-state";
+        emptyState.innerHTML = `
+          <h3><i class="fas fa-search"></i> No staff members found</h3>
+          <p>Try adjusting your search or filter criteria</p>
+        `;
+        area.appendChild(emptyState);
+      }
+    }
+
+    // Populate role filter dropdown
+    function populateRoleFilter() {
+      const select = document.getElementById("roleFilter");
+      const grouped = groupByRole(staff);
+
+      // Get unique roles and sort them
+      const uniqueRoles = [...new Set(staff.map(s => s.role.toLowerCase()))].sort();
+
+      uniqueRoles.forEach((role) => {
+        const opt = document.createElement("option");
+        opt.value = role;
+        opt.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+        select.appendChild(opt);
+      });
+    }
+
+    // Navigation Functions
+    function toggleMobileMenu() {
+      document.getElementById('nav-links').classList.toggle('active');
+    }
+
+    function toggleMoreMenu(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      document.getElementById('moreMenu').classList.toggle('active');
+    }
+
+    // Utility Functions (from homepage)
+    function copyIP() {
+      navigator.clipboard.writeText('titannetwork.run.place').then(() => {
+        showNotification('Server IP copied to clipboard!');
+      });
+    }
+
+    function joinDiscord() {
+      window.open('https://discord.gg/ExFhgvtFng', '_blank');
+    }
+
+    function showPrivacyPolicy() {
+      alert('Privacy Policy:\nWe respect your privacy. Your data is securely stored and never shared with third parties without consent.');
+    }
+
+    function showTerms() {
+      alert('Terms of Service:\nBy using our server, you agree to follow our community rules and guidelines.');
+    }
+
+    function showNotification(message, type = "success") {
+      // Simple notification - you can enhance this later
+      alert(message);
+    }
+
+    // Initialize when DOM is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      populateRoleFilter();
+      renderStaff();
+
+      // Search functionality
+      const search = document.getElementById("search");
+      const roleFilter = document.getElementById("roleFilter");
+
+      search.addEventListener("input", () => {
+        renderStaff(search.value, roleFilter.value);
+      });
+
+      roleFilter.addEventListener("change", () => {
+        renderStaff(search.value, roleFilter.value);
+      });
+
+      // Close menus when clicking outside
+      document.addEventListener('click', function (event) {
+        const moreMenu = document.getElementById('moreMenu');
+        const moreBtn = document.getElementById('moreBtn');
+        const navLinks = document.getElementById('nav-links');
+
+        // Close more menu if clicking outside
+        if (moreMenu && moreBtn &&
+          !moreMenu.contains(event.target) &&
+          !moreBtn.contains(event.target)) {
+          moreMenu.classList.remove('active');
+        }
+
+        // Close mobile menu if clicking outside
+        if (navLinks && window.innerWidth <= 767 &&
+          !navLinks.contains(event.target) &&
+          !event.target.closest('.mobile-menu-btn')) {
+          navLinks.classList.remove('active');
+        }
+      });
+
+      // Close dropdowns on escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          const moreMenu = document.getElementById('moreMenu');
+          const navLinks = document.getElementById('nav-links');
+
+          if (moreMenu) moreMenu.classList.remove('active');
+          if (navLinks) navLinks.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

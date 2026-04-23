@@ -7,7 +7,7 @@ redirects = []
 [functions."*"]
 
 [build]
-publish = "C:\\Users\\munir\\OneDrive\\Desktop\\TitanNetwork - Copy"
+publish = "C:\\Users\\munir\\OneDrive\\Desktop\\Titansmp"
 publishOrigin = "default"
 
 [build.environment]

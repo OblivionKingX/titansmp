@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Unban Appeal</title>
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --card-bg: rgba(10, 20, 40, 0.95);
+      --success-color: #2ecc71;
+      --error-color: #e74c3c;
+      --button-bg: rgba(255, 255, 255, 0.1);
+      --radius-md: 10px;
+      --radius-lg: 14px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background: var(--secondary-bg);
+      border-bottom: 2px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 70px;
+    }
+
+    .logo h1 {
+      color: var(--accent-color);
+      font-size: 1.5rem;
+      text-shadow: 0 0 10px rgba(0, 191, 255, .4);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      color: var(--text-color);
+      border: none;
+      font-size: 1.5rem;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: .35rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: .7rem 1rem;
+      border-radius: 8px;
+      font-weight: 700;
+      display: flex;
+      gap: .4rem;
+      align-items: center;
+      transition: .25s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent-color);
+      background: var(--button-bg);
+    }
+
+    .more-btn {
+      position: relative;
+    }
+
+    .more-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      min-width: 200px;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: .4rem;
+      z-index: 1000;
+    }
+
+    .more-menu.active {
+      display: block;
+    }
+
+    .more-menu li {
+      list-style: none;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 900px;
+      margin: 2.5rem auto 1.2rem;
+      padding: 0 1rem;
+    }
+
+    .hero h1 {
+      color: #fff;
+      font-size: 2rem;
+      margin-bottom: .4rem;
+    }
+
+    .hero p {
+      color: var(--text-secondary);
+    }
+
+    .appeal-container {
+      max-width: 760px;
+      margin: 0 auto 2.5rem;
+      background: linear-gradient(180deg, rgba(12, 25, 44, 0.95), rgba(10, 20, 37, 0.98));
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, .35);
+      padding: 1.5rem;
+    }
+
+    .appeal-form {
+      display: grid;
+      gap: .8rem;
+    }
+
+    .appeal-form label {
+      font-weight: 700;
+      color: #fff;
+      margin-top: .3rem;
+    }
+
+    .appeal-form input,
+    .appeal-form textarea,
+    .appeal-form select {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: .8rem .9rem;
+      color: #fff;
+      outline: none;
+      font-family: inherit;
+    }
+
+    .appeal-form input:focus,
+    .appeal-form textarea:focus,
+    .appeal-form select:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(0, 191, 255, .12);
+    }
+
+    .appeal-btn {
+      margin-top: .6rem;
+      background: var(--accent-color);
+      color: #003366;
+      border: none;
+      border-radius: var(--radius-md);
+      padding: .9rem 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .appeal-btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .success-msg,
+    .error-msg {
+      display: none;
+      font-weight: 700;
+      margin-top: .3rem;
+    }
+
+    .success-msg {
+      color: var(--success-color);
+    }
+
+    .error-msg {
+      color: var(--error-color);
+    }
+
+    footer {
+      margin-top: 2rem;
+      border-top: 2px solid var(--border-color);
+      background: var(--secondary-bg);
+      text-align: center;
+      padding: 1.2rem;
+      color: var(--text-secondary);
+    }
+
+    @media (max-width: 900px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--secondary-bg);
+        flex-direction: column;
+        padding: .8rem;
+        transform: translateY(-120%);
+        opacity: 0;
+        visibility: hidden;
+        transition: .25s;
+      }
+
+      .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .nav-links li,
+      .nav-links a {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .more-menu {
+        position: static;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+        <h1 style="color: var(--accent-color); font-size: 1.5rem; text-shadow: 0 0 10px rgba(0, 191, 255, .4); margin: 0;">TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forums.html"><i class="fas fa-newspaper"></i> Forums</a></li>
+        <li><a href="vote.html"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng"><i class="fab fa-discord"></i> Discord</a></li>
+        <li><a href="team.html"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html" class="active"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Unban Appeal</h1>
+    <p>If you believe your punishment was unfair, submit a clear and honest appeal.</p>
+  </section>
+
+  <div class="appeal-container">
+    <form class="appeal-form" id="appealForm">
+      <label>Minecraft IGN</label>
+      <input type="text" id="ign" required>
+
+      <label>Discord Username</label>
+      <input type="text" id="discord" placeholder="username#0000" required>
+
+      <label>Reason for punishment</label>
+      <input type="text" id="reasonBan" required>
+
+      <label>Approximate punishment date</label>
+      <input type="text" id="date" required>
+
+      <label>Do you admit your actions?</label>
+      <select id="admit" required>
+        <option value="">Select...</option>
+        <option>Yes, I admit</option>
+        <option>No, I believe it was a mistake</option>
+      </select>
+
+      <label>What happened? (Detailed explanation)</label>
+      <textarea id="explanation" rows="4" required></textarea>
+
+      <label>Why should we unban you?</label>
+      <textarea id="why" rows="3" required></textarea>
+
+      <button type="submit" class="appeal-btn">Submit Appeal</button>
+      <p class="success-msg" id="success">✅ Appeal sent successfully!</p>
+      <p class="error-msg" id="error">❌ Failed to send. Please try again later.</p>
+    </form>
+  </div>
+
+  <footer>
+    <p>&copy; 2026 TitanNetwork — All rights reserved.</p>
+  </footer>
+
+  <script type="module">
+    import './firebase-global.js';
+    
+    const { getFunctions, httpsCallable } = window.firebaseApp;
+    const sendWebhook = async (data) => {
+      const func = httpsCallable(getFunctions(), 'sendWebhook');
+      return await func(data);
+    }
+
+    document.getElementById("appealForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const ign = document.getElementById("ign").value;
+      const discord = document.getElementById("discord").value;
+      const reasonBan = document.getElementById("reasonBan").value;
+      const date = document.getElementById("date").value;
+      const admit = document.getElementById("admit").value;
+      const explanation = document.getElementById("explanation").value;
+      const why = document.getElementById("why").value;
+
+      const payload = {
+        embeds: [{
+          title: "New Unban Appeal - TitanNetwork",
+          color: 15158332,
+          fields: [
+            { name: "IGN", value: ign, inline: true },
+            { name: "Discord", value: discord, inline: true },
+            { name: "Punishment Reason", value: reasonBan, inline: false },
+            { name: "Date", value: date, inline: true },
+            { name: "Admitted?", value: admit, inline: true },
+            { name: "Explanation", value: explanation, inline: false },
+            { name: "Why Unban?", value: why, inline: false }
+          ],
+          footer: { text: "TitanNetwork Appeal System" },
+          timestamp: new Date().toISOString()
+        }]
+      };
+
+      try {
+        const res = await sendWebhook({ type: "UNBAN_APPEAL", payload });
+
+        if (res.data.success) {
+          document.getElementById("success").style.display = "block";
+          document.getElementById("error").style.display = "none";
+          e.target.reset();
+        } else {
+          throw new Error("Backend returned false");
+        }
+      } catch (error) {
+        console.error("Webhook Error:", error);
+        document.getElementById("error").style.display = "block";
+        document.getElementById("success").style.display = "none";
+      }
+    });
+  </script>
+
+  <script>
+    function toggleMobileMenu() {
+      document.getElementById('nav-links').classList.toggle('active');
+    }
+
+    document.getElementById('moreBtn')?.addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('moreMenu').classList.toggle('active');
+    });
+  </script>
+</body>
+
+</html>

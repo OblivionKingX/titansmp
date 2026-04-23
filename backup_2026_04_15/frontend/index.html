@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="google-site-verification" content="KAS-TH8AGGiHh5p2Y4ihkP_W0moOMd8QfTlpg7kUgWk" />
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <meta name="theme-color" content="#ff8c00">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="navbar-shared.css">
+  <link rel="stylesheet" href="profile-card.css">
+  <link rel="stylesheet" href="index.css">
+
+</head>
+
+<body>
+
+  <div id="notification-container"></div>
+
+  <div id="auth-modal" class="auth-modal" aria-hidden="true">
+    <div class="auth-content" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="auth-close" type="button" onclick="closeAuthModal()"
+        aria-label="Close authentication modal">×</button>
+
+      <h2 id="auth-title" style="color:white; margin-bottom: var(--space-md);">Account Access</h2>
+
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+        <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+      </div>
+
+      <form id="login-form" class="auth-form active">
+        <div id="login-message" class="form-message"></div>
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" class="form-control" placeholder="Enter your password"
+            minlength="6" required>
+        </div>
+        <button id="login-btn" class="btn" type="submit">Login</button>
+      </form>
+
+      <form id="register-form" class="auth-form">
+        <div id="register-message" class="form-message"></div>
+        <div class="form-group">
+          <label for="register-username">Username</label>
+          <input id="register-username" type="text" class="form-control" placeholder="Choose a username" minlength="3"
+            maxlength="20" required>
+        </div>
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input id="register-email" type="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input id="register-password" type="password" class="form-control" placeholder="Create a password"
+            minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Confirm Password</label>
+          <input id="register-confirm-password" type="password" class="form-control"
+            placeholder="Re-enter your password" minlength="6" required>
+        </div>
+        <button id="register-btn" class="btn" type="submit">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="news-creation-modal" class="news-creation-modal">
+    <div class="news-creation-content">
+      <h2 class="news-creation-title"><i class="fas fa-newspaper"></i> Create News Post</h2>
+      <div id="news-creation-message" class="form-message"></div>
+      <form id="news-creation-form">
+        <div class="form-row">
+          <label>News Title *</label>
+          <input type="text" id="news-title" class="form-control" placeholder="Enter a clear announcement title..."
+            maxlength="100" required>
+        </div>
+        <div class="form-row">
+          <label>Short Preview * <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 400;">(Top
+              section text)</span></label>
+          <input type="text" id="news-preview" class="form-control" placeholder="A catchy one-sentence summary..."
+            maxlength="150" required>
+        </div>
+        <div class="form-row">
+          <label>News Description * <span
+              style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 400;">(Bottom section
+              text)</span></label>
+          
+          <div class="news-toolbar">
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+            <span class="toolbar-divider"></span>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('size')" title="Text Size"><i class="fas fa-text-height"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.openColorPicker()" title="Text Color"><i class="fas fa-palette"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('bold')" title="Bold"><i class="fas fa-bold"></i></button>
+            <span class="toolbar-divider"></span>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('reset')" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+          </div>
+          <input type="color" id="news-color-picker" style="display: none;">
+
+          <textarea id="news-content" class="form-control" placeholder="Write the main summary text here..."
+            maxlength="1000" required style="min-height: 120px; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+          <div style="text-align: right; font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">
+            <span id="content-counter">0</span>/1000 characters
+          </div>
+        </div>
+        <div class="form-row" style="display:flex; align-items:center; gap:10px;">
+          <input type="checkbox" id="news-pinned" style="width: 18px; height: 18px; accent-color: var(--accent-color);">
+          <label for="news-pinned" style="margin:0;">Pin this post (show at top)</label>
+        </div>
+        <div class="image-upload-section">
+          <label>Featured Image (Optional)</label>
+          <div class="image-option-tabs">
+            <div class="image-tab active" id="tab-upload" onclick="switchImageOption('upload')">Upload File</div>
+            <div class="image-tab" id="tab-url" onclick="switchImageOption('url')">Image URL</div>
+          </div>
+          <div id="image-upload-option" class="image-option">
+            <input type="file" id="news-image-file" accept="image/*" onchange="previewImage(this)"
+              style="margin-top: 10px;">
+          </div>
+          <div id="image-url-option" class="image-option" style="display: none;">
+            <input type="url" id="news-image-url" class="form-control" placeholder="https://example.com/image.jpg"
+              oninput="previewImageUrl(this.value)">
+          </div>
+          <div class="image-preview-container" id="preview-container">
+            <img id="image-preview" class="image-preview" src="">
+          </div>
+        </div>
+        <div class="news-actions">
+          <button type="button" class="news-action-btn secondary" onclick="closeNewsCreationModal()">Cancel</button>
+          <button type="submit" class="news-action-btn primary" id="publish-news-btn">Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <header id="header-bg">
+    <div class="header-content">
+      <div class="server-info">
+        <div class="jartex-ip-box" onclick="copyIP()">
+          <div class="click-to-copy-badge">Click to Copy IP</div>
+          <div class="server-ip-text">TITANNETWORK.RUN.PLACE</div>
+          <div class="player-count" id="player-count">Loading players...</div>
+        </div>
+        <p class="server-motto">Join the ultimate premium experience</p>
+      </div>
+
+
+      <div class="logo-3d-container">
+        <div class="logo-3d">
+          <h2 class="titan-text">TITAN<span class="network-accent">NETWORK</span></h2>
+          <div class="logo-aura"></div>
+        </div>
+        <div class="logo-subtitle">PREMIUM MINECRAFT EXPERIENCE</div>
+      </div>
+
+      <div class="header-actions">
+        <button class="play-button" onclick="joinServer()">
+          <i class="fas fa-play"></i> Play Now
+        </button>
+        <button class="discord-widget" onclick="joinDiscord()">
+          <span><i class="fab fa-discord"></i> Discord</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+        <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forums.html" class="forum"><i class="fas fa-newspaper"></i> Forums</a></li>
+        <li><a href="vote.html" class="vote"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="#store" class="store"><i class="fas fa-shopping-cart"></i> Store</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+        </li>
+        <li><a href="team.html" class="staff"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+        <li class="user-menu">
+          <button class="user-btn" onclick="toggleUserMenu()">
+            <span id="user-btn-content" style="display: flex; align-items: center; gap: var(--space-xs);">
+              <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+              <i id="navbar-user-icon" class="fas fa-user"></i>
+              <span id="user-btn-text">Account</span>
+            </span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div class="user-name" id="user-name">Guest</div>
+              <div class="user-role" id="user-role">Guest</div>
+              <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+            </div>
+            <a href="#" onclick="showAuthModal(); return false;" id="login-link">
+              <i class="fas fa-sign-in-alt"></i> Login / Register
+            </a>
+            <a href="#" id="profile-link" style="display:none;">
+              <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a href="profile-settings.html" id="settings-link" style="display:none;">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="admin.html" id="admin-link" style="display:none;">
+              <i class="fas fa-shield-alt"></i> Admin Panel
+            </a>
+            <a href="#" onclick="showOwnerPanel(); return false;" id="owner-link" style="display:none;">
+              <i class="fas fa-crown"></i> Owner Panel
+            </a>
+            <a href="#" onclick="logout(); return false;" id="logout-link" style="display:none;">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="owner-panel" class="owner-panel container" style="display:none;">
+    <h3><i class="fas fa-crown"></i> Owner Control Panel</h3>
+    <p style="color:white; margin-bottom:20px;">Welcome, Owner! You have full control over the website.</p>
+    <div class="owner-actions">
+      <button class="owner-action-btn" onclick="showManageUsersUI()">
+        <i class="fas fa-users"></i> Manage Users / Roles
+      </button>
+      <button class="owner-action-btn green" onclick="createNews()">
+        <i class="fas fa-newspaper"></i> Create News
+      </button>
+      <button class="owner-action-btn purple" onclick="viewStats()">
+        <i class="fas fa-chart-bar"></i> View Stats
+      </button>
+    </div>
+
+    <div id="role-manager-ui"
+      style="display:none; background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px; margin-top: 20px;">
+      <h4 style="color: gold; margin-bottom: 15px;"><i class="fas fa-user-shield"></i> Promote / Demote User</h4>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <input id="manage-uid-input" type="text" placeholder="Paste User UID here..."
+          style="background:#1a1a2e; color:white; border:1px solid #444; border-radius:8px; padding:10px; font-size:14px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="owner-action-btn" onclick="setRole('owner')" style="flex:1;">👑 Owner</button>
+          <button class="owner-action-btn green" onclick="setRole('admin')" style="flex:1;">🛡️ Admin</button>
+          <button class="owner-action-btn orange" onclick="setRole('staff')" style="flex:1;">⭐ Staff</button>
+          <button class="owner-action-btn" onclick="setRole('user')" style="flex:1; background:#555;">👤 User
+            (demote)</button>
+        </div>
+        <p id="role-manager-status" style="color:#aaa; font-size:13px; margin:0;"></p>
+      </div>
+    </div>
+    <div id="owner-stats" style="display: none;"></div>
+  </div>
+
+
+
+  <main class="container main-layout">
+
+    <section class="news-section">
+      <div class="news-section-header">
+        <h2 class="section-title" style="margin-bottom: 0;">News & Announcements</h2>
+        <p class="news-subtitle">Official updates, server improvements, and community highlights.</p>
+      </div>
+      <div class="news-feed-container">
+        <div class="news-grid" id="news-grid">
+
+        </div>
+        <div class="news-actions-row" id="news-actions-row" style="display:none;">
+          <button class="view-more-news-btn" id="view-more-news-btn" onclick="toggleNewsView()">View More News</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="community-sidebar">
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-users-cog"></i> Staff Online</h3>
+        <div id="staff-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-users"></i> Members Online</h3>
+        <div id="members-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-eye"></i> Guests Online</h3>
+        <div id="guests-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-link"></i> Quick Links</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="rules.html"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-gavel"></i> Server Rules
+          </a>
+          <a href="apply.html"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-file-alt"></i> Staff Application
+          </a>
+          <a href="appeal.html"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-balance-scale"></i> Ban Appeal
+          </a>
+          <a href="https://discord.gg/ExFhgvtFng"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fab fa-discord"></i> Join Discord
+          </a>
+        </div>
+      </div>
+    </aside>
+  </main>
+  <section class="container">
+    <div class="path-selection">
+      <h3>Choose Your Path</h3>
+      <p>Select your role identity. It will be shown on your profile and forum posts.</p>
+      <div class="path-buttons">
+        <button class="path-btn" id="path-builder" onclick="choosePath('builder')">🏗️ Builder</button>
+        <button class="path-btn" id="path-pvper" onclick="choosePath('pvper')">⚔️ PvPer</button>
+        <button class="path-btn" id="path-grinder" onclick="choosePath('grinder')">⛏️ Grinder</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features container">
+    <h2 class="section-title">Why Choose TitanNetwork?</h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">⚔️</div>
+        <h3 class="feature-title">PvP Arenas</h3>
+        <p>Battle in competitive arenas with unique kits and tournaments.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎉</div>
+        <h3 class="feature-title">Weekly Events</h3>
+        <p>Participate in exciting events with awesome prizes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <h3 class="feature-title">Custom Plugins</h3>
+        <p>Unique features designed specifically for our community.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+      <div class="footer-links">
+        <span class="footer-link" onclick="copyIP()">IP: titannetwork.run.place</span>
+        <a href="https://discord.gg/ExFhgvtFng" class="footer-link" onclick="joinDiscord()">Join Discord</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <!-- News Viewer logic transitioned to dedicated news.html page -->
+
+  <script src="utils.js"></script>
+  <script type="module" src="index-logic.js"></script>
+</body>
+
+</html>

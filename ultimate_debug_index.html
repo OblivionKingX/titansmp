@@ -1,0 +1,5657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta name="google-site-verification" content="KAS-TH8AGGiHh5p2Y4ihkP_W0moOMd8QfTlpg7kUgWk" />
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <meta name="theme-color" content="#ff8c00">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Home</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>/* ===== NAVBAR SHARED STYLES ===== */
+/* Ported from index.html to unify navigation across the forum */
+
+:root {
+  --primary-bg: #0f1720;
+  --secondary-bg: #0a1425;
+  --accent-color: #00bfff;
+  --accent-hover: #0088cc;
+  --text-color: #d9f3ff;
+  --text-secondary: #87b7d4;
+  --border-color: rgba(0, 180, 255, 0.2);
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --card-bg: rgba(10, 20, 40, 0.95);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+  --transition-base: 300ms ease;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+
+  /* Role Colors */
+  --owner-color: #ffd700;
+  --admin-color: #ff6b81;
+  --mod-color: #00ced1;
+  --helper-color: #00ffea;
+  --developer-color: #22d3ee;
+  --staff-color: #a29bfe;
+  --co-owner-color: #fd79a8;
+  --manager-color: #fab1a0;
+  --member-color: #3498db;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== NAVIGATION ===== */
+.navbar {
+  background: var(--secondary-bg);
+  border-bottom: 2px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-lg);
+}
+
+.nav-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 70px;
+}
+
+.logo {
+  height: 50px;
+  padding: var(--space-xs) 0;
+  display: flex;
+  align-items: center;
+}
+
+.logo h1 {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #0088cc;
+  text-shadow: 0px 0px 10px blue;
+  margin: 0;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--space-sm);
+  z-index: 1001;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: var(--space-xs);
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--text-color);
+  text-decoration: none;
+  padding: var(--space-md) var(--space-lg);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all var(--transition-base);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.nav-links a:hover,
+.nav-links a:focus,
+.nav-links a.active {
+  background: var(--button-bg);
+  color: var(--accent-color);
+}
+
+/* Navigation Color Variants */
+.nav-links .home {
+  color: var(--accent-color);
+}
+
+.nav-links .forum {
+  color: var(--mod-color);
+}
+
+.nav-links .vote {
+  color: #ffd700;
+}
+
+.nav-links .store {
+  color: #ff6b81;
+}
+
+.nav-links .discord-nav {
+  color: var(--discord-color);
+}
+
+.nav-links .staff {
+  color: var(--admin-color);
+}
+
+/* ===== USER MENU ===== */
+.user-menu {
+  position: relative;
+  list-style: none;
+}
+
+.user-btn {
+  background: var(--button-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  transition: all var(--transition-base);
+}
+
+.user-btn:hover,
+.user-btn:focus {
+  background: var(--accent-color);
+  color: #003366;
+  border-color: var(--accent-color);
+}
+
+.navbar-pfp {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent-color);
+  display: none;
+}
+
+.user-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  min-width: 220px;
+  display: none;
+  z-index: 1000;
+  box-shadow: var(--shadow-xl);
+  overflow: hidden;
+}
+
+.user-dropdown.active {
+  display: block;
+  animation: fadeIn var(--transition-base);
+}
+
+.user-info {
+  padding: var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.user-name {
+  font-weight: 700;
+  color: white;
+  margin-bottom: var(--space-xs);
+  word-break: break-word;
+}
+
+.user-role {
+  font-size: 0.75rem;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: 12px;
+  color: white;
+  font-weight: 800;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+.user-path-role {
+  margin-top: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  letter-spacing: 0.35px;
+  text-transform: uppercase;
+}
+
+/* Role Colors */
+.role-owner {
+  background: linear-gradient(45deg, var(--owner-color), #ff9900);
+  color: #003366;
+}
+
+.role-admin {
+  background: linear-gradient(45deg, #ff242b, var(--admin-color));
+  color: white;
+}
+
+.role-mod {
+  background: linear-gradient(45deg, #00AAAA, var(--mod-color));
+  color: white;
+}
+
+.role-helper {
+  background: linear-gradient(45deg, #55ffff, var(--helper-color));
+  color: #005555;
+}
+
+.role-member {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.role-staff {
+  background: linear-gradient(45deg, #6c5ce7, var(--staff-color));
+  color: white !important;
+}
+
+.role-co-owner {
+  background: linear-gradient(45deg, #e84393, var(--co-owner-color));
+  color: white !important;
+}
+
+/* User Role Badges */
+.user-role {
+  font-size: 0.70rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 12px;
+  color: white;
+  font-weight: 800;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.role-owner {
+  background: linear-gradient(45deg, var(--owner-color), #ff9900);
+  color: #003366 !important;
+}
+
+.role-admin {
+  background: linear-gradient(45deg, #ff242b, var(--admin-color));
+  color: white !important;
+}
+
+.role-moderator,
+.role-mod {
+  background: linear-gradient(45deg, #00AAAA, var(--mod-color));
+  color: white !important;
+}
+
+.role-helper {
+  background: linear-gradient(45deg, #55ffff, var(--helper-color));
+  color: #005555 !important;
+}
+
+.role-developer {
+  background: linear-gradient(45deg, #00d2d3, var(--developer-color));
+  color: white !important;
+}
+
+/* Additional Ranks */
+.role-donator {
+  background: linear-gradient(45deg, #ff9f43, #ff6b6b);
+  color: white !important;
+}
+
+.role-known {
+  background: linear-gradient(45deg, #00d2d3, #54a0ff);
+  color: white !important;
+}
+
+.role-vip {
+  background: linear-gradient(45deg, #1dd1a1, #10ac84);
+  color: white !important;
+}
+
+.role-royal {
+  background: linear-gradient(45deg, #5f27cd, #341f97);
+  color: white !important;
+}
+
+.role-manager {
+  background: linear-gradient(45deg, #ee5253, #ff6b6b);
+  color: white !important;
+}
+
+.user-dropdown a {
+  display: block;
+  padding: var(--space-md) var(--space-lg);
+  color: var(--text-color);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border-color);
+  transition: all var(--transition-base);
+}
+
+.user-dropdown a:hover,
+.user-dropdown a:focus {
+  background: var(--accent-color);
+  color: #003366;
+  padding-left: calc(var(--space-lg) + 5px);
+}
+
+.user-dropdown a i {
+  width: 20px;
+  text-align: center;
+}
+
+/* ===== MORE MENU ===== */
+.more-btn {
+  position: relative;
+}
+
+.more-btn>a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.more-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: var(--space-sm);
+  min-width: 220px;
+  z-index: 1000;
+  box-shadow: var(--shadow-xl);
+  list-style: none;
+}
+
+.more-menu.active {
+  display: block;
+  animation: fadeIn var(--transition-base);
+}
+
+.more-menu a {
+  display: block;
+  padding: var(--space-sm) var(--space-md);
+  color: var(--text-color);
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-base);
+  font-weight: 500;
+}
+
+.more-menu a:hover {
+  background: var(--accent-color);
+  color: #003366;
+  padding-left: calc(var(--space-md) + 5px);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 767px) {
+  .nav-container {
+    padding: 0 var(--space-md);
+    height: 60px;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+    font-size: 1.25rem;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 60px);
+    background: var(--secondary-bg);
+    flex-direction: column;
+    padding: 2rem 0;
+    box-shadow: var(--shadow-xl);
+    border-top: 1px solid var(--border-color);
+    z-index: 999;
+    transform: translateX(100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+  }
+
+  .nav-links.active {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-links li {
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  }
+
+  .nav-links a {
+    padding: 1.25rem;
+    font-size: 1.1rem;
+    border-radius: 0;
+    justify-content: flex-start;
+    padding-left: 2rem;
+  }
+
+  .user-menu {
+    width: 100%;
+  }
+
+  .user-btn {
+    width: calc(100% - 4rem);
+    margin: 1rem 2rem;
+    justify-content: center;
+  }
+
+  .user-dropdown {
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid var(--border-color);
+    background: rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+
+  .user-dropdown.active {
+    display: block;
+  }
+
+  .more-btn {
+    position: static; /* Change from relative to static on mobile */
+  }
+
+  .more-menu {
+    position: fixed; /* Use fixed positioning on mobile */
+    top: 70px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    min-width: auto;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: 2px solid var(--border-color);
+    background: var(--secondary-bg);
+    max-height: 70vh;
+    overflow-y: auto;
+    z-index: 999;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base);
+  }
+
+  .more-menu.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+    display: block;
+  }
+
+  .more-menu li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .more-menu a {
+    padding: var(--space-lg) var(--space-md);
+    font-size: 1rem;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    border-radius: 0;
+  }
+
+  /* Make the more button full width on mobile */
+  .more-btn > a {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ===== AUTHENTICATION MODAL ===== */
+.auth-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+}
+
+.auth-content {
+  background: var(--card-bg);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  width: 90%;
+  max-width: 400px;
+  border: 2px solid var(--accent-color);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  position: relative;
+  animation: fadeIn var(--transition-base);
+}
+
+.auth-close {
+  position: absolute;
+  top: var(--space-md);
+  right: var(--space-md);
+  background: none;
+  border: none;
+  color: var(--text-color);
+  font-size: 1.5rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-close:hover {
+  color: var(--accent-color);
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: var(--space-xl);
+  border-bottom: 2px solid var(--border-color);
+}
+
+.auth-tab {
+  flex: 1;
+  padding: var(--space-md);
+  text-align: center;
+  cursor: pointer;
+  color: var(--text-color);
+  font-weight: 700;
+  border-bottom: 3px solid transparent;
+  transition: all var(--transition-base);
+}
+
+.auth-tab.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+.auth-form {
+  display: none;
+}
+
+.auth-form.active {
+  display: block;
+  animation: fadeIn var(--transition-base);
+}
+
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  color: white;
+  font-weight: 600;
+}
+
+.form-control {
+  width: 100%;
+  padding: var(--space-md);
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
+  color: white;
+  font-family: 'Barlow', sans-serif;
+  transition: all var(--transition-base);
+  font-size: 1rem;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+}
+
+.form-message {
+  padding: 10px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-md);
+  font-size: 0.9rem;
+  display: none;
+}
+
+.form-message.error {
+  background: rgba(231, 76, 60, 0.2);
+  color: #ff4757;
+  border: 1px solid rgba(231, 76, 60, 0.5);
+}
+
+.form-message.success {
+  background: rgba(46, 204, 113, 0.2);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.5);
+}</style>
+  <style>/* Profile Mini Card Styles */
+.profile-card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-card-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.mini-profile-card {
+    background: var(--card-bg);
+    width: 340px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.profile-card-overlay.active .mini-profile-card {
+    transform: translateY(0);
+}
+
+.mini-card-header {
+    height: 80px;
+    background: linear-gradient(135deg, var(--accent-light), var(--accent-color));
+    position: relative;
+}
+
+.mini-card-content {
+    padding: 60px 20px 20px;
+    text-align: center;
+}
+
+.mini-card-pfp {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid var(--card-bg);
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    object-fit: cover;
+}
+
+.mini-card-username {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 5px;
+}
+
+.mini-card-ranks {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.mini-card-bio {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    padding: 0 10px;
+}
+
+.mini-card-stats {
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.mini-card-stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.mini-stat-val {
+    color: white;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.mini-stat-lbl {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.mini-card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-full-profile {
+    flex: 1;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: block;
+}
+
+.btn-full-profile:hover {
+    background: var(--accent-light);
+    transform: translateY(-2px);
+}
+
+.close-mini-card {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 10;
+}</style>
+  <style>/* ===== CSS RESET & PERFORMANCE OPTIMIZATIONS ===== */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    /* Remove mobile tap highlight */
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--primary-bg);
+    color: var(--text-color);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    position: relative;
+}
+
+/* ===== CSS VARIABLES ===== */
+:root {
+    /* Color Palette */
+    --primary-bg: #0f1720;
+    --secondary-bg: #0a1425;
+    --accent-color: #00bfff;
+    --accent-hover: #0088cc;
+    --text-color: #d9f3ff;
+    --text-secondary: #87b7d4;
+    --border-color: rgba(0, 180, 255, 0.2);
+    --discord-color: #7289da;
+    --discord-hover: #5865f2;
+    --button-bg: rgba(255, 255, 255, 0.1);
+    --card-bg: rgba(10, 20, 40, 0.95);
+    --success-color: #2ecc71;
+    --error-color: #e74c3c;
+    --warning-color: #f39c12;
+
+    /* Role Colors */
+    --owner-color: #ffd700;
+    --admin-color: #ff6b81;
+    --mod-color: #00ced1;
+    --helper-color: #00ffea;
+    --member-color: #3498db;
+
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+    --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-base: 300ms ease;
+    --transition-slow: 500ms ease;
+}
+
+/* ===== HIGH CONTRAST MODE SUPPORT ===== */
+@media (prefers-contrast: high) {
+    :root {
+        --text-color: #ffffff;
+        --text-secondary: #a0d2ff;
+        --border-color: rgba(0, 180, 255, 0.4);
+        --button-bg: rgba(255, 255, 255, 0.15);
+    }
+}
+
+/* ===== REDUCED MOTION PREFERENCE ===== */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== BASE STYLES ===== */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-md);
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 2px;
+}
+
+/* Skip to main content link for screen readers */
+.skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--accent-color);
+    color: var(--primary-bg);
+    padding: var(--space-sm) var(--space-md);
+    text-decoration: none;
+    z-index: 9999;
+    transition: top var(--transition-base);
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
+/* ===== LOADING STATES ===== */
+.loading {
+    position: relative;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+/* ===== HEADER ===== */
+#header-bg {
+    background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95)),
+        url('photos/background.jpg') no-repeat center / cover;
+    min-height: 300px;
+    position: relative;
+    border-bottom: 3px solid var(--accent-color);
+    box-shadow: inset 0px 0px 50px rgb(9, 75, 151);
+}
+
+.header-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    align-items: center;
+    padding: var(--space-xl) var(--space-md);
+    min-height: 300px;
+    text-align: center;
+}
+
+.server-info {
+    background: var(--card-bg);
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-xl);
+    animation: fadeIn 0.8s ease;
+}
+
+.server-ip {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: var(--space-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    cursor: pointer;
+    transition: color var(--transition-base);
+}
+
+.server-ip:hover,
+.server-ip:focus {
+    color: var(--accent-color);
+}
+
+.server-ip i {
+    color: var(--accent-color);
+}
+
+.player-count {
+    display: inline-block;
+    background: var(--accent-color);
+    color: #003366;
+    padding: var(--space-sm) var(--space-xl);
+    border-radius: 25px;
+    font-weight: 800;
+    font-size: 1.125rem;
+    margin-top: var(--space-sm);
+    transition: all var(--transition-base);
+    border: 2px solid transparent;
+    cursor: pointer;
+    min-width: 180px;
+    text-align: center;
+}
+
+.player-count:hover,
+.player-count:focus {
+    background: var(--accent-hover);
+    transform: scale(1.05);
+    border-color: white;
+}
+
+.header-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+    align-items: center;
+}
+
+/* ===== BUTTONS ===== */
+.play-button,
+.discord-widget {
+    width: 100%;
+    max-width: 300px;
+    padding: var(--space-lg) var(--space-xl);
+    border-radius: var(--radius-lg);
+    font-size: 1.125rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    transition: all var(--transition-base);
+    border: none;
+    text-decoration: none;
+}
+
+.play-button {
+    background: var(--accent-color);
+    color: #003366;
+}
+
+.play-button:hover,
+.play-button:focus {
+    background: var(--accent-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 191, 255, 0.3);
+}
+
+.discord-widget {
+    background: var(--discord-color);
+    color: white;
+}
+
+.discord-widget:hover,
+.discord-widget:focus {
+    background: var(--discord-hover);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(114, 137, 218, 0.3);
+}
+
+.discord-count {
+    background: rgba(255, 255, 255, 0.2);
+    padding: var(--space-xs) var(--space-md);
+    border-radius: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+/* ===== 3D LOGO ===== */
+.logo-3d-container {
+    perspective: 1000px;
+    text-align: center;
+    padding: var(--space-xl);
+    position: relative;
+    width: 100%;
+}
+
+.logo-3d {
+    position: relative;
+    transform-style: preserve-3d;
+    display: inline-block;
+    animation: float3D 6s infinite ease-in-out;
+    z-index: 2;
+}
+
+.titan-text {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: white;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    background: linear-gradient(to bottom, #fff 40%, var(--accent-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 3;
+    filter: drop-shadow(0 0 15px rgba(0, 191, 255, 0.3));
+    /* 3D Extrusion Effect */
+    text-shadow:
+        0 1px 0 #0088cc,
+        0 2px 0 #0077bb,
+        0 3px 0 #0066aa,
+        0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.network-accent {
+    font-weight: 700;
+    opacity: 0.9;
+}
+
+.logo-aura {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(0, 191, 255, 0.2) 0%, transparent 70%);
+    z-index: 1;
+    filter: blur(20px);
+    animation: pulseGlow 4s infinite ease-in-out;
+}
+
+.logo-subtitle {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    margin-top: 10px;
+    opacity: 0.8;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes pulseGlow {
+
+    0%,
+    100% {
+        opacity: 0.4;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+@keyframes float3D {
+
+    0%,
+    100% {
+        transform: rotateY(-10deg) rotateX(5deg) translateY(0);
+    }
+
+    50% {
+        transform: rotateY(10deg) rotateX(-5deg) translateY(-10px);
+    }
+}
+
+
+
+/* ===== AUTHENTICATION MODAL ===== */
+.auth-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+}
+
+.auth-content {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    width: 90%;
+    max-width: 400px;
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: fadeIn var(--transition-base);
+}
+
+.auth-close {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-close:hover,
+.auth-close:focus {
+    color: var(--accent-color);
+}
+
+.auth-tabs {
+    display: flex;
+    margin-bottom: var(--space-xl);
+    border-bottom: 2px solid var(--border-color);
+}
+
+.auth-tab {
+    flex: 1;
+    padding: var(--space-md);
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-color);
+    font-weight: 700;
+    border-bottom: 3px solid transparent;
+    transition: all var(--transition-base);
+}
+
+.auth-tab.active {
+    color: var(--accent-color);
+    border-bottom-color: var(--accent-color);
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+    animation: fadeIn var(--transition-base);
+}
+
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    color: white;
+    font-weight: 600;
+}
+
+.form-control {
+    width: 100%;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: white;
+    font-family: 'Barlow', sans-serif;
+    transition: all var(--transition-base);
+    font-size: 1rem;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(0, 191, 255, 0.1);
+}
+
+
+.btn {
+    width: 100%;
+    padding: var(--space-lg);
+    background: var(--accent-color);
+    color: #003366;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-family: 'Barlow', sans-serif;
+}
+
+.btn:hover,
+.btn:focus {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.form-message {
+    padding: var(--space-sm);
+    margin-bottom: var(--space-md);
+    border-radius: var(--radius-sm);
+    display: none;
+    text-align: center;
+    font-weight: 600;
+}
+
+.form-message.success {
+    background: rgba(46, 204, 113, 0.2);
+    color: var(--success-color);
+    display: block;
+}
+
+.form-message.error {
+    background: rgba(231, 76, 60, 0.2);
+    color: var(--error-color);
+    display: block;
+}
+
+.form-message.warning {
+    background: rgba(243, 156, 18, 0.2);
+    color: var(--warning-color);
+    display: block;
+}
+
+/* ===== MAIN CONTENT SECTIONS ===== */
+.news-section {
+    padding: var(--space-2xl) 0;
+}
+
+.news-section-header {
+    text-align: center;
+    margin-bottom: var(--space-lg);
+}
+
+.news-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.35rem;
+    letter-spacing: 0.2px;
+}
+
+.news-feed-container {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
+}
+
+.features {
+    padding: var(--space-2xl) 0;
+    background: var(--secondary-bg);
+}
+
+.path-selection {
+    background: var(--secondary-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin: var(--space-xl) 0;
+}
+
+.path-selection h3 {
+    color: white;
+    text-align: center;
+    margin-bottom: 0.4rem;
+}
+
+.path-selection p {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+    font-size: 0.92rem;
+}
+
+.path-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 0.75rem;
+}
+
+.path-btn {
+    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-color);
+    border-radius: var(--radius-md);
+    padding: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-family: 'Barlow', sans-serif;
+}
+
+.path-btn:hover,
+.path-btn:focus {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+.path-btn.active {
+    background: var(--accent-color);
+    color: #003366;
+    border-color: var(--accent-color);
+    box-shadow: 0 8px 18px rgba(0, 191, 255, 0.2);
+}
+
+.section-title {
+    color: white;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: var(--accent-color);
+}
+
+/* ===== NEWS GRID ===== */
+.news-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.news-actions-row {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-md);
+}
+
+.view-more-news-btn {
+    background: var(--accent-color);
+    color: #003366;
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 1.5rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-family: 'Barlow', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.view-more-news-btn:hover,
+.view-more-news-btn:focus {
+    background: var(--accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 191, 255, 0.3);
+}
+
+/* ===== NEWS ARCHIVE (OLD POSTS) ===== */
+.news-archive-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+    padding: 0 0 var(--space-xl);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
+}
+
+.news-archive-title-label {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    opacity: 0.6;
+}
+
+.news-archive-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(15, 23, 42, 0.45);
+    border-radius: var(--radius-xl);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    overflow: hidden;
+    height: 100%;
+}
+
+.news-archive-item:hover {
+    background: rgba(0, 191, 255, 0.08);
+    border-color: rgba(0, 191, 255, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.archive-image-wrapper {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+}
+
+.archive-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.news-archive-item:hover .archive-thumbnail {
+    transform: scale(1.05);
+}
+
+.archive-info {
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.archive-title {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.archive-date {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.archive-comments {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.archive-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.archive-description {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* News Description - Collapsible */
+.news-description-content {
+    position: relative;
+    max-height: none;
+    transition: max-height 0.4s ease;
+}
+
+.news-description-content.collapsed {
+    max-height: 120px;
+    overflow: hidden;
+    mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+}
+
+.read-more-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--accent-color);
+    padding: 0.6rem 1.2rem;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.read-more-btn:hover {
+    background: var(--accent-color);
+    color: #003366;
+    transform: translateX(5px);
+}
+
+.read-more-btn i {
+    transition: transform 0.2s;
+}
+
+.read-more-btn.expanded i {
+    transform: rotate(180deg);
+}
+
+.news-post-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: newsFadeIn 0.8s ease forwards;
+    opacity: 0;
+}
+
+@keyframes newsFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 1. BIG NEWS CARD (TOP) */
+.big-news-card {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--border-color);
+    overflow: hidden;
+    transition: var(--transition-base);
+    position: relative;
+    box-shadow: var(--shadow-xl);
+}
+
+.big-news-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.featured-image-container {
+    width: 100%;
+    height: 550px;
+    /* Increased height to 550px per user request */
+    overflow: hidden;
+    position: relative;
+    background: #0a1425;
+}
+
+.featured-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s cubic-bezier(0.33, 1, 0.68, 1), filter 0.3s ease;
+}
+
+.big-news-card:hover .featured-image {
+    transform: scale(1.1);
+    filter: brightness(1.1) contrast(1.1);
+}
+
+.news-card-body {
+    padding: var(--space-xl) var(--space-lg) var(--space-lg);
+    background: linear-gradient(to top, rgba(10, 20, 40, 1) 0%, rgba(10, 20, 40, 0.85) 40%, transparent 100%);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 5;
+}
+
+.news-title {
+    font-size: 2.25rem;
+    /* Even bigger title */
+    font-weight: 900;
+    color: #fff;
+    margin-bottom: 8px;
+    line-height: 1.1;
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.8);
+}
+
+.news-date {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0; /* Changed from 12px since it's now in a flex container */
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.news-comment-count {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.news-meta-inline {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.news-short-preview {
+    font-size: 1.05rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* 2. SMALL LOWER SECTION (DESCRIPTION) */
+.news-description-section {
+    background: #0f172a;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: var(--space-lg);
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.big-news-card:hover .news-description-section {
+    background: #131d33;
+}
+
+.news-description-tag {
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    letter-spacing: 1.8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+.news-description-content {
+    color: #cbd5e1;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+    letter-spacing: 0.2px;
+}
+
+.news-description-content b,
+.news-description-content strong {
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+.news-author-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.news-author-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    object-fit: cover;
+    background: #0a1425;
+}
+
+.posted-by-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 900;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.author-name-text {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* BADGES & DELETION */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* NEWS FORMATTING TOOLBAR */
+.news-toolbar {
+    background: rgba(15, 23, 42, 0.6);
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-bottom: none;
+    border-top-left-radius: var(--radius-md);
+    border-top-right-radius: var(--radius-md);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.toolbar-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.toolbar-btn:hover {
+    background: rgba(0, 191, 255, 0.15);
+    color: var(--accent-color);
+    transform: translateY(-1px);
+}
+
+.toolbar-divider {
+    width: 1px;
+    height: 18px;
+    background: var(--border-color);
+    margin: 0 4px;
+    opacity: 0.5;
+}
+
+/* NEWS ALIGNMENT BLOCKS */
+.news-description-content div {
+    margin-bottom: 2px;
+}
+
+.news-badge.pinned {
+    background: #ffd700;
+}
+
+.news-delete-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    background: rgba(239, 68, 68, 0.9);
+    color: white;
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+.big-news-card:hover .news-delete-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.news-delete-btn:hover {
+    background: #ef4444;
+    transform: scale(1.1) !important;
+}
+
+/* ===== FEATURES GRID ===== */
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+}
+
+.feature-card {
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    border: 2px solid var(--border-color);
+    transition: all var(--transition-base);
+    animation: fadeIn 0.8s ease;
+    will-change: transform;
+}
+
+.feature-card:hover,
+.feature-card:focus-within {
+    border-color: var(--accent-color);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--space-lg);
+    color: var(--accent-color);
+}
+
+.feature-title {
+    color: white;
+    font-size: 1.25rem;
+    margin-bottom: var(--space-md);
+    font-weight: 700;
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
+}
+
+.stat-card {
+    text-align: center;
+    padding: var(--space-md);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-lg);
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: var(--space-xs);
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+/* ===== OWNER PANEL ===== */
+.owner-panel {
+    display: none;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 153, 0, 0.05));
+    border: 2px solid var(--owner-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin: var(--space-xl) auto;
+    max-width: 1200px;
+    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.1);
+    animation: fadeIn 0.5s ease;
+}
+
+.owner-panel h3 {
+    color: var(--owner-color);
+    margin-bottom: var(--space-lg);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.owner-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.owner-action-btn {
+    background: var(--accent-color);
+    color: #003366;
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    font-size: 0.9375rem;
+}
+
+.owner-action-btn:hover,
+.owner-action-btn:focus {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 191, 255, 0.3);
+}
+
+.owner-action-btn.orange {
+    background: var(--owner-color);
+}
+
+.owner-action-btn.green {
+    background: var(--success-color);
+}
+
+.owner-action-btn.purple {
+    background: var(--discord-color);
+    color: white;
+}
+
+
+
+/* ===== LOADING SPINNER ===== */
+.btn.loading,
+.owner-action-btn.loading,
+.news-action-btn.loading {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn.loading::after,
+.owner-action-btn.loading::after,
+.news-action-btn.loading::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    left: 50%;
+    margin: -10px 0 0 -10px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ===== FOOTER ===== */
+footer {
+    background: var(--secondary-bg);
+    padding: var(--space-xl) 0;
+    text-align: center;
+    border-top: 2px solid var(--border-color);
+    margin-top: var(--space-2xl);
+}
+
+footer p {
+    margin: var(--space-sm) 0;
+}
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+}
+
+.footer-link {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color var(--transition-base);
+    padding: var(--space-xs) 0;
+}
+
+.footer-link:hover,
+.footer-link:focus {
+    color: white;
+    text-decoration: underline;
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+
+    .owner-setup-btn,
+    .play-button:hover,
+    .discord-widget:hover,
+    .player-count:hover,
+    .mobile-menu-btn,
+    .user-btn {
+        display: none !important;
+    }
+
+    .news-card,
+    .feature-card {
+        break-inside: avoid;
+        border: 1px solid #ddd;
+        box-shadow: none;
+    }
+
+    body {
+        background: white;
+        color: black;
+    }
+}
+
+/* ===== MOBILE-FIRST RESPONSIVE DESIGN ===== */
+
+/* Small Phones (320px - 374px) */
+@media (min-width: 320px) {
+    .server-ip {
+        font-size: 1.375rem;
+    }
+
+    .player-count {
+        font-size: 1rem;
+        min-width: 140px;
+        padding: 0.5rem 1rem;
+    }
+
+    .play-button,
+    .discord-widget {
+        padding: 0.875rem 1rem;
+        font-size: 1rem;
+    }
+
+    .titan-text {
+        font-size: 1.5rem;
+    }
+
+    .logo-3d-container {
+        padding: var(--space-md);
+    }
+
+    .logo-aura {
+        width: 150px;
+        height: 60px;
+    }
+
+    .news-image {
+        height: 180px;
+    }
+}
+
+/* Medium Phones (375px - 424px) */
+@media (min-width: 375px) {
+    .server-ip {
+        font-size: 1.5rem;
+    }
+
+    .player-count {
+        font-size: 1.0625rem;
+    }
+
+    .titan-text {
+        font-size: 1.75rem;
+    }
+
+    .logo-aura {
+        width: 180px;
+        height: 70px;
+    }
+
+    .news-image {
+        height: 200px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Large Phones (425px - 767px) */
+@media (min-width: 425px) {
+    .server-info {
+        max-width: 400px;
+    }
+
+    .header-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .play-button,
+    .discord-widget {
+        max-width: 280px;
+    }
+
+    .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .titan-text {
+        font-size: 2.2rem;
+    }
+
+    .logo-aura {
+        width: 220px;
+        height: 80px;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+}
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) {
+    .header-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1.5rem;
+    }
+
+
+
+    .server-info {
+        margin: 0 auto;
+    }
+
+    .server-ip {
+        font-size: 1.75rem;
+        justify-content: center;
+    }
+
+    .header-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .play-button,
+    .discord-widget {
+        width: 220px;
+        max-width: none;
+    }
+
+    .news-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .features-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .owner-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .footer-links {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .header-content {
+        grid-template-columns: 1fr auto 1fr;
+        text-align: left;
+        gap: 2rem;
+    }
+
+    .server-info {
+        margin: 0;
+    }
+
+    .server-ip {
+        justify-content: flex-start;
+    }
+
+    .header-actions {
+        align-items: stretch;
+    }
+
+    .container {
+        padding: 0 2rem;
+    }
+
+    .nav-links {
+        gap: 0.5rem;
+    }
+
+    .nav-links a {
+        padding: 1rem 1.25rem;
+    }
+
+    .news-grid {
+        gap: 2rem;
+    }
+
+    .features-grid {
+        gap: 2rem;
+    }
+
+    .owner-actions {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+}
+
+/* Large Desktop (1440px+) */
+@media (min-width: 1440px) {
+    .container {
+        max-width: 1400px;
+    }
+
+    #header-bg {
+        min-height: 350px;
+    }
+
+    .header-content {
+        min-height: 350px;
+    }
+
+    .news-image {
+        height: 250px;
+    }
+}
+
+/* ===== MOBILE NAVIGATION TOGGLE ===== */
+@media (max-width: 767px) {
+    .mobile-menu-btn {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: var(--secondary-bg);
+        flex-direction: column;
+        padding: 1rem 0;
+        box-shadow: var(--shadow-lg);
+        border-top: 2px solid var(--border-color);
+        z-index: 999;
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-base);
+    }
+
+    .nav-links.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .nav-links li {
+        width: 100%;
+        text-align: center;
+    }
+
+    .nav-links a {
+        padding: 1rem;
+        font-size: 1rem;
+        border-radius: 0;
+        justify-content: center;
+    }
+
+    .user-dropdown {
+        position: fixed;
+        top: 70px;
+        right: 1rem;
+        left: 1rem;
+        width: auto;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    .discord-count {
+        display: none;
+    }
+}
+
+/* Jartex-inspired IP Box */
+.jartex-ip-box {
+    background: var(--card-bg);
+    border: 3px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    text-align: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.1);
+}
+
+.jartex-ip-box:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+}
+
+.click-to-copy-badge {
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: var(--accent-color);
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+    opacity: 0.8;
+    text-transform: uppercase;
+}
+
+.server-ip-text {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: white;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.server-motto {
+    margin-top: 15px;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* News Card Upgrade */
+.news-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.news-author-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 191, 255, 0.4);
+}
+
+.news-author-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+}
+
+.news-comments-count {
+    margin-left: auto;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+/* Community Widget */
+.community-sidebar {
+    display: grid;
+    gap: var(--space-xl);
+}
+
+.widget {
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    margin-bottom: var(--space-xl);
+}
+
+.widget-title {
+    color: var(--accent-color);
+    font-size: 1.1rem;
+    font-weight: 800;
+    margin-bottom: var(--space-md);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+    text-transform: uppercase;
+}
+
+/* Staff Online Card Specifics */
+.staff-online-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+.staff-online-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.staff-online-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.staff-online-list::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 4px;
+}
+
+.staff-online-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+
+.staff-online-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(4px);
+    border-color: var(--accent-color);
+}
+
+.staff-online-item:hover .staff-name {
+    color: var(--accent-color);
+}
+
+.staff-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+    object-fit: cover;
+}
+
+.staff-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.staff-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: white;
+}
+
+/* Guest Specific Styling */
+.guest-item {
+    cursor: default;
+}
+
+.guest-avatar-placeholder {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.guest-avatar-placeholder i {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.guest-badge {
+    background: rgba(255, 255, 255, 0.05) !important;
+    color: var(--text-secondary) !important;
+    font-size: 0.65rem !important;
+    padding: 2px 6px !important;
+}
+
+.staff-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+/* ===== DARK MODE SUPPORT (if applicable) ===== */
+@media (prefers-color-scheme: dark) {
+    /* Colors already optimized for dark mode */
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+
+    .news-card:hover,
+    .feature-card:hover,
+    .play-button:hover,
+    .discord-widget:hover {
+        transform: none;
+    }
+
+    .news-card:active,
+    .feature-card:active {
+        transform: scale(0.98);
+    }
+
+    .play-button:active,
+    .discord-widget:active {
+        transform: scale(0.98);
+    }
+
+    /* Increase touch target sizes */
+    .nav-links a,
+    .footer-link,
+    .auth-tab {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .play-button,
+    .discord-widget,
+    .owner-action-btn {
+        min-height: 44px;
+    }
+}
+
+/* ===== DESKTOP MORE BUTTON (Default) ===== */
+.more-btn {
+    position: relative;
+    list-style: none;
+}
+
+.more-btn>a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: var(--space-md) var(--space-lg);
+    font-weight: 600;
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+}
+
+.more-btn>a:hover,
+.more-btn>a:focus {
+    background: var(--button-bg);
+    color: var(--accent-color);
+}
+
+.more-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--space-sm);
+    min-width: 220px;
+    z-index: 1000;
+    box-shadow: var(--shadow-xl);
+}
+
+.more-menu.active {
+    display: block;
+    animation: fadeIn var(--transition-base);
+}
+
+.more-menu li {
+    list-style: none;
+}
+
+.more-menu a {
+    display: block;
+    padding: var(--space-sm) var(--space-md);
+    color: var(--text-color);
+    text-decoration: none;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-base);
+    font-weight: 500;
+    font-size: 0.9375rem;
+}
+
+.more-menu a:hover,
+.more-menu a:focus {
+    background: var(--accent-color);
+    color: #003366;
+    padding-left: calc(var(--space-md) + 5px);
+}
+
+/* ===== MOBILE MORE BUTTON (max-width: 767px) ===== */
+@media (max-width: 767px) {
+    .more-btn {
+        width: 100%;
+    }
+
+    .more-btn>a {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1rem;
+        justify-content: center;
+        border-radius: 0;
+    }
+
+    .more-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: none;
+        min-width: auto;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid var(--border-color);
+        background: var(--secondary-bg);
+        max-height: 60vh;
+        overflow-y: auto;
+        z-index: 999;
+        padding: 0;
+    }
+
+    .more-menu li {
+        width: 100%;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .more-menu li:last-child {
+        border-bottom: none;
+    }
+
+    .more-menu a {
+        padding: 1rem;
+        font-size: 1rem;
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        border-radius: 0;
+        text-align: center;
+    }
+
+    .more-menu a:hover,
+    .more-menu a:focus {
+        padding-left: 1rem;
+        /* Remove the extra padding on mobile */
+        background: var(--accent-color);
+        color: #003366;
+    }
+}
+
+/* ===== TABLET (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .more-menu {
+        min-width: 200px;
+    }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+    .more-btn>a {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    .more-menu a {
+        min-height: 44px;
+    }
+
+    .more-menu a:hover {
+        background: transparent;
+        color: var(--text-color);
+    }
+
+    .more-menu a:active {
+        background: var(--accent-color);
+        color: #003366;
+    }
+}
+
+/* News Creation Modal CSS */
+.news-creation-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 3000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px);
+}
+
+.news-creation-content {
+    background: var(--card-bg);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    width: 95%;
+    max-width: 600px;
+    border: 2px solid var(--accent-color);
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-xl);
+}
+
+.news-creation-title {
+    color: var(--accent-color);
+    margin-bottom: var(--space-lg);
+    font-size: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: var(--space-sm);
+}
+
+.form-row {
+    margin-bottom: var(--space-md);
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+}
+
+.image-upload-section {
+    background: rgba(255, 255, 255, 0.05);
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
+}
+
+.image-option-tabs {
+    display: flex;
+    gap: var(--space-sm);
+    margin: var(--space-sm) 0;
+}
+
+.image-tab {
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.image-tab.active {
+    background: var(--accent-color);
+    color: #003366;
+}
+
+.image-preview-container {
+    margin-top: var(--space-md);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    max-height: 200px;
+    display: none;
+}
+
+.image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-md);
+}
+
+.news-action-btn {
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+}
+
+.news-action-btn.primary {
+    background: var(--accent-color);
+    color: #003366;
+}
+
+.news-action-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Main Content Layout CSS */
+/* Consolidated Layout Logic */
+.main-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    padding: var(--space-lg) 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: start;
+    /* Prevents sidebar from stretching with news height */
+}
+
+@media (min-width: 768px) {
+    .main-layout {
+        padding: var(--space-xl) 0;
+        gap: var(--space-2xl);
+    }
+}
+
+@media (min-width: 1024px) {
+    .main-layout {
+        grid-template-columns: 1fr 350px;
+        align-items: start;
+    }
+}
+
+.community-sidebar {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    align-self: start;
+    /* Ensure it stays at the top */
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .community-sidebar {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
+.jartex-ip-box {
+    padding: var(--space-md);
+}
+
+@media (min-width: 768px) {
+    .jartex-ip-box {
+        padding: var(--space-xl);
+    }
+}
+
+.server-ip-text {
+    font-size: 1.2rem;
+    word-break: break-all;
+}
+
+@media (min-width: 640px) {
+    .server-ip-text {
+        font-size: 1.5rem;
+        word-break: normal;
+    }
+}
+
+.section-title {
+    font-size: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .section-title {
+        font-size: 2rem;
+    }
+}
+
+/* ===== MODAL SYSTEM ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 5000;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(15px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    position: relative;
+    max-height: 95vh;
+    animation: modalContentIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalContentIn {
+    from {
+        transform: translateY(50px) scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    font-size: 2.5rem;
+    color: white;
+    cursor: pointer;
+    z-index: 100;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+    color: var(--accent-color);
+    transform: rotate(90deg);
+}
+
+/* News Viewer Specifics */
+.news-viewer-content {
+    max-width: 900px;
+    width: 95%;
+    padding: 0;
+    overflow: hidden;
+    background: #0a1120;
+    border-radius: var(--radius-2xl);
+    border: 1px solid rgba(0, 191, 255, 0.3);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 191, 255, 0.1);
+}
+
+.viewer-image-container {
+    width: 100%;
+    height: 480px;
+    position: relative;
+}
+
+#viewer-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.viewer-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+    background: linear-gradient(to top, #0a1120 15%, rgba(10, 17, 32, 0.8) 50%, transparent);
+}
+
+.viewer-title {
+    font-size: 2.5rem;
+    color: white;
+    margin: 0 0 10px;
+    font-weight: 900;
+    line-height: 1.1;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.viewer-date {
+    font-size: 1.1rem;
+    color: var(--accent-color);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.viewer-body {
+    padding: var(--space-xl) var(--space-2xl) var(--space-2xl);
+    max-height: 45vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) transparent;
+}
+
+.viewer-tag {
+    font-size: 0.72rem;
+    font-weight: 900;
+    color: var(--accent-color);
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+.viewer-description {
+    font-size: 1.2rem;
+    line-height: 1.9;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+}
+
+.viewer-description b,
+.viewer-description strong {
+    color: var(--accent-color);
+    font-weight: 800;
+}
+
+.viewer-author-footer {
+    margin-top: 50px;
+    padding: 20px 25px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius-2xl);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .viewer-image-container {
+        height: 350px;
+    }
+
+    .viewer-title {
+        font-size: 1.8rem;
+    }
+
+    .viewer-body {
+        padding: var(--space-xl);
+    }
+}
+
+
+@media (max-width: 768px) {
+    .viewer-image-container {
+        height: 350px;
+    }
+
+    .viewer-title {
+        font-size: 1.8rem;
+    }
+
+    .viewer-body {
+        padding: var(--space-xl);
+    }
+}</style>
+
+<style>* { -webkit-user-select: none !important; -moz-user-select: none !important; -ms-user-select: none !important; user-select: none !important; } input, textarea { -webkit-user-select: text !important; -moz-user-select: text !important; -ms-user-select: text !important; user-select: text !important; }</style></head>
+
+<body>
+
+  <div id="notification-container"></div>
+
+  <div id="auth-modal" class="auth-modal" aria-hidden="true">
+    <div class="auth-content" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="auth-close" type="button" onclick="closeAuthModal()"
+        aria-label="Close authentication modal">×</button>
+
+      <h2 id="auth-title" style="color:white; margin-bottom: var(--space-md);">Account Access</h2>
+
+      <div class="auth-tabs">
+        <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+        <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+      </div>
+
+      <form id="login-form" class="auth-form active">
+        <div id="login-message" class="form-message"></div>
+        <div class="form-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" class="form-control" placeholder="Enter your password"
+            minlength="6" required>
+        </div>
+        <button id="login-btn" class="btn" type="submit">Login</button>
+      </form>
+
+      <form id="register-form" class="auth-form">
+        <div id="register-message" class="form-message"></div>
+        <div class="form-group">
+          <label for="register-username">Username</label>
+          <input id="register-username" type="text" class="form-control" placeholder="Choose a username" minlength="3"
+            maxlength="20" required>
+        </div>
+        <div class="form-group">
+          <label for="register-email">Email</label>
+          <input id="register-email" type="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="register-password">Password</label>
+          <input id="register-password" type="password" class="form-control" placeholder="Create a password"
+            minlength="6" required>
+        </div>
+        <div class="form-group">
+          <label for="register-confirm-password">Confirm Password</label>
+          <input id="register-confirm-password" type="password" class="form-control"
+            placeholder="Re-enter your password" minlength="6" required>
+        </div>
+        <button id="register-btn" class="btn" type="submit">Create Account</button>
+      </form>
+    </div>
+  </div>
+
+
+  <div id="news-creation-modal" class="news-creation-modal">
+    <div class="news-creation-content">
+      <h2 class="news-creation-title"><i class="fas fa-newspaper"></i> Create News Post</h2>
+      <div id="news-creation-message" class="form-message"></div>
+      <form id="news-creation-form">
+        <div class="form-row">
+          <label>News Title *</label>
+          <input type="text" id="news-title" class="form-control" placeholder="Enter a clear announcement title..."
+            maxlength="100" required>
+        </div>
+        <div class="form-row">
+          <label>Short Preview * <span style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 400;">(Top
+              section text)</span></label>
+          <input type="text" id="news-preview" class="form-control" placeholder="A catchy one-sentence summary..."
+            maxlength="150" required>
+        </div>
+        <div class="form-row">
+          <label>News Description * <span
+              style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 400;">(Bottom section
+              text)</span></label>
+          
+          <div class="news-toolbar">
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+            <span class="toolbar-divider"></span>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('size')" title="Text Size"><i class="fas fa-text-height"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.openColorPicker()" title="Text Color"><i class="fas fa-palette"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('bold')" title="Bold"><i class="fas fa-bold"></i></button>
+            <span class="toolbar-divider"></span>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('reset')" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+          </div>
+          <input type="color" id="news-color-picker" style="display: none;">
+
+          <textarea id="news-content" class="form-control" placeholder="Write the main summary text here..."
+            maxlength="1000" required style="min-height: 120px; border-top-left-radius: 0; border-top-right-radius: 0;"></textarea>
+          <div style="text-align: right; font-size: 0.75rem; color: var(--text-secondary); margin-top: 5px;">
+            <span id="content-counter">0</span>/1000 characters
+          </div>
+        </div>
+        <div class="form-row" style="display:flex; align-items:center; gap:10px;">
+          <input type="checkbox" id="news-pinned" style="width: 18px; height: 18px; accent-color: var(--accent-color);">
+          <label for="news-pinned" style="margin:0;">Pin this post (show at top)</label>
+        </div>
+        <div class="image-upload-section">
+          <label>Featured Image (Optional)</label>
+          <div class="image-option-tabs">
+            <div class="image-tab active" id="tab-upload" onclick="switchImageOption('upload')">Upload File</div>
+            <div class="image-tab" id="tab-url" onclick="switchImageOption('url')">Image URL</div>
+          </div>
+          <div id="image-upload-option" class="image-option">
+            <input type="file" id="news-image-file" accept="image/*" onchange="previewImage(this)"
+              style="margin-top: 10px;">
+          </div>
+          <div id="image-url-option" class="image-option" style="display: none;">
+            <input type="url" id="news-image-url" class="form-control" placeholder="https://example.com/image.jpg"
+              oninput="previewImageUrl(this.value)">
+          </div>
+          <div class="image-preview-container" id="preview-container">
+            <img id="image-preview" class="image-preview" src="">
+          </div>
+        </div>
+        <div class="news-actions">
+          <button type="button" class="news-action-btn secondary" onclick="closeNewsCreationModal()">Cancel</button>
+          <button type="submit" class="news-action-btn primary" id="publish-news-btn">Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <header id="header-bg">
+    <div class="header-content">
+      <div class="server-info">
+        <div class="jartex-ip-box" onclick="copyIP()">
+          <div class="click-to-copy-badge">Click to Copy IP</div>
+          <div class="server-ip-text">TITANNETWORK.RUN.PLACE</div>
+          <div class="player-count" id="player-count">Loading players...</div>
+        </div>
+        <p class="server-motto">Join the ultimate premium experience</p>
+      </div>
+
+
+      <div class="logo-3d-container">
+        <div class="logo-3d">
+          <h2 class="titan-text">TITAN<span class="network-accent">NETWORK</span></h2>
+          <div class="logo-aura"></div>
+        </div>
+        <div class="logo-subtitle">PREMIUM MINECRAFT EXPERIENCE</div>
+      </div>
+
+      <div class="header-actions">
+        <button class="play-button" onclick="joinServer()">
+          <i class="fas fa-play"></i> Play Now
+        </button>
+        <button class="discord-widget" onclick="joinDiscord()">
+          <span><i class="fab fa-discord"></i> Discord</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+        <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home active"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forums.html" class="forum"><i class="fas fa-newspaper"></i> Forums</a></li>
+        <li><a href="vote.html" class="vote"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="#store" class="store"><i class="fas fa-shopping-cart"></i> Store</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+        </li>
+        <li><a href="team.html" class="staff"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+        <li class="user-menu">
+          <button class="user-btn" onclick="toggleUserMenu()">
+            <span id="user-btn-content" style="display: flex; align-items: center; gap: var(--space-xs);">
+              <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+              <i id="navbar-user-icon" class="fas fa-user"></i>
+              <span id="user-btn-text">Account</span>
+            </span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div class="user-name" id="user-name">Guest</div>
+              <div class="user-role" id="user-role">Guest</div>
+              <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+            </div>
+            <a href="#" onclick="showAuthModal(); return false;" id="login-link">
+              <i class="fas fa-sign-in-alt"></i> Login / Register
+            </a>
+            <a href="#" id="profile-link" style="display:none;">
+              <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a href="profile-settings.html" id="settings-link" style="display:none;">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="admin.html" id="admin-link" style="display:none;">
+              <i class="fas fa-shield-alt"></i> Admin Panel
+            </a>
+            <a href="#" onclick="showOwnerPanel(); return false;" id="owner-link" style="display:none;">
+              <i class="fas fa-crown"></i> Owner Panel
+            </a>
+            <a href="#" onclick="logout(); return false;" id="logout-link" style="display:none;">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="owner-panel" class="owner-panel container" style="display:none;">
+    <h3><i class="fas fa-crown"></i> Owner Control Panel</h3>
+    <p style="color:white; margin-bottom:20px;">Welcome, Owner! You have full control over the website.</p>
+    <div class="owner-actions">
+      <button class="owner-action-btn" onclick="showManageUsersUI()">
+        <i class="fas fa-users"></i> Manage Users / Roles
+      </button>
+      <button class="owner-action-btn green" onclick="createNews()">
+        <i class="fas fa-newspaper"></i> Create News
+      </button>
+      <button class="owner-action-btn purple" onclick="viewStats()">
+        <i class="fas fa-chart-bar"></i> View Stats
+      </button>
+    </div>
+
+    <div id="role-manager-ui"
+      style="display:none; background: rgba(0,0,0,0.4); border-radius: 12px; padding: 20px; margin-top: 20px;">
+      <h4 style="color: gold; margin-bottom: 15px;"><i class="fas fa-user-shield"></i> Promote / Demote User</h4>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <input id="manage-uid-input" type="text" placeholder="Paste User UID here..."
+          style="background:#1a1a2e; color:white; border:1px solid #444; border-radius:8px; padding:10px; font-size:14px;">
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="owner-action-btn" onclick="setRole('owner')" style="flex:1;">👑 Owner</button>
+          <button class="owner-action-btn green" onclick="setRole('admin')" style="flex:1;">🛡️ Admin</button>
+          <button class="owner-action-btn orange" onclick="setRole('staff')" style="flex:1;">⭐ Staff</button>
+          <button class="owner-action-btn" onclick="setRole('user')" style="flex:1; background:#555;">👤 User
+            (demote)</button>
+        </div>
+        <p id="role-manager-status" style="color:#aaa; font-size:13px; margin:0;"></p>
+      </div>
+    </div>
+    <div id="owner-stats" style="display: none;"></div>
+  </div>
+
+
+
+  <main class="container main-layout">
+
+    <section class="news-section">
+      <div class="news-section-header">
+        <h2 class="section-title" style="margin-bottom: 0;">News & Announcements</h2>
+        <p class="news-subtitle">Official updates, server improvements, and community highlights.</p>
+      </div>
+      <div class="news-feed-container">
+        <div class="news-grid" id="news-grid">
+
+        </div>
+        <div class="news-actions-row" id="news-actions-row" style="display:none;">
+          <button class="view-more-news-btn" id="view-more-news-btn" onclick="toggleNewsView()">View More News</button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="community-sidebar">
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-users-cog"></i> Staff Online</h3>
+        <div id="staff-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-users"></i> Members Online</h3>
+        <div id="members-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-eye"></i> Guests Online</h3>
+        <div id="guests-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-link"></i> Quick Links</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <a href="rules.html"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-gavel"></i> Server Rules
+          </a>
+          <a href="apply.html"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-file-alt"></i> Staff Application
+          </a>
+          <a href="appeal.html"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-balance-scale"></i> Ban Appeal
+          </a>
+          <a href="https://discord.gg/ExFhgvtFng"
+            style="color: var(--accent-color); text-decoration: none; display: flex; align-items: center; gap: 8px;">
+            <i class="fab fa-discord"></i> Join Discord
+          </a>
+        </div>
+      </div>
+    </aside>
+  </main>
+  <section class="container">
+    <div class="path-selection">
+      <h3>Choose Your Path</h3>
+      <p>Select your role identity. It will be shown on your profile and forum posts.</p>
+      <div class="path-buttons">
+        <button class="path-btn" id="path-builder" onclick="choosePath('builder')">🏗️ Builder</button>
+        <button class="path-btn" id="path-pvper" onclick="choosePath('pvper')">⚔️ PvPer</button>
+        <button class="path-btn" id="path-grinder" onclick="choosePath('grinder')">⛏️ Grinder</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="features container">
+    <h2 class="section-title">Why Choose TitanNetwork?</h2>
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <div class="feature-icon">⚔️</div>
+        <h3 class="feature-title">PvP Arenas</h3>
+        <p>Battle in competitive arenas with unique kits and tournaments.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎉</div>
+        <h3 class="feature-title">Weekly Events</h3>
+        <p>Participate in exciting events with awesome prizes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔧</div>
+        <h3 class="feature-title">Custom Plugins</h3>
+        <p>Unique features designed specifically for our community.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+      <div class="footer-links">
+        <span class="footer-link" onclick="copyIP()">IP: titannetwork.run.place</span>
+        <a href="https://discord.gg/ExFhgvtFng" class="footer-link" onclick="joinDiscord()">Join Discord</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms of Service</a>
+      </div>
+    </div>
+  </footer>
+  <!-- News Viewer logic transitioned to dedicated news.html page -->
+
+  
+  
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
+import { getAuth, onAuthStateChanged, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
+import { getDatabase, ref, onValue, get, push, set, update, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, increment } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js';
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, query as fQuery, limit, orderBy as fOrderBy, serverTimestamp as fsTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+import { getFunctions, httpsCallable } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-functions.js';
+console.log("TitanNetwork Module Loading...");
+window.addEventListener("error", function(e) { console.error("Global Module Error:", e.message, "at", e.filename, ":", e.lineno); });
+(function() {
+    document.addEventListener("contextmenu", e => e.preventDefault());
+    document.addEventListener("keydown", e => {
+        if (e.ctrlKey && (e.key === "u" || e.key === "s" || e.key === "i" || e.key === "p")) e.preventDefault();
+        if (e.key === "F12") e.preventDefault();
+    });
+    try {
+        const firebaseConfig = {
+  apiKey: "AIzaSyB3FVgVVOAkxXCWUrRJZBdV03jS1KiCcn8",
+  authDomain: "titannetwork-27026.firebaseapp.com",
+  databaseURL: "https://titannetwork-27026-default-rtdb.firebaseio.com",
+  projectId: "titannetwork-27026",
+  storageBucket: "titannetwork-27026.firebasestorage.app",
+  messagingSenderId: "128456072124",
+  appId: "1:128456072124:web:0b0f71900ceea4fd2ee689",
+  measurementId: "G-7ZSFHK2T6F"
+};
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+        const fs = getFirestore(app);
+        const storage = getStorage(app);
+        const functions = getFunctions(app);
+        window.firebaseApp = { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile };
+        console.log("Firebase Global Object Ready");
+    } catch (err) { console.error("Firebase Bootstrap Error:", err); }
+})();
+/* --- Start Module: user-metadata-logic.js --- */
+(function(){
+const { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.firebaseApp || {};
+const metadataCache = new Map();
+
+window.ADMIN_CONFIG = {
+  OWNER_EMAILS: ["oblivionkingx228@gmail.com", "lowiekstaessen@gmail.com"],
+  CO_OWNER_EMAILS: ["tadejmuhic8@gmail.com"],
+  ADMIN_EMAILS: ["lowiekstaessen@gmail.com"],
+  STAFF_EMAILS: []
+};
+
+/**
+ * Fetches comprehensive metadata for a user.
+ */
+window.getUserMetadata = async function(uid, forceRefresh = false) {
+  if (!uid) return null;
+  if (!forceRefresh && metadataCache.has(uid)) return metadataCache.get(uid);
+
+  // Fetch role and additional ranks from Firestore
+  async function fetchUserRoles(targetUid) {
+    try {
+      const userDoc = await getDoc(doc(fs, "users", targetUid));
+      if (userDoc.exists()) {
+        const data = userDoc.data();
+        return {
+          role: data.role || 'user',
+          ranks: data.ranks || [],
+          pfp: data.pfp || null,
+          photoURL: data.photoURL || data.avatar || null
+        };
+      }
+      return { role: 'user', ranks: [], pfp: null, photoURL: null };
+    } catch (err) {
+      console.error('Error fetching roles from Firestore:', err);
+      return { role: 'user', ranks: [] };
+    }
+  }
+  
+  const metadata = {
+    rank: 'Member',
+    ranks: [],
+    joined: 'Unknown',
+    messageCount: 0,
+    bio: 'No bio yet.',
+    pfpUrl: null // Initialize as null to allow fallback
+  };
+
+  try {
+    // 1. Fetch Basic Info & Join Date (May be denied if locked)
+    try {
+      const userSnap = await get(ref(db, `users/${uid}`));
+      if (userSnap.exists()) {
+        const data = userSnap.val();
+        // Join date — check multiple field names
+        const ts = data.registeredAt || data.createdAt || data.joinedAt;
+        if (ts) metadata.joined = formatDate(ts);
+        metadata.messageCount = data.messageCount || 0;
+        metadata.bio = data.bio || 'No bio yet.';
+        metadata.email = data.email || null;
+        // Username stored directly in the users node
+        metadata.username = data.username || data.displayName || null;
+      }
+    } catch (usersErr) {
+      console.warn(`Users node access restricted for ${uid}:`, usersErr.message);
+    }
+
+    // 2. Fetch PFP (Exhaustive search)
+    try {
+      // Check RTDB top-level pfp node first
+      const pfpSnap = await get(ref(db, `pfp/${uid}`));
+      if (pfpSnap.exists()) {
+        metadata.pfpUrl = pfpSnap.val();
+      } else {
+        // Check RTDB users node for pfp or photoURL
+        const rtdbUserSnap = await get(ref(db, `users/${uid}`));
+        if (rtdbUserSnap.exists()) {
+           const rData = rtdbUserSnap.val();
+           metadata.pfpUrl = rData.pfp || rData.photoURL || rData.avatar || null;
+        }
+      }
+    } catch (pfpErr) {
+      console.warn(`RTDB PFP check failed for ${uid}:`, pfpErr.message);
+    }
+
+    // 3. Determine Ranks & Firestore fallback PFP
+    try {
+      const roles = await fetchUserRoles(uid);
+      let role = roles.role;
+      let extraRanks = roles.ranks || [];
+      
+      // Override with email-based roles if available
+      if (metadata.email) {
+        const e = metadata.email.toLowerCase();
+        
+        // A. Hardcoded overrides
+        if (ADMIN_CONFIG.OWNER_EMAILS.includes(e)) role = 'owner';
+        else if (ADMIN_CONFIG.CO_OWNER_EMAILS && ADMIN_CONFIG.CO_OWNER_EMAILS.includes(e)) role = 'co-owner';
+        else if (ADMIN_CONFIG.ADMIN_EMAILS.includes(e)) role = 'admin';
+        else if (ADMIN_CONFIG.STAFF_EMAILS.includes(e)) role = 'staff';
+
+        // B. Database-driven pre-assigned roles
+        try {
+          const emailRoleDoc = await getDoc(doc(fs, "email_roles", e));
+          if (emailRoleDoc.exists()) {
+            const erData = emailRoleDoc.data();
+            if (erData.role) role = erData.role;
+            if (erData.ranks && Array.isArray(erData.ranks)) {
+                extraRanks = [...new Set([...extraRanks, ...erData.ranks])];
+            }
+          }
+        } catch (err) {}
+      }
+
+      metadata.rank = role.charAt(0).toUpperCase() + role.slice(1);
+      metadata.ranks = extraRanks;
+
+      // Prioritize PFP: RTDB > Firestore (pfp or photoURL) > Default
+      if (!metadata.pfpUrl) {
+         metadata.pfpUrl = roles.pfp || roles.photoURL || roles.avatar || roles.photo || null;
+      }
+
+      // Final Fallback - Leave as null so caller can decide (e.g. Minotar skin)
+      if (!metadata.pfpUrl) {
+        metadata.pfpUrl = null;
+      }
+    } catch (roleErr) {
+        console.warn(`Secure role access failed for ${uid}:`, roleErr.message);
+    }
+
+    metadataCache.set(uid, metadata);
+    return metadata;
+  } catch (err) {
+    console.error(`Error in getUserMetadata for ${uid}:`, err);
+    return metadata;
+  }
+}
+
+/**
+ * Explicitly clears the metadata cache for a given user.
+ */
+window.clearUserCache = function(uid) {
+  if (uid) metadataCache.delete(uid);
+}
+
+/**
+ * Increments the user's message count in the database.
+ */
+window.incrementUserMessageCount = async function(uid) {
+  if (!uid) return;
+  try {
+    await update(ref(db, `users/${uid}`), {
+      messageCount: increment(1)
+    });
+    // Invalidate cache if exists
+    if (metadataCache.has(uid)) {
+      const cached = metadataCache.get(uid);
+      cached.messageCount++;
+    }
+  } catch (err) {
+    console.error(`Error incrementing message count for ${uid}:`, err);
+  }
+}
+
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return `${months[date.getMonth()]} ${date.getFullYear()}`;
+}
+
+function getHighestRank(ranks) {
+  if (!ranks) return 'Member';
+  const ranksArray = Array.isArray(ranks) ? ranks : [ranks];
+  const rankPriority = ['owner', 'co-owner', 'manager', 'admin', 'lead developer', 'developer', 'moderator', 'mod', 'helper', 'staff', 'builder', 'pvper', 'grinder', 'member'];
+  
+  for (const pRank of rankPriority) {
+    if (ranksArray.some(r => r.toLowerCase() === pRank)) {
+      if (pRank === 'mod') return 'Moderator';
+      return pRank.charAt(0).toUpperCase() + pRank.slice(1);
+    }
+  }
+  return 'Member';
+}
+
+/**
+ * Fetches all threads and replies authored by a user.
+ */
+window.fetchUserPosts = async function(uid) {
+  const posts = [];
+
+  try {
+    const forums = ['general-chat', 'off-topic', 'server-discussion', 'support', 'password-reset', 'suggestions', 'staff-apps', 'bug-reports'];
+    
+    for (const forumId of forums) {
+      const threadsRef = ref(db, `threads/${forumId}`);
+      const threadsSnap = await get(threadsRef);
+      
+      if (threadsSnap.exists()) {
+        threadsSnap.forEach(threadChild => {
+          const thread = threadChild.val();
+          const threadId = threadChild.key;
+          
+          // Check if thread author
+          if (thread.authorUid === uid) {
+            posts.push({
+              type: 'thread',
+              id: threadId,
+              forumId,
+              title: thread.title,
+              content: thread.content,
+              timestamp: thread.timestamp
+            });
+          }
+          
+          // Check if reply author
+          if (thread.replies) {
+            Object.entries(thread.replies).forEach(([replyId, reply]) => {
+              if (reply.authorUid === uid) {
+                posts.push({
+                  type: 'reply',
+                  id: replyId,
+                  threadId,
+                  forumId,
+                  threadTitle: thread.title,
+                  content: reply.content,
+                  timestamp: reply.timestamp
+                });
+              }
+            });
+          }
+        });
+      }
+    }
+  } catch (err) {
+    console.error("Error fetching user posts:", err);
+  }
+
+  return posts.sort((a, b) => b.timestamp - a.timestamp);
+}
+/**
+ * Utility to generate badges HTML for a user metadata object.
+ */
+window.renderBadges = function(meta) {
+  if (!meta) return '';
+  let badgesHtml = '';
+  
+  // 1. Primary Role Badge
+  let primaryRoleClass = 'role-member';
+  const rank = (meta.rank || 'Member').toLowerCase();
+  if (rank === 'owner') primaryRoleClass = 'role-owner';
+  else if (rank === 'co-owner') primaryRoleClass = 'role-co-owner';
+  else if (rank === 'admin') primaryRoleClass = 'role-admin';
+  else if (rank === 'manager') primaryRoleClass = 'role-manager';
+  else if (['moderator', 'mod'].includes(rank)) primaryRoleClass = 'role-moderator';
+  else if (rank === 'helper') primaryRoleClass = 'role-helper';
+  else if (rank === 'developer' || rank === 'lead developer') primaryRoleClass = 'role-developer';
+  else if (rank === 'staff') primaryRoleClass = 'role-staff';
+  
+  badgesHtml += `<span class="user-role ${primaryRoleClass}">${meta.rank || 'Member'}</span>`;
+
+  // 2. Additional Rank Badges
+  if (meta.ranks && meta.ranks.length > 0) {
+    meta.ranks.forEach(r => {
+      // Skip if this rank is already shown as the primary rank
+      if (r.toLowerCase() === rank.toLowerCase()) return;
+      
+      const rLower = r.toLowerCase();
+      let rClass = 'role-member';
+      if (rLower === 'donator') rClass = 'role-donator';
+      else if (rLower === 'known') rClass = 'role-known';
+      else if (rLower === 'vip') rClass = 'role-vip';
+      else if (rLower === 'royal') rClass = 'role-royal';
+      else if (rLower === 'manager') rClass = 'role-manager';
+      
+      badgesHtml += `<span class="user-role ${rClass}">${r}</span>`;
+    });
+  }
+  return badgesHtml;
+}
+})();
+/* --- Start Module: utils.js --- */
+(function(){
+const { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.firebaseApp || {};
+/**
+ * TitanNetwork Advanced Rich Text Utility
+ * Supports Minecraft color codes, stacking, hex colors, and font sizes.
+ */
+
+window.formatRichText = function (text) {
+    if (!text) return '';
+
+    const colors = {
+        '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
+        '4': '#AA0000', '5': '#AA00AA', '6': '#FFAA00', '7': '#AAAAAA',
+        '8': '#555555', '9': '#5555FF', 'a': '#55FF55', 'b': '#55FFFF',
+        'c': '#FF5555', 'd': '#FF55FF', 'e': '#FFFF55', 'f': '#FFFFFF'
+    };
+
+    // Pre-process alignment tags, newlines and standard markdown bold
+    let html = text
+        .replace(/\[center\](.*?)\[\/center\]/gs, '<div style="text-align: center; width: 100%; display: block;">$1</div>')
+        .replace(/\[right\](.*?)\[\/right\]/gs, '<div style="text-align: right; width: 100%; display: block;">$1</div>')
+        .replace(/\[left\](.*?)\[\/left\]/gs, '<div style="text-align: left; width: 100%; display: block;">$1</div>')
+        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+        .replace(/\n/g, '<br>');
+
+    let output = '';
+    let i = 0;
+
+    // State management for stacking
+    let activeStyles = {
+        color: null,
+        fontSize: null,
+        bold: false,
+        italic: false,
+        underline: false,
+        strikethrough: false
+    };
+
+    function closeSpan() {
+        let count = 0;
+        if (activeStyles.color) count++;
+        if (activeStyles.fontSize) count++;
+        if (activeStyles.bold) count++;
+        if (activeStyles.italic) count++;
+        if (activeStyles.underline) count++;
+        if (activeStyles.strikethrough) count++;
+        return '</span>'.repeat(count);
+    }
+
+    function openSpan() {
+        let span = '';
+        if (activeStyles.color) span += `<span style="color: ${activeStyles.color}">`;
+        if (activeStyles.fontSize) span += `<span style="font-size: ${activeStyles.fontSize}">`;
+        if (activeStyles.bold) span += `<span style="font-weight: bold;">`;
+        if (activeStyles.italic) span += `<span style="font-style: italic;">`;
+        if (activeStyles.underline) span += `<span style="text-decoration: underline;">`;
+        if (activeStyles.strikethrough) span += `<span style="text-decoration: line-through;">`;
+        return span;
+    }
+
+    while (i < html.length) {
+        if (html[i] === '&' && i + 1 < html.length) {
+            const code = html[i + 1].toLowerCase();
+            
+            // Handle Hex Code &#RRGGBB
+            if (code === '#' && i + 7 < html.length) {
+                const hex = html.substring(i + 2, i + 8);
+                if (/^[0-9a-f]{6}$/i.test(hex)) {
+                    output += closeSpan();
+                    activeStyles.color = '#' + hex;
+                    output += openSpan();
+                    i += 8;
+                    continue;
+                }
+            }
+
+            // Handle Size Code &sz[num]
+            if (code === 's' && i + 2 < html.length && html[i + 2].toLowerCase() === 'z') {
+                let j = i + 3;
+                let sizeStr = '';
+                while (j < html.length && /[0-9]/.test(html[j])) {
+                    sizeStr += html[j];
+                    j++;
+                }
+                if (sizeStr.length > 0) {
+                    output += closeSpan();
+                    activeStyles.fontSize = sizeStr + 'px';
+                    output += openSpan();
+                    i = j;
+                    continue;
+                }
+            }
+
+            // Handle Standard Codes
+            if (colors[code]) {
+                output += closeSpan();
+                activeStyles.color = colors[code];
+                // Minecraft convention: color resets formatting
+                activeStyles.bold = false;
+                activeStyles.italic = false;
+                activeStyles.underline = false;
+                activeStyles.strikethrough = false;
+                // Note: We keep fontSize state unless &r is used
+                output += openSpan();
+                i += 2;
+                continue;
+            } else if (code === 'l') {
+                output += closeSpan();
+                activeStyles.bold = true;
+                output += openSpan();
+                i += 2;
+                continue;
+            } else if (code === 'o') {
+                output += closeSpan();
+                activeStyles.italic = true;
+                output += openSpan();
+                i += 2;
+                continue;
+            } else if (code === 'n') {
+                output += closeSpan();
+                activeStyles.underline = true;
+                output += openSpan();
+                i += 2;
+                continue;
+            } else if (code === 'm') {
+                output += closeSpan();
+                activeStyles.strikethrough = true;
+                output += openSpan();
+                i += 2;
+                continue;
+            } else if (code === 'r') {
+                output += closeSpan();
+                activeStyles = { color: null, fontSize: null, bold: false, italic: false, underline: false, strikethrough: false };
+                i += 2;
+                continue;
+            }
+        }
+
+        output += html[i];
+        i++;
+    }
+
+    output += closeSpan();
+    return output;
+};
+})();
+/* --- Start Module: presence-logic.js --- */
+(function(){
+const { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.firebaseApp || {};
+// presence-logic.js
+
+let presenceListenerAttachedFor = null;
+let presenceConnectedUnsubscribe = null;
+let presenceHeartbeatInterval = null;
+
+const PRESENCE_HEARTBEAT_MS = 25000; // 25 seconds
+
+window.stopPresenceHeartbeat = function() {
+  if (presenceHeartbeatInterval) {
+    clearInterval(presenceHeartbeatInterval);
+    presenceHeartbeatInterval = null;
+  }
+}
+
+window.startPresenceHeartbeat = function() {
+  const { auth, db, ref, update } = window.firebaseApp;
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const emailKey = user.email.toLowerCase().replace(/\./g, '_');
+  const userStatusRef = ref(db, `online-users/${emailKey}`);
+  const staffStatusRef = ref(db, `online-staff/${emailKey}`);
+
+  // ensure only one heartbeat loop
+  stopPresenceHeartbeat();
+
+  const beat = async () => {
+    try {
+      const { getUserMetadata } = await Promise.resolve(window);
+      const meta = await getUserMetadata(user.uid, true);
+
+      const STAFF_ROLES = ['owner', 'co-owner', 'admin', 'manager', 'mod', 'moderator', 'staff', 'helper', 'developer', 'lead developer', 'builder'];
+      
+      const primaryRank = (meta.rank || 'Member').toLowerCase();
+      const otherRanks = (meta.ranks || []).map(r => r.toLowerCase());
+      const isStaff = STAFF_ROLES.includes(primaryRank) ||
+        otherRanks.some(r => STAFF_ROLES.includes(r));
+
+      console.log(`[Presence] Heartbeat for ${user.emailRaw || user.email}: Rank=${meta.rank}, isStaff=${isStaff}`);
+
+      const ranksForPresence = meta.ranks?.includes(meta.rank) ? meta.ranks : [meta.rank, ...(meta.ranks || [])].filter(Boolean);
+
+      const presenceData = {
+        online: true,
+        lastSeen: Date.now(),
+        username: meta.username || user.displayName || user.email.split('@')[0],
+        email: user.email,
+        uid: user.uid,
+        ranks: ranksForPresence,
+        photoURL: meta.pfpUrl || null
+      };
+
+      await update(userStatusRef, presenceData);
+
+      if (isStaff) {
+        await update(staffStatusRef, presenceData);
+      }
+    } catch (err) {
+      console.error('Presence heartbeat failed:', err);
+    }
+  };
+
+  beat();
+  presenceHeartbeatInterval = setInterval(beat, PRESENCE_HEARTBEAT_MS);
+}
+
+// Track user online presence
+window.setupPresenceTracking = async function(existingMeta = null) {
+  const { auth, db, ref, set, onDisconnect, onValue } = window.firebaseApp;
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  const emailKey = user.email.toLowerCase().replace(/\./g, '_');
+  const userStatusRef = ref(db, `online-users/${emailKey}`);
+  const staffStatusRef = ref(db, `online-staff/${emailKey}`);
+
+  if (presenceListenerAttachedFor === emailKey) return;
+
+  if (typeof presenceConnectedUnsubscribe === 'function') {
+    presenceConnectedUnsubscribe();
+    presenceConnectedUnsubscribe = null;
+  }
+  presenceListenerAttachedFor = emailKey;
+
+  try {
+    // Use existing metadata or fetch if missing
+    const { getUserMetadata } = await Promise.resolve(window);
+    const meta = existingMeta || await getUserMetadata(user.uid);
+
+    const STAFF_ROLES = ['owner', 'co-owner', 'admin', 'manager', 'mod', 'moderator', 'staff', 'helper', 'developer', 'lead developer', 'builder'];
+    
+    const primaryRank = (meta.rank || 'Member').toLowerCase();
+    const otherRanks = (meta.ranks || []).map(r => r.toLowerCase());
+    const isStaff = STAFF_ROLES.includes(primaryRank) ||
+      otherRanks.some(r => STAFF_ROLES.includes(r));
+
+    const ranksForPresence = meta.ranks?.includes(meta.rank) ? meta.ranks : [meta.rank, ...(meta.ranks || [])].filter(Boolean);
+    const username = meta.username || user.displayName || user.email.split('@')[0];
+
+    const connectedRef = ref(db, '.info/connected');
+    presenceConnectedUnsubscribe = onValue(connectedRef, async (snap) => {
+      if (snap.val() !== true) return;
+
+      const presenceData = {
+        online: true,
+        lastSeen: Date.now(),
+        email: user.email,
+        uid: user.uid,
+        username: username,
+        ranks: ranksForPresence,
+        photoURL: meta.pfpUrl || null
+      };
+
+      try {
+        await onDisconnect(userStatusRef).remove();
+        await set(userStatusRef, presenceData);
+
+        if (isStaff) {
+          await onDisconnect(staffStatusRef).remove();
+          await set(staffStatusRef, presenceData);
+          console.log('--- STAFF PRESENCE ACTIVE ---', user.email);
+        }
+      } catch (err) {
+        console.error('Error setting onDisconnect presence:', err);
+      }
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (presenceListenerAttachedFor) {
+        set(ref(db, `online-users/${presenceListenerAttachedFor}`), null);
+        set(ref(db, `online-staff/${presenceListenerAttachedFor}`), null);
+      }
+    });
+  } catch (err) {
+    console.error('Setup presence tracking failed:', err);
+  }
+}
+
+window.cleanupPresenceOnLogout = function() {
+  const { auth, db, ref, set } = window.firebaseApp;
+
+  if (presenceListenerAttachedFor) {
+    const userStatusRef = ref(db, `online-users/${presenceListenerAttachedFor}`);
+    const staffStatusRef = ref(db, `online-staff/${presenceListenerAttachedFor}`);
+
+    set(userStatusRef, null);
+    set(staffStatusRef, null);
+
+    if (typeof presenceConnectedUnsubscribe === 'function') {
+      presenceConnectedUnsubscribe();
+      presenceConnectedUnsubscribe = null;
+    }
+    presenceListenerAttachedFor = null;
+  }
+
+  stopPresenceHeartbeat();
+}
+})();
+/* --- Start Module: online-users-logic.js --- */
+(function(){
+const { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.firebaseApp || {};
+// frontend/online-users-logic.js
+
+window.initOnlineUsersWidgets = async function() {
+  const { onValue, ref, db, auth, set } = window.firebaseApp;
+  const { renderBadges } = await Promise.resolve(window);
+
+  const staffListContainer = document.getElementById('staff-online-list');
+  const membersListContainer = document.getElementById('members-online-list');
+  const guestsListContainer = document.getElementById('guests-online-list');
+
+  const defaultAvatar = `data:image/svg+xml;utf8,${encodeURIComponent(`
+    <svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'>
+      <rect width='64' height='64' rx='32' fill='#0b2a45'/>
+      <circle cx='32' cy='24' r='12' fill='#58c8ff'/>
+      <path d='M14 54c2-10 10-16 18-16s16 6 18 16' fill='#58c8ff'/>
+    </svg>
+  `)}`;
+
+  function createHtmlForItem(user) {
+    if (!user) return '';
+    const ranks = Array.isArray(user.ranks) ? user.ranks : (typeof user.ranks === 'string' ? [user.ranks] : []);
+
+    let badgesHtml = '';
+    if (ranks.length > 0) {
+      badgesHtml = renderBadges({ rank: ranks[0], ranks: ranks.slice(1) });
+    }
+
+    return `
+      <a href="profile.html?user=${user.uid}" class="staff-online-item" data-user-uid="${user.uid}">
+        <img src="${user.photoURL || defaultAvatar}" class="staff-avatar" alt="${user.username || 'User'}">
+        <div class="staff-info">
+          <div class="staff-name">${user.username || 'Unknown User'}</div>
+          <div class="staff-badges">${badgesHtml}</div>
+        </div>
+      </a>
+    `;
+  }
+
+  // Monitor staff online
+  if (staffListContainer) {
+    onValue(ref(db, 'online-staff'), (snapshot) => {
+      const staffData = snapshot.val() || {};
+      let html = '';
+      let count = 0;
+      const now = Date.now();
+
+      Object.values(staffData).forEach(staff => {
+        if (!staff.lastSeen || (now - staff.lastSeen) > 60000) return;
+        html += createHtmlForItem(staff);
+        count++;
+      });
+
+      if (count === 0) {
+        staffListContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">No staff online</p>';
+      } else {
+        staffListContainer.innerHTML = html;
+      }
+    });
+  }
+
+  // Monitor members online
+  if (membersListContainer) {
+    // We only want to show members who are NOT in the online-staff list
+    let staffKeys = new Set();
+
+    onValue(ref(db, 'online-staff'), (snapshot) => {
+      const staffData = snapshot.val();
+      staffKeys = new Set(staffData ? Object.keys(staffData) : []);
+      renderMembers(); // Re-render members if staff list changes
+    });
+
+    let currentUsersData = {};
+
+    onValue(ref(db, 'online-users'), (snapshot) => {
+      currentUsersData = snapshot.val() || {};
+      renderMembers();
+    });
+
+    function renderMembers() {
+      if (!membersListContainer) return;
+
+      let html = '';
+      let memberCount = 0;
+      const now = Date.now();
+
+      Object.keys(currentUsersData).forEach(emailKey => {
+        const userData = currentUsersData[emailKey];
+
+        // Skip stale users
+        if (!userData.lastSeen || (now - userData.lastSeen) > 60000) return;
+
+        const userRanks = Array.isArray(userData.ranks) ? userData.ranks.map(r => r.toLowerCase()) : [];
+        const STAFF_ROLES = ['owner', 'co-owner', 'admin', 'manager', 'mod', 'moderator', 'staff', 'helper', 'developer', 'lead developer', 'builder'];
+        const isStaffRank = userRanks.some(r => STAFF_ROLES.includes(r));
+
+        // Skip if they are in staff table OR have a staff rank
+        if (!staffKeys.has(emailKey) && !isStaffRank) {
+          html += createHtmlForItem(userData);
+          memberCount++;
+        }
+      });
+
+      if (memberCount === 0) {
+        membersListContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">No members online</p>';
+      } else {
+        membersListContainer.innerHTML = html;
+      }
+    }
+  }
+
+  // Initialize Guest Tracking
+  trackGuestPresence();
+
+  // Monitor guests online
+  if (guestsListContainer) {
+    onValue(ref(db, 'online-guests'), (snapshot) => {
+      const guestsData = snapshot.val() || {};
+
+      let html = '';
+      let count = 0;
+      const now = Date.now();
+
+      Object.keys(guestsData).forEach((guestId) => {
+        const guestData = guestsData[guestId];
+        if (!guestData.lastSeen || (now - guestData.lastSeen) > 60000) return;
+
+        html += `
+          <div class="staff-online-item guest-item">
+            <div class="guest-avatar-placeholder">
+              <i class="fas fa-question"></i>
+            </div>
+            <div class="staff-info">
+              <div class="staff-name">Guest</div>
+              <div class="staff-badges">
+                <span class="user-role role-member guest-badge">Unauthenticated</span>
+              </div>
+            </div>
+          </div>
+        `;
+        count++;
+      });
+
+      if (count === 0) {
+        guestsListContainer.innerHTML = '<p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">No guests online</p>';
+      } else {
+        guestsListContainer.innerHTML = html;
+      }
+    });
+  }
+}
+
+function trackGuestPresence() {
+  const { auth, db, ref, set, onDisconnect, onValue } = window.firebaseApp;
+
+  const { update } = window.firebaseApp;
+  let guestListenerAttached = false;
+  let guestStatusRef = null;
+  let connectedRefListener = null;
+  let guestHeartbeatInterval = null;
+
+  function cleanupGuest() {
+    if (guestHeartbeatInterval) {
+      clearInterval(guestHeartbeatInterval);
+      guestHeartbeatInterval = null;
+    }
+    if (guestStatusRef) set(guestStatusRef, null);
+    if (connectedRefListener) {
+      connectedRefListener();
+      connectedRefListener = null;
+    }
+    guestListenerAttached = false;
+  }
+
+  function setupGuest() {
+    if (guestListenerAttached) return;
+
+    let guestId = localStorage.getItem('guestId');
+    if (!guestId) {
+      guestId = 'guest_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+      localStorage.setItem('guestId', guestId);
+    }
+
+    guestStatusRef = ref(db, `online-guests/${guestId}`);
+    const connectedRef = ref(db, '.info/connected');
+
+    connectedRefListener = onValue(connectedRef, async (snap) => {
+      if (snap.val() !== true) return;
+
+      guestListenerAttached = true;
+
+      if (guestHeartbeatInterval) {
+        clearInterval(guestHeartbeatInterval);
+        guestHeartbeatInterval = null;
+      }
+
+      try {
+        await onDisconnect(guestStatusRef).remove();
+        await set(guestStatusRef, {
+          online: true,
+          lastSeen: Date.now()
+        });
+
+        guestHeartbeatInterval = setInterval(async () => {
+          try {
+            await update(guestStatusRef, { lastSeen: Date.now(), online: true });
+          } catch (err) { }
+        }, 25000);
+      } catch (err) {
+        console.error("Guest tracking error:", err);
+      }
+    });
+
+    window.addEventListener('beforeunload', () => {
+      cleanupGuest();
+    });
+  }
+
+  // Initial check
+  if (!auth.currentUser) {
+    setupGuest();
+  }
+
+  // Subscribe to auth state changes:
+  auth.onAuthStateChanged(user => {
+    if (user) {
+      cleanupGuest();
+    } else {
+      setupGuest();
+    }
+  });
+
+  // Initialize Global Forum Stats
+  initForumStatsWidget();
+}
+
+const FORUM_IDS = [
+  'general-chat', 'off-topic', 'server-discussion', 'support', 
+  'password-reset', 'suggestions', 'staff-apps', 'bug-reports'
+];
+
+async function initForumStatsWidget() {
+  const { ref, db, onValue } = window.firebaseApp;
+  const globalStats = {};
+  
+  FORUM_IDS.forEach(forumId => {
+    const forumRef = ref(db, `threads/${forumId}`);
+    onValue(forumRef, (snapshot) => {
+      const threads = snapshot.val() || {};
+      const threadCount = Object.keys(threads).length;
+      let messageCount = 0;
+      
+      Object.values(threads).forEach(t => {
+        messageCount++; // Thread itself
+        if (t.replies) {
+          messageCount += Object.keys(t.replies).length;
+        }
+      });
+      
+      globalStats[forumId] = { threads: threadCount, messages: messageCount };
+      
+      // Update Display
+      let totalThreads = 0;
+      let totalMessages = 0;
+      Object.values(globalStats).forEach(s => {
+        totalThreads += s.threads;
+        totalMessages += s.messages;
+      });
+      
+      const threadEl = document.getElementById('global-thread-count');
+      const messageEl = document.getElementById('global-message-count');
+      
+      if (threadEl) threadEl.textContent = totalThreads.toLocaleString();
+      if (messageEl) messageEl.textContent = totalMessages.toLocaleString();
+    });
+  });
+}
+})();
+/* --- Start Module: navbar-logic.js --- */
+(function(){
+const { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.firebaseApp || {};
+// Access globally initialized Firebase services and functions
+const {
+  auth, db, fs, functions, httpsCallable,
+  onAuthStateChanged, getAuth,
+  signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut,
+  getDatabase, ref, get, set,
+  doc, setDoc, serverTimestamp: rtdbTimestamp, fsTimestamp
+} = window.firebaseApp;
+
+let navbarInitialized = false;
+
+// ===== AUTH MODAL FUNCTIONS =====
+
+window.showAuthModal = function (tab = 'login') {
+  const modal = document.getElementById('auth-modal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  switchAuthTab(tab);
+  closeUserMenu();
+  // clear messages
+  const lm = document.getElementById('login-message');
+  const rm = document.getElementById('register-message');
+  if (lm) lm.style.display = 'none';
+  if (rm) rm.style.display = 'none';
+};
+
+window.closeAuthModal = function () {
+  const modal = document.getElementById('auth-modal');
+  if (modal) modal.style.display = 'none';
+};
+
+window.switchAuthTab = function (tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+  const tabs = document.querySelectorAll('.auth-tab');
+  if (tab === 'login') {
+    if (tabs[0]) tabs[0].classList.add('active');
+  } else {
+    if (tabs[1]) tabs[1].classList.add('active');
+  }
+  const form = document.getElementById(`${tab}-form`);
+  if (form) form.classList.add('active');
+};
+
+// Expose switchAuthTab outside of window too (needed for onclick in template)
+function switchAuthTab(tab) { window.switchAuthTab(tab); }
+
+window.login = async function (event) {
+  event.preventDefault();
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const btn = document.getElementById('login-btn');
+  const msg = document.getElementById('login-message');
+
+  if (msg) { msg.style.display = 'none'; msg.className = 'form-message'; }
+
+  try {
+    if (btn) { btn.textContent = 'Logging in...'; btn.disabled = true; }
+    await signInWithEmailAndPassword(auth, email, password);
+    if (msg) { msg.textContent = 'Success! Welcome back.'; msg.className = 'form-message success'; msg.style.display = 'block'; }
+    setTimeout(() => { window.closeAuthModal(); }, 1200);
+  } catch (err) {
+    let errorMessage = 'Login failed. ';
+    switch (err.code) {
+      case 'auth/user-not-found':
+      case 'auth/wrong-password':
+      case 'auth/invalid-credential':
+        errorMessage += 'Invalid email or password.'; break;
+      case 'auth/too-many-requests':
+        errorMessage += 'Too many attempts. Try again later.'; break;
+      default: errorMessage += err.message;
+    }
+    if (msg) { msg.textContent = errorMessage; msg.className = 'form-message error'; msg.style.display = 'block'; }
+  } finally {
+    if (btn) { btn.textContent = 'Login'; btn.disabled = false; }
+  }
+};
+
+window.register = async function (event) {
+  event.preventDefault();
+  const username = document.getElementById('register-username').value.trim();
+  const email = document.getElementById('register-email').value.trim();
+  const password = document.getElementById('register-password').value;
+  const confirm = document.getElementById('register-confirm-password').value;
+  const btn = document.getElementById('register-btn');
+  const msg = document.getElementById('register-message');
+
+  if (msg) { msg.style.display = 'none'; msg.className = 'form-message'; }
+
+  if (password !== confirm) {
+    if (msg) { msg.textContent = 'Passwords do not match.'; msg.className = 'form-message error'; msg.style.display = 'block'; }
+    return;
+  }
+
+  try {
+    if (btn) { btn.textContent = 'Creating account...'; btn.disabled = true; }
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(cred.user, { displayName: username });
+    const emailKey = email.replace(/\./g, '_');
+    await set(ref(db, `users/${cred.user.uid}`), { username, email, registeredAt: Date.now() });
+
+    // Sync to Firestore for Admin search and Rank Unification
+    await setDoc(doc(fs, "users", cred.user.uid), {
+      username,
+      email: email.toLowerCase(),
+      role: 'member',
+      ranks: [], // Initial empty additional ranks
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+    if (msg) { msg.textContent = 'Account created! Welcome!'; msg.className = 'form-message success'; msg.style.display = 'block'; }
+    setTimeout(() => { window.closeAuthModal(); }, 1500);
+  } catch (err) {
+    let errorMessage = 'Registration failed. ';
+    switch (err.code) {
+      case 'auth/email-already-in-use': errorMessage += 'Email already registered.'; break;
+      case 'auth/invalid-email': errorMessage += 'Invalid email address.'; break;
+      case 'auth/weak-password': errorMessage += 'Password is too weak.'; break;
+      default: errorMessage += err.message;
+    }
+    if (msg) { msg.textContent = errorMessage; msg.className = 'form-message error'; msg.style.display = 'block'; }
+  } finally {
+    if (btn) { btn.textContent = 'Create Account'; btn.disabled = false; }
+  }
+};
+
+window.logout = async function () {
+  try {
+    await signOut(auth);
+    closeUserMenu();
+  } catch (err) {
+    console.error('Logout error:', err);
+  }
+};
+
+window.showOwnerPanel = function () {
+  window.location.href = 'admin.html';
+};
+
+let currentPathRole = null;
+const PATH_RANKS = ['builder', 'pvper', 'grinder'];
+
+
+/**
+ * Updates the UI based on the user's authentication state
+ */
+window.updateUIForUser = async function(user) {
+  const userBtnText = document.getElementById('user-btn-text');
+  const userName = document.getElementById('user-name');
+  const userRole = document.getElementById('user-role');
+  const userPathRole = document.getElementById('user-path-role');
+  const navbarPfp = document.getElementById('navbar-pfp');
+  const navbarUserIcon = document.getElementById('navbar-user-icon');
+  const loginLink = document.getElementById('login-link');
+  const logoutLink = document.getElementById('logout-link');
+  const profileLink = document.getElementById('profile-link');
+  const ownerLink = document.getElementById('owner-link');
+  const adminLink = document.getElementById('admin-link');
+  const settingsLink = document.getElementById('settings-link');
+
+  if (user) {
+    const displayName = user.displayName || user.email.split('@')[0];
+    if (userBtnText) userBtnText.textContent = displayName.substring(0, 15) + (displayName.length > 15 ? '...' : '');
+    if (userName) userName.textContent = displayName;
+
+    // Fetch and show PFP
+    get(ref(db, `pfp/${user.uid}`)).then(snapshot => {
+      if (snapshot.exists()) {
+        if (navbarPfp) {
+          navbarPfp.src = snapshot.val();
+          navbarPfp.style.display = 'block';
+        }
+        if (navbarUserIcon) navbarUserIcon.style.display = 'none';
+        const btn = document.querySelector('.user-btn');
+        if (btn) btn.style.padding = '4px 12px';
+      } else {
+        if (navbarPfp) navbarPfp.style.display = 'none';
+        if (navbarUserIcon) navbarUserIcon.style.display = 'inline-block';
+        const btn = document.querySelector('.user-btn');
+        if (btn) btn.style.padding = '';
+      }
+    }).catch(err => {
+      console.error("Error fetching PFP:", err);
+    });
+
+    // Unified Rank & Metadata Fetching
+    const meta = await getUserMetadata(user.uid);
+    const badgesHtml = renderBadges(meta);
+
+    if (userRole) {
+      userRole.innerHTML = badgesHtml;
+      userRole.className = 'user-role-container'; // Changed to a container for multiple badges
+    }
+
+    const primaryRank = meta.rank?.toLowerCase() || 'user';
+    const otherRanks = meta.ranks || [];
+
+    // Determine if owner for admin panel access
+    const isOwner = primaryRank === 'owner' || otherRanks.some(r => r.toLowerCase() === 'owner');
+    const isAdmin = primaryRank === 'admin' || otherRanks.some(r => r.toLowerCase() === 'admin');
+
+    // Path role
+    await loadUserPathRole(user, meta.ranks || []);
+    if (userPathRole) {
+      userPathRole.textContent = currentPathRole ? `Path: ${formatPathRank(currentPathRole)}` : `Path: Not selected`;
+    }
+
+    // Show/hide links
+    if (loginLink) loginLink.style.display = 'none';
+    if (logoutLink) logoutLink.style.display = 'block';
+    if (adminLink) adminLink.style.display = isAdmin ? 'block' : 'none';
+    if (ownerLink) ownerLink.style.display = isOwner ? 'block' : 'none';
+
+    if (profileLink) {
+      profileLink.style.display = 'block';
+      profileLink.href = `profile.html?user=${user.uid}`;
+    }
+    if (settingsLink) settingsLink.style.display = 'block';
+
+  } else {
+    // Guest user
+    if (userBtnText) userBtnText.textContent = 'Account';
+    if (userName) userName.textContent = 'Guest';
+    if (userRole) {
+      userRole.textContent = 'Guest';
+      userRole.className = 'user-role role-member';
+    }
+    if (userPathRole) userPathRole.textContent = 'Path: Not selected';
+
+    if (loginLink) loginLink.style.display = 'block';
+    if (logoutLink) logoutLink.style.display = 'none';
+    if (adminLink) adminLink.style.display = 'none';
+    if (ownerLink) ownerLink.style.display = 'none';
+    if (profileLink) profileLink.style.display = 'none';
+    if (settingsLink) settingsLink.style.display = 'none';
+
+    if (navbarPfp) navbarPfp.style.display = 'none';
+    if (navbarUserIcon) navbarUserIcon.style.display = 'inline-block';
+    const btn = document.querySelector('.user-btn');
+    if (btn) btn.style.padding = '';
+  }
+}
+
+async function loadUserPathRole(user, ranks) {
+  if (!user) {
+    currentPathRole = null;
+    return;
+  }
+  try {
+    const pathSnapshot = await get(ref(db, `users/${user.uid}/pathRole`));
+    if (pathSnapshot.exists()) {
+      currentPathRole = pathSnapshot.val();
+    } else {
+      currentPathRole = PATH_RANKS.find(r => ranks.includes(r)) || null;
+    }
+  } catch (err) {
+    currentPathRole = PATH_RANKS.find(r => ranks.includes(r)) || null;
+  }
+}
+
+function formatPathRank(rank) {
+  if (!rank) return 'Not selected';
+  if (rank === 'pvper') return 'PvPer';
+  return rank.charAt(0).toUpperCase() + rank.slice(1);
+}
+
+/**
+ * Toggles the user dropdown menu
+ */
+window.toggleUserMenu = function() {
+  const dropdown = document.getElementById('user-dropdown');
+  if (dropdown) dropdown.classList.toggle('active');
+}
+
+/**
+ * Closes the user dropdown menu
+ */
+window.closeUserMenu = function() {
+  const dropdown = document.getElementById('user-dropdown');
+  if (dropdown) dropdown.classList.remove('active');
+}
+
+/**
+ * Toggles the mobile navigation menu
+ */
+window.toggleMobileMenu = function() {
+  const navLinks = document.getElementById('nav-links');
+  if (navLinks) navLinks.classList.toggle('active');
+}
+
+/**
+ * Initializes navbar event listeners
+ */
+window.initNavbar = function() {
+  if (navbarInitialized) return;
+  navbarInitialized = true;
+  const userBtns = document.querySelectorAll('.user-btn');
+  userBtns.forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      toggleUserMenu();
+    };
+  });
+
+  const mobileBtns = document.querySelectorAll('.mobile-menu-btn');
+  mobileBtns.forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      toggleMobileMenu();
+    };
+  });
+
+  // More button logic
+  const moreBtn = document.getElementById('moreBtn');
+  const moreMenu = document.getElementById('moreMenu');
+  if (moreBtn && moreMenu) {
+    moreBtn.onclick = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      moreMenu.classList.toggle('active');
+      closeUserMenu();
+    };
+  }
+
+  // Global click handler to close menus
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.user-menu')) closeUserMenu();
+    if (moreMenu && !e.target.closest('.more-btn')) moreMenu.classList.remove('active');
+
+    const navLinks = document.getElementById('nav-links');
+    if (navLinks && !e.target.closest('.nav-container')) {
+      navLinks.classList.remove('active');
+    }
+  });
+
+  // Escape key handler
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeUserMenu();
+      window.closeAuthModal();
+      if (moreMenu) moreMenu.classList.remove('active');
+      const navLinks = document.getElementById('nav-links');
+      if (navLinks) navLinks.classList.remove('active');
+    }
+  });
+
+  // Auth modal form submissions
+  const loginForm = document.getElementById('login-form');
+  const registerForm = document.getElementById('register-form');
+  if (loginForm) loginForm.onsubmit = window.login;
+  if (registerForm) registerForm.onsubmit = window.register;
+
+  // Close auth modal on backdrop click
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) {
+    authModal.addEventListener('click', (e) => {
+      if (e.target === authModal) window.closeAuthModal();
+    });
+  }
+}
+
+// Global Auth Listener to keep UI in sync
+onAuthStateChanged(auth, (user) => {
+  updateUIForUser(user);
+
+  // Optional: Start presence tracking if user is logged in
+  if (user) {
+    Promise.resolve(window).then(({ setupPresenceTracking, startPresenceHeartbeat }) => {
+      setupPresenceTracking();
+      startPresenceHeartbeat();
+    }).catch(err => console.error("Presence sync failed:", err));
+  }
+});
+
+// Initialize on load
+initNavbar();
+})();
+
+/* --- Start Module: index-logic.js --- */
+(function(){
+const { app, auth, db, fs, storage, functions, getAuth, getDatabase, getFirestore, getStorage, getFunctions, ref, onValue, get, push, query, orderByChild, limitToLast, serverTimestamp, onDisconnect, set, onAuthStateChanged, update, increment, remove, sRef, uploadBytes, getDownloadURL, doc, getDoc, setDoc, deleteDoc, collection, getDocs, where, fQuery, limit, fOrderBy, fsTimestamp, httpsCallable, signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } = window.firebaseApp || {};
+// Access globally initialized Firebase services and functions
+const {
+    auth, db, onAuthStateChanged,
+    ref, onValue, get, push, set, remove, query, orderByChild, limitToLast, serverTimestamp
+} = window.firebaseApp;
+
+let userRanks = [];
+let currentPathRole = null;
+const PATH_RANKS = ['builder', 'pvper', 'grinder'];
+
+// ====================================
+// UTILITY FUNCTIONS
+// ====================================
+
+window.showNotification = function (message, type = "success") {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+    container.innerHTML = '';
+
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px;
+        background: ${type === 'error' ? 'var(--error-color)' : type === 'warning' ? 'var(--warning-color)' : 'var(--success-color)'};
+        color: white; padding: 15px 25px; border-radius: 8px; z-index: 9999;
+        animation: slideIn 0.3s ease; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        max-width: 400px; word-wrap: break-word; font-family: 'Barlow', sans-serif;
+    `;
+    container.appendChild(notification);
+
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+window.copyToClipboard = function (text) {
+    navigator.clipboard.writeText(text).then(() => {
+        window.showNotification('Copied to clipboard!');
+    }).catch(err => {
+        console.error('Copy failed:', err);
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        window.showNotification('Copied to clipboard!');
+    });
+};
+
+window.copyIP = function () { window.copyToClipboard('titannetwork.run.place'); };
+
+window.joinServer = function () {
+    const instructions = `To join TitanNetwork:\n1. Open Minecraft\n2. Click "Multiplayer"\n3. Click "Add Server"\n4. Enter: titannetwork.run.place\n5. Click "Done" and join!`;
+    alert(instructions);
+    window.copyIP();
+};
+
+window.joinDiscord = function () {
+    window.open('https://discord.gg/ExFhgvtFng', '_blank');
+};
+
+// ====================================
+// INITIALIZATION
+// ====================================
+
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        const meta = await getUserMetadata(user.uid);
+        userRanks = meta.ranks || [];
+        const primaryRank = meta.rank?.toLowerCase() || 'user';
+        const isOwner = primaryRank === 'owner' || userRanks.some(r => r.toLowerCase() === 'owner');
+        const isAdmin = primaryRank === 'admin' || userRanks.some(r => r.toLowerCase() === 'admin');
+
+        updatePageUI(user, meta);
+
+        if (isOwner || isAdmin) {
+            loadOwnerNews();
+        } else {
+            loadPublicNews();
+        }
+
+        updateServerStatus();
+
+        try {
+            const { setupPresenceTracking, startPresenceHeartbeat } = await Promise.resolve(window);
+            setupPresenceTracking(meta);
+            startPresenceHeartbeat();
+        } catch (e) {
+            console.error("Presence tracking failed:", e);
+        }
+    } else {
+        userRanks = [];
+        currentPathRole = null;
+
+        try {
+            const { cleanupPresenceOnLogout } = await Promise.resolve(window);
+            cleanupPresenceOnLogout();
+        } catch (e) {
+            console.error("Presence cleanup failed:", e);
+        }
+
+        updatePageUI(null, null);
+        loadPublicNews();
+        updateServerStatus();
+    }
+});
+
+// ====================================
+// NEWS LOGIC
+// ====================================
+
+async function loadOwnerNews() {
+    try {
+        const newsRef = ref(db, 'news');
+        const newsQuery = query(newsRef, orderByChild('timestamp'));
+
+        onValue(newsQuery, (snapshot) => {
+            const news = snapshot.val() || {};
+            displayNews(news, true);
+        });
+    } catch (error) {
+        console.error('Error loading news:', error);
+        displayNews({}, true);
+    }
+}
+
+async function loadPublicNews() {
+    try {
+        const newsRef = ref(db, 'news');
+        const newsQuery = query(newsRef, orderByChild('timestamp'));
+
+        onValue(newsQuery, (snapshot) => {
+            const news = snapshot.val() || {};
+            displayNews(news, false);
+        });
+    } catch (error) {
+        console.error('Error loading news:', error);
+        displayNews({}, false);
+    }
+}
+
+let newsExpanded = false;
+let latestNewsDataCache = {};
+let latestNewsOwnerViewCache = false;
+let newsCountUnsubscribers = [];
+
+function clearNewsCountListeners() {
+    newsCountUnsubscribers.forEach(unsub => {
+        if (typeof unsub === 'function') unsub();
+    });
+    newsCountUnsubscribers = [];
+}
+
+window.toggleNewsView = function () {
+    newsExpanded = !newsExpanded;
+    displayNews(latestNewsDataCache, latestNewsOwnerViewCache);
+    const newsSection = document.querySelector('.news-section');
+    if (newsExpanded && newsSection) {
+        newsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+};
+
+async function getCommentCount(threadId) {
+    if (!threadId) return 0;
+    try {
+        const repliesRef = ref(db, `threads/news/${threadId}/replies`);
+        const snapshot = await get(repliesRef);
+        if (snapshot.exists()) {
+            return Object.keys(snapshot.val()).length;
+        }
+    } catch (e) {
+        console.error("Error fetching comment count:", e);
+    }
+    return 0;
+}
+
+async function displayNews(newsData, isOwnerView = false) {
+    latestNewsDataCache = newsData || {};
+    latestNewsOwnerViewCache = isOwnerView;
+
+    const newsGrid = document.getElementById('news-grid');
+    const actionsRow = document.getElementById('news-actions-row');
+    const viewMoreBtn = document.getElementById('view-more-news-btn');
+    const defaultPlaceholder = 'photos/1000+quality.jpg';
+
+    if (!newsGrid) return;
+
+    // Clear existing listeners to prevent leaks
+    clearNewsCountListeners();
+
+    let newsHTML = '';
+    const newsArray = Object.entries(newsData);
+    newsArray.sort((a, b) => (b[1].timestamp || 0) - (a[1].timestamp || 0));
+
+    const publishedNews = newsArray.filter(([, article]) => article.published !== false);
+    const totalCount = publishedNews.length;
+
+    if (totalCount === 0) {
+        if (actionsRow) actionsRow.style.display = 'none';
+        newsGrid.innerHTML = `
+            <div style="text-align: center; grid-column: 1 / -1; padding: 40px;">
+              <h3 style="color: var(--accent-color); margin-bottom: 15px;">Welcome to TitanNetwork</h3>
+              <p style="color: var(--text-secondary);">Latest updates will appear here.</p>
+              ${latestNewsOwnerViewCache ? `<button onclick="createNews()" class="btn btn-primary" style="margin: 20px auto 0; max-width: 200px;"><i class="fas fa-plus"></i> Create News</button>` : ''}
+            </div>
+        `;
+        return;
+    }
+
+    // Standard newest-first behavior
+    const featured = publishedNews[0];
+    const archives = publishedNews.slice(1, newsExpanded ? 999 : 5);
+
+    // 1. RENDER FEATURED (NEWEST) FIRST
+    const [fid, farticle] = featured;
+    const fdate = new Date(farticle.timestamp).toLocaleDateString('en-US', {
+        year: 'numeric', month: 'short', day: 'numeric'
+    });
+    const fcategory = farticle.pinned ? 'Pinned' : (farticle.category || 'Announcement');
+    const fbadgeClass = farticle.pinned ? 'news-badge pinned' : 'news-badge';
+    const showBadge = farticle.pinned; // Only show badge if pinned
+    const fformattedDesc = window.formatRichText(farticle.description || farticle.content || '');
+    const fauthorName = farticle.authorName || (farticle.author ? farticle.author.split('@')[0] : 'Admin');
+    const fauthorUid = farticle.authorUid || '';
+    const defaultAvatarSvg = `data:image/svg+xml;utf8,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'><rect width='64' height='64' rx='32' fill='#0b2a45'/><circle cx='32' cy='24' r='12' fill='#58c8ff'/><path d='M14 54c2-10 10-16 18-16s16 6 18 16' fill='#58c8ff'/></svg>`)}`;
+
+    newsHTML += `
+        <div class="news-featured-section">
+            <div class="news-archive-title-label"><i class="fas fa-star"></i> Featured Post</div>
+            <div class="news-post-item" data-id="${fid}">
+              <div class="news-card big-news-card">
+                <div class="featured-image-container">
+                  ${showBadge ? `<span class="${fbadgeClass}">${fcategory}</span>` : ''}
+                  <img src="${farticle.featuredImage || farticle.image || defaultPlaceholder}" 
+                       class="featured-image" 
+                       alt="${farticle.title}"
+                       onerror="this.src='${defaultPlaceholder}'">
+                  ${isOwnerView ? `<button class="news-delete-btn" onclick="const e = arguments[0] || window.event; e.stopPropagation(); deleteNews('${fid}')" title="Delete News"><i class="fas fa-trash"></i></button>` : ''}
+                  
+                  <div class="news-card-body">
+                    <h3 class="news-title">${farticle.title}</h3>
+                    <div class="news-meta-inline">
+                        <div class="news-date"><i class="far fa-calendar-alt"></i> ${fdate}</div>
+                        <div class="news-comment-count" data-thread-id="${farticle.forumThreadId || ''}"><i class="far fa-comments"></i> <span class="count">0</span> Comments</div>
+                    </div>
+                    <div class="news-short-preview">${farticle.preview || (farticle.content ? farticle.content.substring(0, 100) + '...' : '')}</div>
+                  </div>
+                </div>
+                <div class="news-description-section">
+                  <div class="news-description-tag"><i class="fas fa-info-circle"></i> QUICK SUMMARY</div>
+                  <div class="news-description-content ${fformattedDesc.length > 350 ? 'collapsed' : ''}">${fformattedDesc}</div>
+                  ${fformattedDesc.length > 350 ? `
+                  <button class="read-more-btn" onclick="toggleReadMore(this)">
+                    Read More <i class="fas fa-chevron-down"></i>
+                  </button>` : ''}
+                  <div class="news-author-footer">
+                    <img src="${defaultAvatarSvg}" class="news-author-avatar" data-author-uid="${fauthorUid}" alt="${fauthorName}">
+                    <div class="author-details">
+                      <span class="posted-by-label">POSTED BY</span>
+                      <span class="author-name-text">${fauthorName}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+    `;
+
+    // 2. RENDER ARCHIVES (OLD NEWS) SECOND
+    if (archives.length > 0) {
+        newsHTML += `<div class="news-archive-container">`;
+        newsHTML += `<div class="news-archive-title-label" style="grid-column: 1/-1;"><i class="fas fa-history"></i> News Archive</div>`;
+        for (const [id, article] of archives) {
+            const date = new Date(article.timestamp).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const snippet = (article.preview || (article.content ? article.content.substring(0, 80) + '...' : ''))
+                .replace(/\*\*(.*?)\*\*/g, '$1')
+                .replace(/\n/g, ' ');
+            
+            newsHTML += `
+                <div class="news-archive-item" onclick="window.location.href='news.html?id=${id}'">
+                    <div class="archive-image-wrapper">
+                        <img src="${article.featuredImage || article.image || defaultPlaceholder}" class="archive-thumbnail">
+                    </div>
+                    <div class="archive-info">
+                        <span class="archive-title">${article.title}</span>
+                        <div class="archive-meta">
+                            <span class="archive-date">${date}</span>
+                            <span class="archive-comments" data-thread-id="${article.forumThreadId || ''}"><i class="far fa-comments"></i> <span class="count">0</span></span>
+                        </div>
+                        <p class="archive-description">${snippet}</p>
+                    </div>
+                </div>
+            `;
+        }
+        newsHTML += `</div>`;
+    }
+
+    newsGrid.innerHTML = newsHTML;
+
+    // 3. ATTACH REAL-TIME COMMENT LISTENERS
+    document.querySelectorAll('[data-thread-id]').forEach(el => {
+        const threadId = el.dataset.threadId;
+        if (!threadId) return;
+
+        const countSpan = el.querySelector('.count');
+        const repliesRef = ref(db, `threads/news/${threadId}/replies`);
+        
+        const unsub = onValue(repliesRef, (snapshot) => {
+            const count = snapshot.exists() ? Object.keys(snapshot.val()).length : 0;
+            if (countSpan) countSpan.textContent = count;
+            
+            // Adjust "Comment" vs "Comments" for featured especially
+            if (el.classList.contains('news-comment-count')) {
+                const suffix = count === 1 ? ' Comment' : ' Comments';
+                el.innerHTML = `<i class="far fa-comments"></i> <span class="count">${count}</span>${suffix}`;
+            }
+        });
+
+        newsCountUnsubscribers.push(unsub);
+    });
+
+    if (actionsRow && viewMoreBtn) {
+        if (totalCount > 5) {
+            actionsRow.style.display = 'flex';
+            viewMoreBtn.textContent = newsExpanded ? 'Show Less' : 'View More News';
+        } else {
+            actionsRow.style.display = 'none';
+        }
+    }
+
+    if (isOwnerView) {
+        const ownerPanel = document.getElementById('owner-panel');
+        if (ownerPanel) ownerPanel.style.display = 'block';
+    }
+
+    hydrateNewsAuthorPfps(defaultAvatarSvg);
+}
+
+// Modal viewer logic removed - transitioned to dedicated news.html page
+
+window.toggleReadMore = function (btn) {
+    const content = btn.parentElement.querySelector('.news-description-content');
+    if (!content) return;
+
+    const isCollapsed = content.classList.toggle('collapsed');
+    btn.classList.toggle('expanded', !isCollapsed);
+
+    if (isCollapsed) {
+        btn.innerHTML = `Read More <i class="fas fa-chevron-down"></i>`;
+        // Scroll back to the top of the card if needed
+        btn.closest('.news-post-item').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+        btn.innerHTML = `Show Less <i class="fas fa-chevron-up"></i>`;
+    }
+};
+
+async function hydrateNewsAuthorPfps(defaultAvatar) {
+    const avatarEls = Array.from(document.querySelectorAll('.news-author-avatar[data-author-uid]'));
+    const uidSet = new Set(avatarEls.map(el => el.dataset.authorUid).filter(uid => uid));
+
+    for (const uid of uidSet) {
+        try {
+            const snap = await get(ref(db, `pfp/${uid}`));
+            const pfpUrl = snap.exists() ? snap.val() : defaultAvatar;
+            document.querySelectorAll(`.news-author-avatar[data-author-uid="${uid}"]`).forEach(el => {
+                el.src = pfpUrl;
+                el.onerror = () => el.src = defaultAvatar;
+            });
+        } catch (err) {
+            console.warn(`Failed to load PFP for uid ${uid}:`, err);
+        }
+    }
+}
+
+window.toggleNewsContent = function (btn) {
+    const card = btn.closest('.news-card');
+    const desc = card ? card.querySelector('.news-description') : null;
+    if (!desc) return;
+
+    const isExpanded = desc.classList.toggle('expanded');
+    desc.classList.toggle('truncated', !isExpanded);
+    btn.innerHTML = isExpanded
+        ? `Show Less <i class="fas fa-chevron-up"></i>`
+        : `Read More <i class="fas fa-chevron-right"></i>`;
+};
+
+window.createNews = function () {
+    const modal = document.getElementById('news-creation-modal');
+    if (modal) {
+        document.getElementById('news-creation-form')?.reset();
+        document.getElementById('preview-container').style.display = 'none';
+        modal.style.display = 'flex';
+    }
+};
+
+window.closeNewsCreationModal = function () {
+    const modal = document.getElementById('news-creation-modal');
+    if (modal) modal.style.display = 'none';
+};
+
+window.deleteNews = async function (id) {
+    if (!confirm('Are you sure you want to delete this news article?')) return;
+    try {
+        await remove(ref(db, `news/${id}`));
+        loadOwnerNews();
+    } catch (error) {
+        console.error('Error deleting news:', error);
+    }
+};
+
+// ====================================
+// SERVER STATUS LOGIC
+// ====================================
+
+async function updateServerStatus() {
+    const playerCount = document.getElementById('player-count');
+    const onlineCountElement = document.getElementById('online-count');
+    if (!playerCount) return;
+
+    try {
+        const response = await fetch('https://api.mcsrvstat.us/2/titannetwork.run.place');
+        if (!response.ok) throw new Error('Network response fallback');
+        const data = await response.json();
+
+        if (data.online) {
+            const count = data.players?.online || 0;
+            playerCount.textContent = `${count} Player${count !== 1 ? 's' : ''} Online`;
+            playerCount.style.background = 'var(--accent-color)';
+            if (onlineCountElement) onlineCountElement.textContent = count;
+        } else {
+            playerCount.textContent = 'Server Offline';
+            playerCount.style.background = 'var(--error-color)';
+            if (onlineCountElement) onlineCountElement.textContent = '0';
+        }
+    } catch (error) {
+        console.error('Error fetching server status:', error);
+        playerCount.textContent = 'Status Unavailable';
+        if (onlineCountElement) onlineCountElement.textContent = '-';
+    }
+}
+
+// ====================================
+// PATH SELECTION LOGIC
+// ====================================
+
+window.choosePath = async function (pathRank) {
+    if (!PATH_RANKS.includes(pathRank)) return;
+    const user = auth.currentUser;
+    if (!user) {
+        alert('Please login first to choose your path.');
+        return;
+    }
+
+    try {
+        await set(ref(db, `users/${user.uid}/pathRole`), pathRank);
+        currentPathRole = pathRank;
+
+        // Refresh UI
+        const meta = await getUserMetadata(user.uid);
+        const { updateUIForUser } = await Promise.resolve(window);
+        updateUIForUser(user);
+        updatePageUI(user, meta);
+
+        alert(`Path updated: ${pathRank}`);
+    } catch (error) {
+        console.error('Error updating path rank:', error);
+    }
+};
+
+function updatePageUI(user, meta) {
+    const userPathRole = document.getElementById('user-path-role');
+    const ownerSetupBtn = document.getElementById('owner-setup-btn');
+
+    if (user && meta) {
+        const ranks = meta.ranks || [];
+        const pathRank = currentPathRole || ranks.find(r => PATH_RANKS.includes(r.toLowerCase()));
+        if (userPathRole) {
+            userPathRole.textContent = pathRank ? `Path: ${pathRank.toUpperCase()}` : 'Path: Not selected';
+        }
+
+        const primaryRank = meta.rank?.toLowerCase() || 'user';
+        const isOwner = primaryRank === 'owner' || ranks.some(r => r.toLowerCase() === 'owner');
+        const isAdmin = primaryRank === 'admin' || ranks.some(r => r.toLowerCase() === 'admin');
+
+        if (ownerSetupBtn) ownerSetupBtn.style.display = (isOwner || isAdmin) ? 'none' : 'block';
+    } else {
+        if (userPathRole) userPathRole.textContent = 'Path: Not selected';
+        if (ownerSetupBtn) ownerSetupBtn.style.display = 'block';
+    }
+}
+
+// ====================================
+// NEWS PUBLISHING
+// ====================================
+
+window.switchImageOption = function (option) {
+    document.getElementById('tab-upload').classList.toggle('active', option === 'upload');
+    document.getElementById('tab-url').classList.toggle('active', option === 'url');
+    document.getElementById('image-upload-option').style.display = option === 'upload' ? 'block' : 'none';
+    document.getElementById('image-url-option').style.display = option === 'url' ? 'block' : 'none';
+};
+
+window.previewImage = function (input) {
+    const preview = document.getElementById('image-preview');
+    const container = document.getElementById('preview-container');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            preview.src = e.target.result;
+            container.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+};
+
+window.previewImageUrl = function (url) {
+    const preview = document.getElementById('image-preview');
+    const container = document.getElementById('preview-container');
+    if (url) {
+        preview.src = url;
+        container.style.display = 'block';
+    } else {
+        container.style.display = 'none';
+    }
+};
+
+async function compressImage(file, maxWidth = 800, maxHeight = 600, quality = 0.7) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                let { width, height } = img;
+                if (width > height) {
+                    if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                } else {
+                    if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; }
+                }
+                canvas.width = width; canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                resolve(canvas.toDataURL('image/jpeg', quality));
+            };
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+async function publishNews() {
+    const user = auth.currentUser;
+    const publishBtn = document.getElementById('publish-news-btn');
+    if (!user) return;
+
+    const title = document.getElementById('news-title').value.trim();
+    const preview = document.getElementById('news-preview').value.trim();
+    const description = document.getElementById('news-content').value.trim();
+    const pinned = !!document.getElementById('news-pinned')?.checked;
+
+    if (!title || !preview || !description) {
+        alert('Please fill in required fields');
+        return;
+    }
+
+    try {
+        if (publishBtn) publishBtn.disabled = true;
+        let imageUrl = '';
+        const uploadTabActive = document.getElementById('tab-upload').classList.contains('active');
+
+        if (uploadTabActive) {
+            const fileInput = document.getElementById('news-image-file');
+            if (fileInput.files[0]) imageUrl = await compressImage(fileInput.files[0]);
+        } else {
+            imageUrl = document.getElementById('news-image-url').value.trim();
+        }
+
+        // 1. First, create a corresponding forum thread in the 'news' channel
+        const threadData = {
+            title: title,
+            content: description,
+            featuredImage: imageUrl || 'photos/1000+quality.jpg', // Include news image
+            authorUid: user.uid,
+            authorName: user.displayName || user.email.split('@')[0],
+            timestamp: serverTimestamp(),
+            lastActivity: serverTimestamp(),
+            lastAuthorName: user.displayName || user.email.split('@')[0],
+            type: 'news_sync'
+        };
+
+        const threadRef = push(ref(db, 'threads/news'));
+        const forumThreadId = threadRef.key;
+        await set(threadRef, threadData);
+
+        const newsData = {
+            title,
+            preview,
+            description,
+            pinned,
+            featuredImage: imageUrl || 'photos/1000+quality.jpg',
+            author: user.email,
+            authorName: user.displayName || user.email.split('@')[0],
+            authorUid: user.uid,
+            timestamp: Date.now(),
+            published: true,
+            forumThreadId: forumThreadId // Link to the forum thread
+        };
+
+        await push(ref(db, 'news'), newsData);
+        closeNewsCreationModal();
+        window.showNotification('News published successfully!', 'success');
+    } catch (error) {
+        console.error('Error publishing news:', error);
+        window.showNotification('Error: ' + error.message, 'error');
+    } finally {
+        if (publishBtn) publishBtn.disabled = false;
+    }
+}
+
+// Statistics
+window.viewStats = async function () {
+    try {
+        const [usersSnap, newsSnap] = await Promise.all([
+            get(ref(db, 'users')),
+            get(ref(db, 'news'))
+        ]);
+        const userCount = Object.keys(usersSnap.val() || {}).length;
+        const newsCount = Object.keys(newsSnap.val() || {}).length;
+
+        const statsHTML = `
+            <div style="background: rgba(0,0,0,0.3); padding: 20px; border-radius: 10px; margin-top: 20px;">
+                <h4 style="color: var(--accent-color); margin-bottom: 15px;">📊 Server Statistics</h4>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; text-align: center;">
+                    <div><div style="font-size: 1.5rem; font-weight: 800;">${userCount}</div><div style="font-size: 0.8rem; color: var(--text-secondary);">Total Users</div></div>
+                    <div><div style="font-size: 1.5rem; font-weight: 800;">${newsCount}</div><div style="font-size: 0.8rem; color: var(--text-secondary);">News Articles</div></div>
+                    <div><div style="font-size: 1.5rem; font-weight: 800;" id="online-count">0</div><div style="font-size: 0.8rem; color: var(--text-secondary);">Online Players</div></div>
+                </div>
+            </div>
+        `;
+        const statsEl = document.getElementById('owner-stats');
+        if (statsEl) { statsEl.innerHTML = statsHTML; statsEl.style.display = 'block'; }
+        updateServerStatus();
+    } catch (e) {
+        console.error(e);
+    }
+};
+
+// ====================================
+// PAGE EVENT LISTENERS
+// ====================================
+
+const _init = async () => {
+    initNavbar();
+
+    try {
+        const { initOnlineUsersWidgets } = await Promise.resolve(window);
+        initOnlineUsersWidgets();
+    } catch (e) {
+        console.error("Online widgets initialization failed:", e);
+    }
+
+    setInterval(updateServerStatus, 30000);
+
+    const newsForm = document.getElementById('news-creation-form');
+    if (newsForm) {
+        newsForm.onsubmit = (e) => { e.preventDefault(); publishNews(); };
+    }
+
+    const previewInput = document.getElementById('news-preview');
+    const contentTextarea = document.getElementById('news-content');
+    const counterElement = document.getElementById('content-counter');
+
+    if (contentTextarea && counterElement) {
+        contentTextarea.addEventListener('input', function () {
+            counterElement.textContent = this.value.length;
+        });
+    }
+
+    // Optional: add counter for preview if needed, or just let maxlength handle it
+});
+
+window.insertFormatTag = function(type, value = '') {
+    const textarea = document.getElementById('news-content');
+    if (!textarea) return;
+
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selection = text.substring(start, end);
+
+    let tagStart = '';
+    let tagEnd = '';
+
+    switch(type) {
+        case 'center': tagStart = '[center]'; tagEnd = '[/center]'; break;
+        case 'right': tagStart = '[right]'; tagEnd = '[/right]'; break;
+        case 'left': tagStart = '[left]'; tagEnd = '[/left]'; break;
+        case 'bold': tagStart = '**'; tagEnd = '**'; break;
+        case 'reset': tagStart = '&r'; break;
+        case 'size': 
+            const size = prompt('Enter font size (e.g. 24):', '20');
+            if (!size) return;
+            tagStart = `&sz${size}`;
+            break;
+        case 'color':
+            if (!value) return;
+            tagStart = `&#${value}`;
+            break;
+    }
+
+    const newText = text.substring(0, start) + tagStart + selection + tagEnd + text.substring(end);
+    textarea.value = newText;
+    
+    textarea.focus();
+    if (selection.length > 0) {
+        textarea.setSelectionRange(start + tagStart.length + selection.length + tagEnd.length, start + tagStart.length + selection.length + tagEnd.length);
+    } else {
+        textarea.setSelectionRange(start + tagStart.length, start + tagStart.length);
+    }
+    
+    textarea.dispatchEvent(new Event('input'));
+};
+
+window.openColorPicker = function() {
+    const picker = document.getElementById('news-color-picker');
+    if (!picker) return;
+    
+    picker.oninput = (e) => {
+        const hex = e.target.value;
+        if (hex) {
+            window.insertFormatTag('color', hex.replace('#', ''));
+            picker.oninput = null; // Reset
+        }
+    };
+    picker.click();
+};
+if(document.readyState === "loading") { document.addEventListener("DOMContentLoaded", _init); } else { _init(); }
+})();
+
+console.log("TitanNetwork Module Execution Finished.");
+</script></body>
+
+</html>

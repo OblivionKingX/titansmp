@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Forums</title>
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="navbar-shared.css">
+  <link rel="stylesheet" href="bbcode.css">
+  <style>
+    /* Reusing base styles from index.html */
+    :root {
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --card-bg: rgba(10, 20, 40, 0.95);
+
+      /* Role Colors */
+      --owner-color: #ffd700;
+      --admin-color: #ff6b81;
+      --mod-color: #00ced1;
+      --helper-color: #00ffea;
+      --member-color: #3498db;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --transition-base: 300ms ease;
+      --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+      --shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    /* ===== HEADER ===== */
+    #header-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95)),
+        url('photos/background.jpg') no-repeat center / cover;
+      min-height: 250px;
+      border-bottom: 3px solid var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: inset 0px 0px 50px rgb(9, 75, 151);
+    }
+
+    .titan-text {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: -1px;
+      text-transform: uppercase;
+      background: linear-gradient(to bottom, #fff 40%, var(--accent-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+      z-index: 3;
+      filter: drop-shadow(0 0 15px rgba(0, 191, 255, 0.3));
+      text-shadow:
+        0 1px 0 #0088cc,
+        0 2px 0 #0077bb,
+        0 3px 0 #0066aa,
+        0 10px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .logo-subtitle {
+      color: var(--accent-color);
+      font-size: 0.85rem;
+      font-weight: 800;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      margin-top: 10px;
+      opacity: 0.8;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .navbar {
+      background: var(--secondary-bg);
+      border-bottom: 2px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: var(--space-xs);
+    }
+
+    .nav-links a {
+      color: var(--text-color);
+      text-decoration: none;
+      padding: var(--space-md) var(--space-lg);
+      font-weight: 600;
+      font-size: 0.9375rem;
+      transition: all var(--transition-base);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--accent-color);
+    }
+
+    /* ===== FORUM CONTENT ===== */
+    .forum-main {
+      padding: 0;
+    }
+
+    .forum-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-lg);
+      padding-top: var(--space-lg);
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    @media (min-width: 768px) {
+      .forum-header-row {
+        padding-top: var(--space-xl);
+      }
+    }
+
+    .forum-title-section h1 {
+      font-size: 2rem;
+      color: white;
+      font-weight: 800;
+    }
+
+    .forum-actions {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all var(--transition-base);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: #003366;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Category Style */
+    .forum-category {
+      margin-bottom: var(--space-xl);
+    }
+
+    .category-header {
+      background: rgba(0, 191, 255, 0.1);
+      border-left: 4px solid var(--accent-color);
+      padding: var(--space-md) var(--space-lg);
+      border-radius: var(--radius-md) var(--radius-md) 0 0;
+      margin-bottom: 2px;
+    }
+
+    .category-header h2 {
+      font-size: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-color);
+    }
+
+    /* Community Widget */
+    .community-sidebar {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+
+    @media (min-width: 768px) and (max-width: 1023px) {
+      .community-sidebar {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      }
+    }
+
+    .widget {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+    }
+
+    .widget-title {
+      color: var(--accent-color);
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: var(--space-md);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    /* Staff Online Card Specifics */
+    .staff-online-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      padding-right: 5px;
+    }
+
+    .staff-online-list::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .staff-online-list::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    .staff-online-list::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 4px;
+    }
+
+    .staff-online-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .staff-online-item:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(5px);
+      border-color: var(--accent-color);
+    }
+
+    .staff-online-item:hover .staff-name {
+      color: var(--accent-color);
+    }
+
+    .staff-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-color);
+      object-fit: cover;
+    }
+
+    .staff-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .staff-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: white;
+    }
+
+    .staff-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* Main Content Layout */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+      padding: var(--space-lg) var(--space-md);
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Tablet and up */
+    @media (min-width: 768px) {
+      .main-layout {
+        padding: var(--space-xl) var(--space-lg);
+        gap: var(--space-2xl);
+      }
+    }
+
+    /* Desktop */
+    @media (min-width: 1024px) {
+      .main-layout {
+        grid-template-columns: 1fr 350px;
+        align-items: start;
+      }
+    }
+
+    /* Forum Grid */
+    .forum-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .forum-card {
+      background: var(--card-bg);
+      padding: var(--space-lg);
+      display: grid;
+      grid-template-columns: 50px 1fr 100px 100px 250px;
+      align-items: center;
+      gap: var(--space-lg);
+      transition: background var(--transition-base);
+      border-radius: 0;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .forum-card:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .forum-card:last-child {
+      border-radius: 0 0 var(--radius-md) var(--radius-md);
+    }
+
+    .forum-icon {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      text-align: center;
+    }
+
+    .forum-info h3 {
+      font-size: 1.1rem;
+      color: white;
+      margin-bottom: 2px;
+    }
+
+    .forum-info p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .forum-stats {
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      font-weight: 700;
+      color: white;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+
+    .forum-latest {
+      font-size: 0.85rem;
+      border-left: 1px solid var(--border-color);
+      padding-left: var(--space-lg);
+      max-width: 250px;
+    }
+
+    .latest-title {
+      color: var(--accent-color);
+      font-weight: 600;
+      display: block;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .latest-meta {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+    }
+
+    .latest-author {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 992px) {
+      .forum-card {
+        grid-template-columns: 40px 1fr 80px 80px;
+      }
+
+      .forum-latest {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .forum-card {
+        grid-template-columns: 40px 1fr;
+        padding: var(--space-md);
+      }
+
+      .forum-stats {
+        display: none;
+      }
+
+      .forum-latest {
+        display: none;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    footer {
+      background: var(--secondary-bg);
+      padding: var(--space-xl) 0;
+      text-align: center;
+      border-top: 2px solid var(--border-color);
+      margin-top: var(--space-2xl);
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .user-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .role-badge {
+      font-size: 0.6rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: inline-block;
+    }
+
+    .role-owner {
+      background: linear-gradient(45deg, var(--owner-color), #ff9900);
+      color: #003366 !important;
+    }
+
+    .role-admin {
+      background: linear-gradient(45deg, #ff242b, var(--admin-color));
+      color: white !important;
+    }
+
+    .role-moderator {
+      background: linear-gradient(45deg, #00AAAA, var(--mod-color));
+      color: white !important;
+    }
+
+    .role-helper {
+      background: linear-gradient(45deg, #55ffff, var(--helper-color));
+      color: #005555 !important;
+    }
+
+    .role-member {
+      background: rgba(255, 255, 255, 0.1);
+      color: white !important;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: var(--space-md);
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--accent-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      padding: var(--space-xl);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 191, 255, 0.1);
+      position: relative;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: var(--space-md);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color var(--transition-base);
+    }
+
+    .modal-close:hover {
+      color: white;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      color: white;
+      font-family: inherit;
+      margin-bottom: var(--space-md);
+      transition: border-color var(--transition-base);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    textarea.form-control {
+      min-height: 150px;
+      resize: vertical;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <header id="header-bg">
+    <div class="container" style="text-align: center;">
+      <h2 class="titan-text">TitanNetwork</h2>
+      <div class="logo-subtitle">Official Community Forums</div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+        <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forums.html" class="forum active"><i class="fas fa-newspaper"></i> Forums</a></li>
+        <li><a href="vote.html" class="vote"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="index.html#store" class="store"><i class="fas fa-shopping-cart"></i> Store</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+        </li>
+        <li><a href="team.html" class="staff"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+        <li class="user-menu" id="user-menu-item">
+          <button class="user-btn" id="user-btn-desktop">
+            <span id="user-btn-content" style="display: flex; align-items: center; gap: var(--space-xs);">
+              <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+              <i id="navbar-user-icon" class="fas fa-user-circle"></i>
+              <span id="user-btn-text">Account</span>
+            </span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div class="user-name" id="user-name">Guest</div>
+              <div class="user-role" id="user-role">Guest</div>
+              <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+            </div>
+            <a href="index.html?login=true" id="login-link">
+              <i class="fas fa-sign-in-alt"></i> Login / Register
+            </a>
+            <a href="#" id="profile-link" style="display:none;">
+              <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a href="profile-settings.html" id="settings-link" style="display:none;">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" id="owner-link" style="display:none;">
+              <i class="fas fa-crown"></i> Owner Panel
+            </a>
+            <a href="#" onclick="logout()" id="logout-link" style="display:none;">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="container" style="max-width: 1400px;">
+    <div class="forum-header-row">
+      <div class="forum-title-section">
+        <h1>Community Forums</h1>
+      </div>
+      <div class="forum-actions">
+        <button class="btn btn-secondary"><i class="fas fa-search"></i> Search</button>
+        <button class="btn btn-primary" id="open-forum-modal" style="display: none;">
+          <i class="fas fa-edit"></i> Create Post
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container main-layout" style="padding-top: 0;">
+    <div class="forum-main">
+      <!-- Forum-Wide Thread Creation Modal -->
+      <div class="modal-overlay" id="forum-modal">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h2><i class="fas fa-edit"></i> Start a New Discussion</h2>
+            <button class="modal-close" id="close-forum-modal">&times;</button>
+          </div>
+          <form id="new-forum-thread-form">
+            <div class="form-group">
+              <label for="forum-category-select">Select Category</label>
+              <select id="forum-category-select" class="form-control" required>
+                <option value="" disabled selected>Choose a category...</option>
+                <option value="general-chat">General Chat</option>
+                <option value="off-topic">Off-Topic</option>
+                <option value="server-discussion">Server Discussion</option>
+                <option value="support">Support</option>
+                <option value="password-reset">Password Reset</option>
+                <option value="suggestions">Suggestions</option>
+                <option value="bug-reports">Bug Reports</option>
+                <option value="staff-apps">Staff Applications</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="thread-title">Thread Title</label>
+              <input type="text" id="thread-title" class="form-control" placeholder="What's on your mind?" required>
+            </div>
+
+            <div class="form-group">
+              <label for="thread-content">Content</label>
+              <div class="bb-toolbar">
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+                <span class="toolbar-divider"></span>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('size')" title="Text Size"><i class="fas fa-text-height"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.openColorPicker()" title="Text Color"><i class="fas fa-palette"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('bold')" title="Bold"><i class="fas fa-bold"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('italic')" title="Italic"><i class="fas fa-italic"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('underline')" title="Underline"><i class="fas fa-underline"></i></button>
+                <span class="toolbar-divider"></span>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('reset')" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+              </div>
+              <textarea id="thread-content" class="form-control" placeholder="Share your thoughts with the community..."
+                required style="border-top-left-radius: 0; border-top-right-radius: 0; min-height: 150px;"></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Live Preview</label>
+              <div id="thread-preview-area" class="bb-preview-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border: 1px dashed var(--border-color); min-height: 50px; color: white;">
+                <span style="color: var(--text-secondary); font-style: italic;">Preview will appear here as you type...</span>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary" id="publish-forum-thread-btn">Publish Thread</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Category: Official -->
+      <section class="forum-category">
+        <div class="category-header" style="background: rgba(255, 215, 0, 0.1); border-left-color: #ffd700;">
+          <h2 style="color: #ffd700;">Official</h2>
+        </div>
+        <div class="forum-list">
+          <!-- News channel -->
+          <a href="threads.html?forum=news" class="forum-card">
+            <div class="forum-icon" style="color: #ffd700;"><i class="fas fa-bullhorn"></i></div>
+            <div class="forum-info">
+              <h3>Community News</h3>
+              <p>Official announcements and updates from the TitanNetwork team.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-news-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-news-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-news">
+              <span class="latest-title">No news yet</span>
+              <span class="latest-meta">Stay tuned!</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Category: General -->
+      <section class="forum-category">
+        <div class="category-header">
+          <h2>General</h2>
+        </div>
+        <div class="forum-list">
+          <!-- General Chat -->
+          <a href="threads.html?forum=general-chat" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-comments"></i></div>
+            <div class="forum-info">
+              <h3>General Chat</h3>
+              <p>Talk about anything related to the community.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-general-chat-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-general-chat-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-general-chat">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+
+          <!-- Off-Topic -->
+          <a href="threads.html?forum=off-topic" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-mug-hot"></i></div>
+            <div class="forum-info">
+              <h3>Off-Topic</h3>
+              <p>Non-server related discussions and fun topics.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-off-topic-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-off-topic-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-off-topic">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+
+          <!-- Server Discussion -->
+          <a href="threads.html?forum=server-discussion" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-server"></i></div>
+            <div class="forum-info">
+              <h3>Server Discussion</h3>
+              <p>Discussion specifically about TitanNetwork gameplay.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-server-discussion-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-server-discussion-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-server-discussion">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Category: Support & Suggestions -->
+      <section class="forum-category">
+        <div class="category-header">
+          <h2>Support & Suggestions</h2>
+        </div>
+        <div class="forum-list">
+          <!-- Support -->
+          <a href="threads.html?forum=support" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-life-ring"></i></div>
+            <div class="forum-info">
+              <h3>Support</h3>
+              <p>Need help? Ask for assistance here.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-support-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-support-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-support">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+
+          <!-- Password Reset -->
+          <a href="threads.html?forum=password-reset" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-key"></i></div>
+            <div class="forum-info">
+              <h3>Password Reset</h3>
+              <p>Request a password reset for your game account.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-password-reset-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-password-reset-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-password-reset">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+
+          <!-- Suggestions -->
+          <a href="threads.html?forum=suggestions" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-lightbulb"></i></div>
+            <div class="forum-info">
+              <h3>Suggestions</h3>
+              <p>Have an idea to improve the server? Let us know!</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-suggestions-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-suggestions-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-suggestions">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+
+          <!-- Bug Reports -->
+          <a href="threads.html?forum=bug-reports" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-bug"></i></div>
+            <div class="forum-info">
+              <h3>Bug Reports</h3>
+              <p>Found a glitch or issue? Report it here for a fix!</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-bug-reports-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-bug-reports-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-bug-reports">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <!-- Category: Staff Applications -->
+      <section class="forum-category">
+        <div class="category-header">
+          <h2>Staff Applications</h2>
+        </div>
+        <div class="forum-list">
+          <!-- Staff Applications -->
+          <a href="threads.html?forum=staff-apps" class="forum-card">
+            <div class="forum-icon"><i class="fas fa-user-shield"></i></div>
+            <div class="forum-info">
+              <h3>Staff Applications</h3>
+              <p>Want to join the team? Apply here.</p>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-staff-apps-threads">0</span>
+              <span class="stat-label">Threads</span>
+            </div>
+            <div class="forum-stats">
+              <span class="stat-value" id="stats-staff-apps-posts">0</span>
+              <span class="stat-label">Posts</span>
+            </div>
+            <div class="forum-latest" id="latest-staff-apps">
+              <span class="latest-title">No threads yet</span>
+              <span class="latest-meta">Be the first to post!</span>
+            </div>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="community-sidebar">
+      <!-- Staff Online Widget -->
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-users-cog"></i> Staff Online</h3>
+        <div id="staff-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Members Online Widget -->
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-users"></i> Members Online</h3>
+        <div id="members-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Guests Online Widget -->
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-eye"></i> Guests Online</h3>
+        <div id="guests-online-list" class="staff-online-list">
+          <p style="color: var(--text-secondary); font-size: 0.9rem; text-align: center; padding: 10px;">Loading...</p>
+        </div>
+      </div>
+
+      <!-- Forum Stats Widget -->
+      <div class="widget">
+        <h3 class="widget-title"><i class="fas fa-chart-line"></i> Forum Stats</h3>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 5px;">
+           <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px;">
+               <span style="color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-list-alt" style="width: 20px; color: var(--accent-color);"></i> Threads:</span>
+               <span id="global-thread-count" style="font-weight: 800; color: white; font-size: 1.1rem;">0</span>
+           </div>
+           <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 5px;">
+               <span style="color: var(--text-secondary); font-size: 0.95rem;"><i class="fas fa-comment-dots" style="width: 20px; color: var(--accent-color);"></i> Messages:</span>
+               <span id="global-message-count" style="font-weight: 800; color: white; font-size: 1.1rem;">0</span>
+           </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork Minecraft Server. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="bbcode.js"></script>
+  <script src="utils.js"></script>
+  <script type="module" src="forum-logic.js"></script>
+</body>
+
+</html>

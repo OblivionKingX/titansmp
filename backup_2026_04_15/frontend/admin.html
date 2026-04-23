@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link rel="stylesheet" href="navbar-shared.css">
+  <script type="module">
+    import './firebase-global.js';
+    import { renderBadges } from './user-metadata-logic.js';
+
+    const { auth, signOut, doc, getDoc, setDoc, collection, fQuery: query, where, getDocs, limit, fOrderBy: orderBy, fsTimestamp: serverTimestamp, db, get: getRTDB } = window.firebaseApp;
+    const fs = window.firebaseApp.fs;
+    const app = window.firebaseApp.app;
+
+    const ADMIN_CONFIG = {
+      OWNER_EMAILS: ["oblivionkingx228@gmail.com", "lowiekstaessen@gmail.com"],
+      CO_OWNER_EMAILS: ["tadejmuhic8@gmail.com"],
+      ADMIN_EMAILS: ["lowiekstaessen@gmail.com"],
+      STAFF_EMAILS: []
+    };
+
+    const getUserRole = async (data) => {
+      let targetUid = data?.uid;
+      if (!targetUid) {
+        if (!auth.currentUser) return { data: { role: 'user' } };
+        targetUid = auth.currentUser.uid;
+      }
+      try {
+        const userDoc = await getDoc(doc(fs, "users", targetUid));
+        let role = userDoc.exists() ? (userDoc.data().role || "user") : "user";
+
+        // Auto-assign from email
+        const userEmail = (targetUid === auth.currentUser?.uid) ? auth.currentUser.email : null;
+        if (userEmail) {
+          const e = userEmail.toLowerCase();
+          let hardRole = null;
+          if (ADMIN_CONFIG.OWNER_EMAILS.includes(e)) hardRole = "owner";
+          else if (ADMIN_CONFIG.CO_OWNER_EMAILS.includes(e)) hardRole = "co-owner";
+          else if (ADMIN_CONFIG.ADMIN_EMAILS.includes(e)) hardRole = "admin";
+          else if (ADMIN_CONFIG.STAFF_EMAILS.includes(e)) hardRole = "staff";
+
+          if (hardRole && role !== hardRole) {
+            await setDoc(doc(fs, "users", targetUid), {
+              role: hardRole,
+              email: userEmail,
+              updatedAt: serverTimestamp()
+            }, { merge: true });
+            role = hardRole;
+          }
+        }
+        return { data: { role } };
+      } catch (err) {
+        console.error(err);
+        return { data: { role: 'user' } };
+      }
+    };
+
+    const setUserRole = async ({ targetUid, newRole, ranks }) => {
+      try {
+        const updateData = { updatedAt: serverTimestamp() };
+        if (newRole !== undefined) updateData.role = newRole;
+        if (ranks !== undefined) updateData.ranks = ranks;
+
+        await setDoc(doc(fs, "users", targetUid), updateData, { merge: true });
+        return { data: { success: true } };
+      } catch (err) {
+        console.error(err);
+        return { data: { success: false, message: err.message } };
+      }
+    };
+
+    const listUsers = async () => {
+      try {
+        const usersQuery = query(collection(fs, "users"), limit(100)); // Removed orderBy to show all users
+        const snapshot = await getDocs(usersQuery);
+        const users = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          users.push({
+            uid: doc.id,
+            role: data.role || "user",
+            ranks: data.ranks || [],
+            email: data.email || "",
+            updatedAt: data.updatedAt?.toDate?.() || null
+          });
+        });
+        return { data: { users } };
+      } catch (err) {
+        console.error(err);
+        return { data: { users: [] } };
+      }
+    };
+
+    const getUidByEmail = async (email) => {
+      const emailLower = email.toLowerCase();
+      try {
+        // 1. Try Firestore first (indexed search)
+        const q = query(collection(fs, "users"), where("email", "==", emailLower), limit(1));
+        const snap = await getDocs(q);
+        if (!snap.empty) return snap.docs[0].id;
+
+        // 2. Fallback to Realtime Database (slower, but covers un-synced users)
+        const userSnap = await getRTDB(ref(db, 'users'));
+        if (userSnap.exists()) {
+          const users = userSnap.val();
+          const foundUid = Object.keys(users).find(uid => users[uid].email?.toLowerCase() === emailLower);
+          if (foundUid) return foundUid;
+        }
+        return null;
+      } catch (err) {
+        console.error("Email lookup failed:", err);
+        return null;
+      }
+    };
+
+    window.adminApp = { auth, signOut, getUserRole, setUserRole, listUsers, getUidByEmail, renderBadges };
+  </script>
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --surface: #12121f;
+      --card: #1a1a2e;
+      --border: #2a2a40;
+      --accent: #4f8ef7;
+      --owner: #ffd700;
+      --co-owner: #fd79a8;
+      --admin: #e040fb;
+      --staff: #00e5ff;
+      --user: #78909c;
+      --success: #4caf50;
+      --danger: #f44336;
+      --warning: #ff9800;
+      --text: #e0e0f0;
+      --text-secondary: #8888aa;
+      --radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    .admin-nav {
+      background: var(--surface);
+      border-bottom: 2px solid var(--accent);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-nav .logo {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    .admin-nav .logo span {
+      color: var(--owner);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-user {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .btn-nav {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.9rem;
+      transition: 0.2s;
+    }
+
+    .btn-nav:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .btn-home {
+      text-decoration: none;
+    }
+
+    /* ── LAYOUT ── */
+    .wrapper {
+      max-width: 1100px;
+      margin: 36px auto;
+      padding: 0 20px;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--accent), var(--owner));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+    }
+
+    /* ── PROMOTE CARD ── */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 28px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--accent);
+    }
+
+    .uid-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .uid-input {
+      flex: 1;
+      min-width: 220px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: 0.2s;
+    }
+
+    .uid-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .role-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .role-btn {
+      flex: 1;
+      min-width: 100px;
+      padding: 11px 18px;
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .role-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.15);
+    }
+
+    .role-btn.owner {
+      background: var(--owner);
+      color: #1a1000;
+    }
+
+    .role-btn.co-owner {
+      background: var(--co-owner);
+      color: #1a1000;
+    }
+
+    .role-btn.moderator {
+      background: #00ced1;
+      color: white;
+    }
+
+    .role-btn.helper {
+      background: #00ffea;
+      color: #005555;
+    }
+
+    .role-btn.developer {
+      background: #4ecdc4;
+      color: white;
+    }
+
+    .role-btn.user {
+      background: var(--user);
+      color: white;
+    }
+
+    /* ── BADGES FOR TABLE ── */
+    .badge-moderator {
+      background: rgba(0, 206, 209, 0.12);
+      color: #00ced1;
+      border: 1px solid #00ced1;
+    }
+
+    .badge-helper {
+      background: rgba(0, 255, 234, 0.10);
+      color: #00ffea;
+      border: 1px solid #00ffea;
+    }
+
+    .badge-developer {
+      background: rgba(78, 205, 196, 0.12);
+      color: #4ecdc4;
+      border: 1px solid #4ecdc4;
+    }
+
+    .status-msg {
+      margin-top: 14px;
+      font-size: 0.9rem;
+      min-height: 22px;
+      padding: 6px 0;
+      transition: 0.3s;
+    }
+
+    /* ── USER TABLE ── */
+    .table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .search-input {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 9px 14px;
+      font-size: 13px;
+      font-family: inherit;
+      width: 240px;
+      transition: 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    .refresh-btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 9px 18px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .refresh-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .user-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .user-table th {
+      text-align: left;
+      padding: 12px 14px;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      letter-spacing: 1px;
+    }
+
+    .user-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.9rem;
+    }
+
+    .user-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .uid-cell {
+      font-family: monospace;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .email-cell {
+      color: var(--text);
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .badge-owner {
+      background: rgba(255, 215, 0, 0.15);
+      color: var(--owner);
+      border: 1px solid var(--owner);
+    }
+
+    .badge-admin {
+      background: rgba(224, 64, 251, 0.12);
+      color: var(--admin);
+      border: 1px solid var(--admin);
+    }
+
+    .badge-staff {
+      background: rgba(0, 229, 255, 0.10);
+      color: var(--staff);
+      border: 1px solid var(--staff);
+    }
+
+    .badge-user {
+      background: rgba(120, 144, 156, 0.1);
+      color: var(--user);
+      border: 1px solid var(--user);
+    }
+
+    .action-cell {
+      display: flex;
+      gap: 6px;
+    }
+
+    .inline-btn {
+      padding: 5px 12px;
+      border-radius: 6px;
+      border: none;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      opacity: 0.85;
+    }
+
+    .inline-btn:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+    }
+
+    .inline-btn.promote {
+      background: var(--success);
+      color: white;
+    }
+
+    .inline-btn.demote {
+      background: var(--danger);
+      color: white;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px;
+      color: var(--text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    /* ── BLOCKED SCREEN ── */
+    .blocked {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 80vh;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .blocked i {
+      font-size: 4rem;
+      color: var(--danger);
+    }
+
+    .blocked h2 {
+      font-size: 1.6rem;
+    }
+
+    .blocked p {
+      color: var(--text-secondary);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      padding: 14px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      transition: 0.3s;
+      opacity: 0;
+      transform: translateY(10px);
+      z-index: 9999;
+      pointer-events: none;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    #toast.success {
+      background: var(--success);
+      color: white;
+    }
+
+    #toast.error {
+      background: var(--danger);
+      color: white;
+    }
+
+    #toast.warning {
+      background: var(--warning);
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="admin-nav">
+    <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+      <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 35px; border-radius: 6px;">
+      Titan<span>Admin</span>
+    </div>
+    <div class="nav-right">
+      <span class="nav-user" id="nav-user-email">Loading...</span>
+      <a href="index.html" class="btn-nav btn-home"><i class="fas fa-home"></i> Home</a>
+      <button class="btn-nav" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Logout</button>
+    </div>
+  </nav>
+
+  <!-- ACCESS DENIED STATE -->
+  <div id="blocked" class="blocked hidden">
+    <i class="fas fa-lock"></i>
+    <h2>Access Denied</h2>
+    <p>You need to be an Owner or Admin to view this page.</p>
+    <a href="index.html" class="btn-nav btn-home" style="margin-top:8px;"><i class="fas fa-home"></i> Go Home</a>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div id="panel" class="wrapper hidden">
+    <h1 class="page-title"><i class="fas fa-crown"></i> Admin Panel</h1>
+    <p class="page-subtitle">Manage user roles. Changes are applied instantly and stored securely.</p>
+
+    <!-- PROMOTE / DEMOTE BY UID -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-user-shield"></i> Change Primary Role</div>
+      <div class="uid-row">
+        <input id="uid-input" class="uid-input" type="text" placeholder="User UID or Email (e.g. user@example.com)">
+        <button class="refresh-btn" onclick="lookupAndPopulate('primary')"><i class="fas fa-search"></i> Load</button>
+      </div>
+      <div class="role-buttons">
+        <button id="role-btn-owner" class="role-btn owner" onclick="applyRole('owner')">👑 Owner</button>
+        <button id="role-btn-co-owner" class="role-btn co-owner" onclick="applyRole('co-owner')">👑 Co-Owner</button>
+        <button id="role-btn-admin" class="role-btn admin" onclick="applyRole('admin')">🛡️ Admin</button>
+        <button id="role-btn-moderator" class="role-btn moderator" onclick="applyRole('moderator')">🛡️ Moderator</button>
+        <button id="role-btn-helper" class="role-btn helper" onclick="applyRole('helper')">🤝 Helper</button>
+        <button id="role-btn-developer" class="role-btn developer" onclick="applyRole('developer')">🛠️ Developer</button>
+        <button id="role-btn-staff" class="role-btn staff" onclick="applyRole('staff')">⭐ Staff</button>
+        <button id="role-btn-user" class="role-btn user" onclick="applyRole('user')">👤 Regular User</button>
+      </div>
+      <div class="status-msg" id="uid-status"></div>
+    </div>
+
+    <!-- ADD STAFF MEMBER (SPECIFIC FOR TEAM.HTML) -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-user-plus"></i> Add Staff Member (Team Page)</div>
+      <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">Directly add a user to the
+        <b>Meet the Team</b> page by their email and role section.
+      </p>
+      <div class="uid-row">
+        <input id="add-staff-email" class="uid-input" type="email" placeholder="User Email (e.g. staff@example.com)">
+        <select id="add-staff-role" class="uid-input" style="flex: 0.5; min-width: 150px;">
+          <option value="staff">Staff</option>
+          <option value="helper">Helper</option>
+          <option value="moderator">Moderator</option>
+          <option value="developer">Developer</option>
+          <option value="lead developer">Lead Developer</option>
+          <option value="admin">Admin</option>
+          <option value="manager">Manager</option>
+          <option value="co-owner">Co-Owner</option>
+          <option value="owner">Owner</option>
+        </select>
+        <button class="refresh-btn" onclick="addStaffByEmail()">Add to Team</button>
+        <button class="btn-nav" style="border-color: var(--danger); color: var(--danger); padding: 9px 18px;"
+          onclick="removeStaffByEmail()">Remove</button>
+      </div>
+      <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+        <button class="refresh-btn" style="background: #2563eb; border: none; padding: 10px 16px; font-weight: 600;" onclick="forceMassSync()">
+          <i class="fas fa-sync-alt" style="margin-right: 6px;"></i> Force Sync All Profiles
+        </button>
+      </div>
+      <div class="status-msg" id="add-staff-status"></div>
+    </div>
+
+    <!-- MANAGE ADDITIONAL RANKS -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-tags"></i> Manage Additional Ranks</div>
+      <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">Select the additional ranks for
+        the user below. These will be added as tags.</p>
+      <div class="uid-row">
+        <input id="ranks-uid-input" class="uid-input" type="text"
+          placeholder="User UID or Email (e.g. user@example.com)">
+        <button class="refresh-btn" onclick="lookupAndPopulate('additional')"><i class="fas fa-search"></i>
+          Load</button>
+      </div>
+      <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;" id="ranks-checkboxes">
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" value="Member" class="rank-check"> Member
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" value="Donator" class="rank-check"> Donator
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" value="Known" class="rank-check"> Known
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" value="Vip" class="rank-check"> Vip
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" value="Royal" class="rank-check"> Royal
+        </label>
+        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+          <input type="checkbox" value="Manager" class="rank-check"> Manager
+        </label>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <button class="refresh-btn" style="flex: 1;" onclick="applyAdditionalRanks()">Update Additional Ranks</button>
+        <button class="btn-nav" style="border-color: var(--danger); color: var(--danger); padding: 9px 18px;"
+          onclick="clearAllRanks()">Clear All</button>
+      </div>
+      <div class="status-msg" id="ranks-status"></div>
+    </div>
+
+    <!-- USER LIST -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-users"></i> All Users with Roles</div>
+      <div class="table-header">
+        <input id="search-input" class="search-input" type="text" placeholder="Search by email or UID..."
+          oninput="filterTable()">
+        <button class="refresh-btn" onclick="loadUsers()"><i class="fas fa-sync-alt"></i> Refresh</button>
+      </div>
+      <div id="table-container">
+        <div class="empty-state">
+          <i class="fas fa-spinner fa-spin"></i>
+          <p>Loading users...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="toast"></div>
+
+  <script>
+    let allUsers = [];
+    let currentUserUid = null;
+
+    function toast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.className = `show ${type}`;
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.className = '', 3000);
+    }
+
+    async function doLogout() {
+      const { auth, signOut } = window.adminApp;
+      await signOut(auth);
+      window.location.href = 'index.html';
+    }
+
+    function clearAllRanks() {
+      document.querySelectorAll('.rank-check').forEach(cb => cb.checked = false);
+      const status = document.getElementById('ranks-status');
+      status.textContent = 'ℹ️ All ranks deselected in UI. Click Update to save.';
+      status.style.color = '#aaa';
+    }
+
+    // Lookup user and populate UI fields
+    async function lookupAndPopulate(type) {
+      const inputId = type === 'primary' ? 'uid-input' : 'ranks-uid-input';
+      const statusId = type === 'primary' ? 'uid-status' : 'ranks-status';
+      let identifier = document.getElementById(inputId).value.trim();
+      const status = document.getElementById(statusId);
+
+      if (!identifier) {
+        status.textContent = '⚠️ Please enter a UID or Email.';
+        status.style.color = 'orange';
+        return;
+      }
+
+      try {
+        status.textContent = 'Fetching user data...';
+        status.style.color = '#aaa';
+
+        let uid = identifier;
+        if (identifier.includes('@')) {
+          const { getUidByEmail } = window.adminApp;
+          uid = await getUidByEmail(identifier);
+          if (!uid) {
+            status.textContent = '❌ User not found.';
+            status.style.color = 'red';
+            return;
+          }
+        }
+
+        const { getUserRole } = window.adminApp;
+        // Reusing getUserRole logic to get full doc
+        const res = await getUserRole({ uid });
+        const userDoc = allUsers.find(u => u.uid === uid) || res.data; // Try cache or fresh
+
+        // If user not in allUsers yet, fetch detail
+        const { listUsers } = window.adminApp;
+        const allRes = await listUsers({});
+        const found = (allRes.data.users || []).find(u => u.uid === uid);
+
+        if (found) {
+          // Sync both input fields
+          document.getElementById('uid-input').value = identifier;
+          document.getElementById('ranks-uid-input').value = identifier;
+
+          // 1. Highlight Primary Role
+          const currentRole = found.role.toLowerCase();
+          document.querySelectorAll('.role-btn').forEach(btn => btn.style.outline = 'none');
+          const roleBtn = document.getElementById(`role-btn-${currentRole}`);
+          if (roleBtn) roleBtn.style.outline = '3px solid white';
+
+          // 2. Set Additional Ranks Checkboxes
+          const userRanks = found.ranks || [];
+          document.querySelectorAll('.rank-check').forEach(cb => {
+            cb.checked = userRanks.includes(cb.value);
+          });
+
+          status.textContent = `✅ Loaded data for ${identifier}`;
+          status.style.color = '#4caf50';
+          toast(`Loaded data for ${found.email || uid.slice(0, 8)}`);
+        } else {
+          status.textContent = '❌ User metadata not found in system.';
+          status.style.color = 'red';
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = '❌ Error loading user data.';
+        status.style.color = 'red';
+      }
+    }
+
+    // Helper to sync a user to the Team collection and Email Roles
+    async function syncUserToTeam(uid, email, role, username = null, pfp = null) {
+      const { fs, doc, setDoc, deleteDoc, fsTimestamp } = window.firebaseApp;
+      const staffRoles = ['owner', 'co-owner', 'admin', 'moderator', 'mod', 'helper', 'staff', 'manager', 'developer', 'lead developer', 'builder'];
+      const isStaffRole = role && staffRoles.includes(role.toLowerCase());
+
+      if (!email) {
+        console.warn(`Cannot sync ${uid} to team: Email is missing.`);
+        return;
+      }
+
+      const emailLower = email.toLowerCase();
+
+      if (isStaffRole) {
+        const teamData = {
+          uid: uid,
+          email: emailLower,
+          role: role,
+          updatedAt: fsTimestamp(),
+          ranks: [role]
+        };
+        if (username) teamData.username = username;
+        if (pfp) teamData.pfp = pfp;
+
+        await Promise.all([
+          setDoc(doc(fs, "team", emailLower), teamData, { merge: true }),
+          setDoc(doc(fs, "email_roles", emailLower), { role, email: emailLower, updatedAt: fsTimestamp() }, { merge: true })
+        ]);
+        console.log(`Synced ${emailLower} to Team collection as ${role}`);
+      } else if (role === 'user') {
+        await Promise.all([
+          deleteDoc(doc(fs, "team", emailLower)),
+          deleteDoc(doc(fs, "email_roles", emailLower))
+        ]);
+        console.log(`Removed ${emailLower} from Team collection (Demoted)`);
+      }
+    }
+    window.syncUserToTeam = syncUserToTeam;
+
+    // Apply role to UID or Email from input field
+    async function applyRole(newRole) {
+      let identifier = document.getElementById('uid-input').value.trim();
+      const status = document.getElementById('uid-status');
+      if (!identifier) { status.textContent = '⚠️ Please enter a UID or Email.'; status.style.color = 'orange'; return; }
+
+      const roleLabels = { 
+        owner: '👑 Owner', 
+        admin: '🛡️ Admin', 
+        moderator: '🛡️ Moderator', 
+        helper: '🤝 Helper', 
+        developer: '🛠️ Developer', 
+        staff: '⭐ Staff', 
+        manager: '💎 Manager',
+        user: '👤 User' 
+      };
+
+      try {
+        const { fs, db, doc, get, ref } = window.firebaseApp;
+        let uid = identifier;
+        let email = identifier.includes('@') ? identifier.toLowerCase() : null;
+
+        if (email) {
+          status.textContent = `Searching for email...`;
+          const { getUidByEmail } = window.adminApp;
+          uid = await getUidByEmail(email);
+          if (!uid) {
+            status.textContent = 'ℹ️ User not found. Pre-assigning role to email...';
+            await syncUserToTeam(null, email, newRole);
+            status.textContent = `✅ Success! Pre-assigned ${roleLabels[newRole]} rank to ${email}.`;
+            toast(`${email} pre-assigned as ${newRole}!`);
+            return;
+          }
+        }
+
+        status.textContent = `Updating...`;
+        const { setUserRole } = window.adminApp;
+        const result = await setUserRole({ targetUid: uid, newRole });
+        
+        if (result.data && result.data.success) {
+          let pfpUrl = null;
+          try {
+            const [userSnap, pfpSnap] = await Promise.all([
+              get(ref(db, `users/${uid}`)),
+              get(ref(db, `pfp/${uid}`))
+            ]);
+            if (userSnap.exists()) {
+              const ud = userSnap.val();
+              email = email || ud.email;
+              username = ud.username || ud.displayName;
+              pfpUrl = ud.pfp || ud.photoURL || null;
+            }
+            if (pfpSnap.exists()) pfpUrl = pfpSnap.val();
+          } catch(e) { console.warn("RTDB fetch failed:", e); }
+
+          await syncUserToTeam(uid, email, newRole, username, pfpUrl);
+
+          status.textContent = `✅ Done! User updated to ${roleLabels[newRole]}.`;
+          status.style.color = '#4caf50';
+          toast(`Role updated to ${newRole}!`, 'success');
+          loadUsers();
+        } else {
+          status.textContent = '❌ Update failed.';
+          status.style.color = 'red';
+        }
+      } catch (err) {
+        status.textContent = '❌ ' + (err.message || 'Error updating role.');
+        status.style.color = 'red';
+        toast(err.message || 'Failed', 'error');
+        loadUsers();
+      }
+    }
+
+    async function addStaffByEmail() {
+      const emailInput = document.getElementById('add-staff-email').value.trim();
+      const role = document.getElementById('add-staff-role').value;
+      const status = document.getElementById('add-staff-status');
+
+      if (!emailInput) { status.textContent = '⚠️ Please enter an email address.'; status.style.color = 'orange'; return; }
+      const email = emailInput.toLowerCase();
+
+      try {
+        const { db, get, ref } = window.firebaseApp;
+        status.textContent = 'Processing...';
+        status.style.color = '#aaa';
+
+        const { getUidByEmail, setUserRole } = window.adminApp;
+        const uid = await getUidByEmail(email);
+
+        let username = null;
+        let pfpUrl = null;
+        if (uid) {
+          try {
+            const [userSnap, pfpSnap] = await Promise.all([
+              get(ref(db, `users/${uid}`)),
+              get(ref(db, `pfp/${uid}`))
+            ]);
+            if (userSnap.exists()) {
+              const ud = userSnap.val();
+              username = ud.username || ud.displayName;
+              pfpUrl = ud.pfp || ud.photoURL || null;
+            }
+            if (pfpSnap.exists()) pfpUrl = pfpSnap.val();
+          } catch(e) {}
+          // Update primary role if user exists
+          await setUserRole({ targetUid: uid, newRole: role });
+        }
+
+        // Sync to team (handles pre-assignment if uid is null)
+        await syncUserToTeam(uid, email, role, username, pfpUrl);
+
+        status.textContent = `✅ Success! ${email} updated in Team & Roles.`;
+        status.style.color = '#4caf50';
+        toast(`${email} updated!`);
+        document.getElementById('add-staff-email').value = '';
+        if (typeof loadUsers === 'function') loadUsers();
+      } catch (err) {
+        console.error(err);
+        status.textContent = '❌ ' + err.message;
+        status.style.color = 'red';
+      }
+    }
+
+    async function removeStaffByEmail() {
+        const emailInput = document.getElementById('add-staff-email').value.trim();
+        const status = document.getElementById('add-staff-status');
+        if (!emailInput) return;
+        const email = emailInput.toLowerCase();
+
+        try {
+            const { fs, doc, deleteDoc } = window.firebaseApp;
+            status.textContent = 'Removing from team...';
+            
+            const { getUidByEmail, setUserRole } = window.adminApp;
+            const uid = await getUidByEmail(email);
+            
+            const deletePromises = [
+                deleteDoc(doc(fs, "team", email)),
+                deleteDoc(doc(fs, "email_roles", email))
+            ];
+            
+            if (uid) {
+               // Demote to regular user when removed from team
+               deletePromises.push(setUserRole({ targetUid: uid, newRole: 'user' }));
+            }
+            
+            await Promise.all(deletePromises);
+            
+            status.textContent = `✅ Removed ${email} from Team.`;
+            status.style.color = '#4caf50';
+            toast(`Removed ${email} from team`);
+        } catch (err) {
+            status.textContent = '❌ ' + err.message;
+        }
+    }
+
+    async function forceMassSync() {
+      const status = document.getElementById('add-staff-status');
+      try {
+        const { fs, db, doc, setDoc, get, ref, getDocs, collection, fsTimestamp } = window.firebaseApp;
+        const { getUidByEmail } = window.adminApp;
+        
+        status.textContent = 'Starting Mass Sync... Fetching staff list...';
+        status.style.color = '#aaa';
+
+        const emailRolesSnap = await getDocs(collection(fs, "email_roles"));
+        const syncPromises = [];
+        let count = 0;
+
+        for (const d of emailRolesSnap.docs) {
+          const data = d.data();
+          const email = (data.email || d.id).toLowerCase();
+          if (!email.includes('@')) continue;
+
+          // Resolve UID
+          const uid = await getUidByEmail(email);
+          
+          let username = null;
+          let pfpUrl = null;
+
+          // Fetch full profile from RTDB if UID exists
+          if (uid) {
+            try {
+              const [userSnap, pfpSnap] = await Promise.all([
+                get(ref(db, `users/${uid}`)),
+                get(ref(db, `pfp/${uid}`))
+              ]);
+              if (userSnap.exists()) {
+                const ud = userSnap.val();
+                username = ud.username || ud.displayName;
+                pfpUrl = ud.pfp || ud.photoURL || null;
+              }
+              if (pfpSnap && pfpSnap.exists()) {
+                pfpUrl = pfpSnap.val();
+              }
+            } catch(e) { console.warn(`Failed RTDB fetch for ${email}:`, e); }
+          }
+
+          // Build complete public snapshot
+          const teamData = {
+            email: email,
+            role: data.role || "Staff",
+            ranks: data.ranks || [data.role || "Staff"],
+            updatedAt: fsTimestamp()
+          };
+          
+          if (uid) teamData.uid = uid;
+          if (username) teamData.username = username;
+          if (pfpUrl) teamData.pfp = pfpUrl;
+
+          syncPromises.push(setDoc(doc(fs, "team", email), teamData, { merge: true }));
+          count++;
+        }
+
+        await Promise.all(syncPromises);
+        status.textContent = `✅ Mass Sync Complete! ${count} staff profiles updated.`;
+        status.style.color = '#4caf50';
+        toast(`Synced ${count} full profiles to Team list.`);
+      } catch (err) {
+        console.error(err);
+        status.textContent = '❌ Mass Sync Failed: ' + err.message;
+        status.style.color = 'red';
+      }
+    }
+    window.forceMassSync = forceMassSync;
+
+    // Manage additional ranks (Donator, VIP, etc.)
+    async function applyAdditionalRanks() {
+      let identifier = document.getElementById('ranks-uid-input').value.trim();
+      const status = document.getElementById('ranks-status');
+      if (!identifier) { status.textContent = '⚠️ Please enter a UID or Email.'; status.style.color = 'orange'; return; }
+
+      const checks = document.querySelectorAll('.rank-check:checked');
+      const selectedRanks = Array.from(checks).map(c => c.value);
+
+      try {
+        const { fs, doc, setDoc, fsTimestamp: serverTimestamp } = window.firebaseApp;
+        let uid = identifier;
+        // Email lookup
+        if (identifier.includes('@')) {
+          status.textContent = 'Searching for email...';
+          status.style.color = '#aaa';
+          const { getUidByEmail } = window.adminApp;
+          uid = await getUidByEmail(identifier);
+          if (!uid) {
+            status.textContent = 'ℹ️ User not found. Pre-assigning ranks to email...';
+            status.style.color = '#ff9800';
+            
+            await setDoc(doc(fs, "email_roles", identifier.toLowerCase()), {
+              ranks: selectedRanks,
+              email: identifier.toLowerCase(),
+              updatedAt: serverTimestamp()
+            }, { merge: true });
+
+            status.textContent = `✅ Success! Pre-assigned ranks to ${identifier}.`;
+            status.style.color = '#4caf50';
+            toast(`Ranks pre-assigned to ${identifier}!`);
+            return;
+          }
+        }
+
+        status.textContent = 'Updating...';
+        status.style.color = '#aaa';
+        const { setUserRole } = window.adminApp;
+        const result = await setUserRole({ targetUid: uid, ranks: selectedRanks });
+        if (result.data && result.data.success) {
+          status.textContent = `✅ Success! Updated ranks for ${uid.slice(0, 8)}...`;
+          status.style.color = '#4caf50';
+          toast('Additional ranks updated!', 'success');
+          loadUsers();
+        } else {
+          status.textContent = '❌ Failed.';
+          status.style.color = 'red';
+        }
+      } catch (err) {
+        status.textContent = '❌ ' + err.message;
+        status.style.color = 'red';
+        toast(err.message, 'error');
+      }
+    }
+
+    // Quick promote/demote from user table
+    async function quickRole(uid, newRole) {
+      try {
+        const { db, get, ref } = window.firebaseApp;
+        const { setUserRole } = window.adminApp;
+        
+        // Update Primary Role
+        const result = await setUserRole({ targetUid: uid, newRole });
+        if (result.data && result.data.success) {
+          // Fetch additional info for Team Sync
+          let email = null;
+          let username = null;
+          try {
+            const userSnap = await get(ref(db, `users/${uid}`));
+            if (userSnap.exists()) {
+              const ud = userSnap.val();
+              email = ud.email;
+              username = ud.username || ud.displayName;
+            }
+          } catch(e) { console.warn("RTDB fetch failed during quickRole sync:", e); }
+
+          await syncUserToTeam(uid, email, newRole, username);
+          toast(`✅ Updated to ${newRole}!`, 'success');
+          loadUsers();
+        }
+      } catch (err) {
+        toast('❌ ' + (err.message || 'Error'), 'error');
+      }
+    }
+
+    function getRoleBadge(u) {
+      const { renderBadges } = window.adminApp;
+      const meta = {
+        rank: u.role.charAt(0).toUpperCase() + u.role.slice(1),
+        ranks: u.ranks || []
+      };
+      return renderBadges(meta);
+    }
+
+    function getNextRole(role) {
+      const map = { user: 'staff', staff: 'admin', admin: 'owner', owner: 'user' };
+      return map[role] || 'user';
+    }
+
+    function renderTable(users) {
+      const container = document.getElementById('table-container');
+      if (!users.length) {
+        container.innerHTML = '<div class="empty-state"><i class="fas fa-users-slash"></i><p>No users found.</p></div>';
+        return;
+      }
+
+      const rows = users.map(u => {
+        const nextUp = getNextRole(u.role);
+        const isMe = u.uid === currentUserUid;
+        return `
+        <tr>
+          <td class="uid-cell" title="${u.uid}">${u.uid.slice(0, 12)}...</td>
+          <td class="email-cell">${u.email || '<em style="color:#555">unknown</em>'}</td>
+          <td>${getRoleBadge(u)}</td>
+          <td class="action-cell">
+            ${!isMe ? `
+              <button class="inline-btn promote" onclick="quickRole('${u.uid}', '${nextUp}')" title="Promote to ${nextUp}">
+                ↑ ${nextUp}
+              </button>
+              <button class="inline-btn demote" onclick="quickRole('${u.uid}', 'user')" title="Demote to user">
+                ↓ User
+              </button>
+            ` : '<span style="color:#555;font-size:0.8rem">(you)</span>'}
+          </td>
+        </tr>
+      `;
+      }).join('');
+
+      container.innerHTML = `
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>UID</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+    }
+
+    async function loadUsers() {
+      const container = document.getElementById('table-container');
+      container.innerHTML = '<div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>';
+      try {
+        const { listUsers } = window.adminApp;
+        const result = await listUsers({});
+        allUsers = result.data.users || [];
+        filterTable();
+      } catch (err) {
+        container.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>${err.message || 'Failed to load users.'}</p></div>`;
+        toast('Failed to load users: ' + (err.message || ''), 'error');
+      }
+    }
+
+    function filterTable() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const filtered = allUsers.filter(u =>
+        !q || u.uid.includes(q) || (u.email || '').toLowerCase().includes(q) || (u.role || '').includes(q)
+      );
+      renderTable(filtered);
+    }
+
+    // Auth check on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const { auth, getUserRole } = window.adminApp;
+      const panel = document.getElementById('panel');
+      const blocked = document.getElementById('blocked');
+      const navEmail = document.getElementById('nav-user-email');
+
+      auth.onAuthStateChanged(async (user) => {
+        if (!user) {
+          window.location.href = 'index.html?needLogin=1';
+          return;
+        }
+
+        currentUserUid = user.uid;
+        navEmail.textContent = user.email || user.uid.slice(0, 10) + '...';
+
+        try {
+          const res = await getUserRole({ uid: user.uid });
+          const role = res.data?.role || 'user';
+          const allowedRoles = ['owner', 'co-owner', 'admin', 'manager'];
+
+          if (allowedRoles.includes(role)) {
+            panel.classList.remove('hidden');
+            loadUsers();
+          } else {
+            blocked.classList.remove('hidden');
+          }
+        } catch (err) {
+          console.error(err);
+          blocked.classList.remove('hidden');
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

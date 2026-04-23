@@ -1,0 +1,32 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, list: if true;
+      allow write: if request.auth != null && (
+        request.auth.token.email in ['oblivionkingx228@gmail.com', 'lowiekstaessen@gmail.com', 'tadejmuhic8@gmail.com'] ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'owner') ||
+        (!exists(/databases/$(database)/documents/users/$(userId)) && request.auth.uid == userId)
+      );
+    }
+
+    match /email_roles/{email} {
+      // Public reading so anyone can see pre-assigned staff on team page
+      allow read, list: if true;
+      allow write: if request.auth != null && (
+        request.auth.token.email in ['oblivionkingx228@gmail.com', 'lowiekstaessen@gmail.com', 'tadejmuhic8@gmail.com'] ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['owner', 'co-owner', 'admin', 'manager'])
+      );
+    }
+    
+    match /team/{docId} {
+      allow read, list: if true;
+      allow write: if request.auth != null && (
+        request.auth.token.email in ['oblivionkingx228@gmail.com', 'lowiekstaessen@gmail.com', 'tadejmuhic8@gmail.com'] ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['owner', 'co-owner', 'admin', 'manager'])
+      );
+    }
+  }
+}

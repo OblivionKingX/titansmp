@@ -4,7 +4,36 @@
       "dataDir": "dataconnect/.dataconnect/pgliteData"
     }
   },
+  "hosting": {
+    "site": "titannetwork",
+    "public": "frontend",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+      {
+        "source": "**/*.@(js|html)",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "no-cache, no-store, must-revalidate"
+          }
+        ]
+      }
+    ]
+  },
+  "functions": {
+    "source": "backend/functions"
+  },
   "dataconnect": {
     "source": "dataconnect"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "firestore": {
+    "rules": "firestore.rules"
   }
 }

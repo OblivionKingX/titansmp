@@ -1,0 +1,41 @@
+redirectsOrigin = "config"
+plugins = []
+functionsDirectory = "C:\\Users\\munir\\OneDrive\\Desktop\\Titansmp\\frontend\\netlify\\functions"
+functionsDirectoryOrigin = "config-v1"
+headers = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\munir\\OneDrive\\Desktop\\Titansmp\\frontend\\frontend"
+publishOrigin = "config"
+base = "C:\\Users\\munir\\OneDrive\\Desktop\\Titansmp\\frontend"
+functions = "C:\\Users\\munir\\OneDrive\\Desktop\\Titansmp\\frontend\\netlify\\functions"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

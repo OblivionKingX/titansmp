@@ -1,0 +1,107 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+      <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+      <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanNetwork</h1>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="forums.html" class="forum"><i class="fas fa-newspaper"></i> Forums</a></li>
+      <li><a href="vote.html" class="vote"><i class="fas fa-vote-yea"></i> Vote</a></li>
+      <li><a href="index.html#store" class="store"><i class="fas fa-shopping-cart"></i> Store</a></li>
+      <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+      </li>
+      <li><a href="team.html" class="staff"><i class="fas fa-users"></i> Team</a></li>
+      <li class="more-btn">
+        <a href="#" id="moreBtn">More ▾</a>
+        <ul class="more-menu" id="moreMenu">
+          <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+          <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+          <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+          <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+        </ul>
+      </li>
+      <li class="user-menu">
+        <button class="user-btn" onclick="toggleUserMenu()">
+          <span id="user-btn-content" style="display: flex; align-items: center; gap: 0.25rem;">
+            <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+            <i id="navbar-user-icon" class="fas fa-user"></i>
+            <span id="user-btn-text">Account</span>
+          </span>
+        </button>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="user-info">
+            <div class="user-name" id="user-name">Guest</div>
+            <div class="user-role" id="user-role">Guest</div>
+            <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+          </div>
+          <a href="#" id="profile-link" style="display:none;">
+            <i class="fas fa-user-circle"></i> Profile
+          </a>
+          <a href="profile-settings.html" id="settings-link" style="display:none;">
+            <i class="fas fa-cog"></i> Settings
+          </a>
+          <a href="admin.html" id="admin-link" style="display:none;">
+            <i class="fas fa-shield-alt"></i> Admin Panel
+          </a>
+          <a href="#" onclick="showOwnerPanel()" id="owner-link" style="display:none;">
+            <i class="fas fa-crown"></i> Owner Panel
+          </a>
+          <a href="#" onclick="logout(); return false;" id="logout-link" style="display:none;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+          <a href="#" onclick="showAuthModal(); return false;" id="login-link">
+            <i class="fas fa-sign-in-alt"></i> Login / Register
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Unified Auth Modal -->
+<div id="auth-modal" class="auth-modal" aria-hidden="true">
+  <div class="auth-content" role="dialog" aria-modal="true" aria-labelledby="auth-title" onclick="event.stopPropagation()">
+    <button class="auth-close" type="button" onclick="closeAuthModal()" aria-label="Close">×</button>
+    <h2 id="auth-title" style="color:white; margin-bottom: 1rem;">Account Access</h2>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+    </div>
+    <form id="login-form" class="auth-form active">
+      <div id="login-message" class="form-message"></div>
+      <div class="form-group">
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" class="form-control" placeholder="Enter your password" minlength="6" required>
+      </div>
+      <button id="login-btn" class="btn" type="submit" style="width:100%;background:var(--accent-color);color:#003366;font-weight:700;border-radius:var(--radius-md);padding:0.75rem;">Login</button>
+    </form>
+    <form id="register-form" class="auth-form">
+      <div id="register-message" class="form-message"></div>
+      <div class="form-group">
+        <label for="register-username">Username</label>
+        <input id="register-username" type="text" class="form-control" placeholder="Choose a username" minlength="3" maxlength="20" required>
+      </div>
+      <div class="form-group">
+        <label for="register-email">Email</label>
+        <input id="register-email" type="email" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="register-password">Password</label>
+        <input id="register-password" type="password" class="form-control" placeholder="Create a password" minlength="6" required>
+      </div>
+      <div class="form-group">
+        <label for="register-confirm-password">Confirm Password</label>
+        <input id="register-confirm-password" type="password" class="form-control" placeholder="Re-enter your password" minlength="6" required>
+      </div>
+      <button id="register-btn" class="btn" type="submit" style="width:100%;background:var(--accent-color);color:#003366;font-weight:700;border-radius:var(--radius-md);padding:0.75rem;">Create Account</button>
+    </form>
+  </div>
+</div>

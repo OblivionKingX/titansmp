@@ -1,0 +1,115 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": false,
+    "threads": {
+      ".read": true,
+      "$forumId": {
+        ".write": "auth != null && ($forumId != 'news' || root.child('admins').child(auth.uid).exists() || auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1')",
+        "$threadId": {
+          "replies": {
+            ".write": "auth != null"
+          }
+        }
+      }
+    },
+    "gallery": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "posts": {
+      ".read": true,
+      ".write": "auth != null",
+      "$postId": {
+        "replies": {
+          ".read": true,
+          ".write": "auth != null"
+        },
+        "likes": {
+          "$uid": {
+            ".read": true,
+            ".write": "auth != null && auth.uid === $uid"
+          }
+        }
+      }
+    },
+    "pfp": {
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && (auth.uid === $uid || root.child('admins').child(auth.uid).exists())"
+      }
+    },
+    "team": {
+      ".read": true,
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+    },
+    "email_roles": {
+      ".read": true,
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+    },
+    "bios": {
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "ranks": {
+      ".read": true,
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+    },
+    "nicknames": {
+      ".read": true,
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+    },
+    "bans": {
+      ".read": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())",
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+    },
+    "notifications": {
+      "$userId": {
+        ".read": "auth != null && auth.uid === $userId",
+        ".write": "auth != null && (auth.uid === $userId || auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+      }
+    },
+    "reactions": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "users": {
+      ".read": true,
+      "$uid": {
+        ".read": true,
+        ".write": "auth != null && (auth.uid === $uid || root.child('admins').child(auth.uid).exists())"
+      }
+    },
+    "news": {
+      ".read": true,
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())"
+    },
+    "admins": {
+      ".read": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1' || root.child('admins').child(auth.uid).exists())",
+      ".write": "auth != null && (auth.uid === 'Sis5kxG0cIfV2ACggILMUKWzAI52' || auth.uid === 'rG63xvzM49aA49vD5sMzXV9pp6t1')"
+    },
+    "online-users": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "online-staff": {
+      ".read": true,
+      ".write": "auth != null"
+    },
+    "online-guests": {
+      ".read": true,
+      ".write": true
+    },
+    "blocked_users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$blockedId": {
+          ".read": "auth != null && auth.uid === $blockedId",
+          ".write": "auth != null && auth.uid === $uid"
+        }
+      }
+    }
+  }
+}

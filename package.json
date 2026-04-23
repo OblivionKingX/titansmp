@@ -1,0 +1,24 @@
+{
+  "name": "titansmp",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OblivionKingX/titansmp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OblivionKingX/titansmp/issues"
+  },
+  "homepage": "https://github.com/OblivionKingX/titansmp#readme",
+  "description": "",
+  "dependencies": {
+    "firebase-admin": "^13.7.0",
+    "node-fetch": "^3.3.2"
+  }
+}

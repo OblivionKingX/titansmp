@@ -1,0 +1,1153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="TitanNetwork Staff Team - Meet the dedicated team behind the server.">
+  <title>TitanNetwork - Staff Team</title>
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="navbar-shared.css">
+  <link rel="stylesheet" href="profile-card.css">
+  <style>
+    /* ── BASE & TOKENS (UNIFIED WITH INDEX) ── */
+    :root {
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --card-bg: rgba(10, 20, 40, 0.95);
+
+      /* Original Rank Colors */
+      --owner-color: #ffd700;
+      --co-owner-color: #fd79a8;
+      --admin-color: #ff6b81;
+      --manager-color: #fab1a0;
+      --developer-color: #22d3ee;
+      --mod-color: #00ced1;
+      --helper-color: #00ffea;
+      --staff-color: #a29bfe;
+      
+      /* Mapping legacy variables to keep existing logic working */
+      --bg-dark: var(--primary-bg);
+      --bg-card: var(--card-bg);
+      --glass-border: var(--border-color);
+      --accent-primary: var(--accent-color);
+      --text-main: var(--text-color);
+      --text-dim: var(--text-secondary);
+
+      --radius-xl: 1rem;
+      --radius-lg: 0.75rem;
+      --radius-md: 0.5rem;
+      
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+
+      --transition: 300ms ease;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(10, 20, 40, 0.94), rgba(15, 23, 32, 0.98)),
+                  url('photos/background.jpg') no-repeat center / cover;
+      z-index: -2;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 0%, rgba(0, 191, 255, 0.15) 0%, transparent 70%);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* ── PREMIUM HERO (INDEX STYLE) ── */
+    #header-bg {
+      background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.95)),
+                  url('photos/background.jpg') no-repeat center / cover;
+      min-height: 450px;
+      position: relative;
+      border-bottom: 3px solid var(--accent-color);
+      box-shadow: inset 0px 0px 50px rgb(9, 75, 151);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-top: 80px;
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      width: 100%;
+    }
+
+    .server-info {
+      animation: fadeIn 0.8s ease;
+    }
+
+    .jartex-ip-box {
+      background: var(--card-bg);
+      border: 3px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.1);
+    }
+
+    .jartex-ip-box:hover {
+      border-color: var(--accent-color);
+      transform: translateY(-5px);
+      box-shadow: 0 0 30px rgba(0, 191, 255, 0.2);
+    }
+
+    .click-to-copy-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+      opacity: 0.8;
+      text-transform: uppercase;
+    }
+
+    .server-ip-text {
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: white;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .player-count {
+      display: inline-block;
+      background: var(--accent-color);
+      color: #003366;
+      padding: 0.4rem 1.2rem;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .server-motto {
+      margin-top: 15px;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* 3D Logo */
+    .logo-3d-container {
+      perspective: 1000px;
+      text-align: center;
+    }
+
+    .logo-3d {
+      position: relative;
+      transform-style: preserve-3d;
+      display: inline-block;
+      animation: float3D 6s infinite ease-in-out;
+    }
+
+    .titan-text {
+      font-size: 5.5rem;
+      font-weight: 950;
+      color: white;
+      text-transform: uppercase;
+      background: linear-gradient(to bottom, #fff 40%, var(--accent-color));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 1px 0 #0088cc, 0 2px 0 #0077bb, 0 3px 0 #0066aa, 0 10px 20px rgba(0, 0, 0, 0.5);
+      line-height: 1;
+    }
+
+    .hero-logo {
+      height: 120px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 20px rgba(0, 191, 255, 0.5));
+      animation: floatLogo 6s infinite ease-in-out;
+    }
+
+    @keyframes floatLogo {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(5deg); }
+    }
+
+    .logo-subtitle {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-secondary);
+      letter-spacing: 4px;
+      margin-top: 10px;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .play-button, .discord-widget {
+      width: 100%;
+      max-width: 240px;
+      padding: 0.8rem 1.5rem;
+      border-radius: var(--radius-lg);
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      border: none;
+    }
+
+    .play-button { background: var(--accent-color); color: #003366; }
+    .discord-widget { background: #7289da; color: white; }
+
+    .play-button:hover, .discord-widget:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+    @keyframes float3D {
+      0%, 100% { transform: rotateY(-10deg) rotateX(5deg) translateY(0); }
+      50% { transform: rotateY(10deg) rotateX(-5deg) translateY(-10px); }
+    }
+
+    @media (max-width: 1100px) {
+      .header-content { grid-template-columns: 1fr; text-align: center; }
+      #header-bg { min-height: auto; padding-bottom: 40px; }
+    }
+
+    /* ── CONTROLS ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    
+    .controls-wrapper {
+      margin-bottom: 50px;
+      display: flex;
+      gap: 15px;
+      background: var(--bg-card);
+      backdrop-filter: blur(12px);
+      padding: 12px;
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .search-box {
+      flex: 1;
+      position: relative;
+    }
+    .search-box i {
+      position: absolute;
+      left: 18px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+    }
+    .search-box input {
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid transparent;
+      padding: 14px 14px 14px 50px;
+      border-radius: var(--radius-lg);
+      color: #fff;
+      font-family: inherit;
+      outline: none;
+      transition: var(--transition);
+    }
+    .search-box input:focus {
+      background: rgba(255,255,255,0.06);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 15px rgba(0, 191, 255, 0.2);
+    }
+
+    .filter-box select {
+      height: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--glass-border);
+      padding: 0 20px;
+      border-radius: var(--radius-lg);
+      color: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      outline: none;
+    }
+
+    /* ── STAFF GRID ── */
+    /* ── STAFF GRID REDESIGN (INDEX STYLE) ── */
+    .staff-section {
+      margin-bottom: 40px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .section-header {
+      padding: 16px 24px;
+      border-bottom: 2px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    /* Rank Specific Header Tints */
+    .staff-section:has(.rank-owner) .section-header { background: rgba(255, 215, 0, 0.05); }
+    .staff-section:has(.rank-admin) .section-header { background: rgba(255, 107, 129, 0.05); }
+    .staff-section:has(.rank-manager) .section-header { background: rgba(250, 177, 160, 0.05); }
+    .staff-section:has(.rank-co-owner) .section-header { background: rgba(253, 121, 168, 0.05); }
+    .staff-section:has(.rank-moderator) .section-header { background: rgba(0, 206, 209, 0.05); }
+    .staff-section:has(.rank-developer) .section-header { background: rgba(34, 211, 238, 0.05); }
+    .staff-section:has(.rank-helper) .section-header { background: rgba(0, 255, 234, 0.05); }
+    .staff-section:has(.rank-staff) .section-header { background: rgba(162, 155, 254, 0.05); }
+    .section-header h2 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-header h2::before {
+      content: '';
+      display: inline-block;
+      width: 4px; height: 1.2rem;
+      background: currentColor;
+      border-radius: 2px;
+    }
+
+    /* Header Rank Colors */
+    .section-header h2.rank-owner { color: var(--owner-color); }
+    .section-header h2.rank-admin { color: var(--admin-color); }
+    .section-header h2.rank-manager { color: var(--manager-color); }
+    .section-header h2.rank-co-owner { color: var(--co-owner-color); }
+    .section-header h2.rank-developer { color: var(--developer-color); }
+    .section-header h2.rank-moderator { color: var(--mod-color); }
+    .section-header h2.rank-helper { color: var(--helper-color); }
+    .section-header h2.rank-staff { color: var(--staff-color); }
+
+    .staff-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 12px;
+      padding: 16px;
+    }
+
+    /* ── BOXED STAFF CARD ── */
+    .staff-card {
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+    .staff-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar-wrapper {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+    }
+    .avatar-img {
+      width: 100%; height: 100%;
+      border-radius: 50%; /* Circular */
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+    
+    .status-dot {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 12px; height: 12px;
+      background: #475569;
+      border: 2px solid #141b26;
+      border-radius: 50%;
+    }
+    .status-dot.online { background: #10b981; }
+
+    .staff-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .staff-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 2px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .staff-role-text {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+
+    /* Rank Colors & Text Shadows (Titan Style) */
+    .rank-owner .staff-name { 
+      color: var(--owner-color);
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+    }
+    .rank-admin .staff-name { 
+      color: var(--admin-color);
+      text-shadow: 0 0 10px rgba(255, 107, 129, 0.3);
+    }
+    .rank-manager .staff-name { 
+      color: var(--manager-color);
+      text-shadow: 0 0 10px rgba(250, 177, 160, 0.3);
+    }
+    .rank-co-owner .staff-name { 
+      color: var(--co-owner-color);
+      text-shadow: 0 0 10px rgba(253, 121, 168, 0.3);
+    }
+    .rank-developer .staff-name, .rank-lead-developer .staff-name { 
+      color: var(--developer-color);
+      text-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+    }
+    .rank-moderator .staff-name { 
+      color: var(--mod-color);
+      text-shadow: 0 0 10px rgba(0, 206, 209, 0.3);
+    }
+    .rank-helper .staff-name { 
+      color: var(--helper-color);
+      text-shadow: 0 0 10px rgba(0, 255, 234, 0.3);
+    }
+    .rank-staff .staff-name { 
+      color: var(--staff-color);
+      text-shadow: 0 0 10px rgba(162, 155, 254, 0.3);
+    }
+
+    /* Hover Glows (Premium Original Look) */
+    .staff-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-2px);
+      border-color: currentColor;
+    }
+    
+    .rank-owner:hover { box-shadow: 0 8px 25px rgba(255, 215, 0, 0.2); }
+    .rank-admin:hover { box-shadow: 0 8px 25px rgba(255, 107, 129, 0.2); }
+    .rank-manager:hover { box-shadow: 0 8px 25px rgba(250, 177, 160, 0.2); }
+    .rank-co-owner:hover { box-shadow: 0 8px 25px rgba(253, 121, 168, 0.2); }
+    .rank-developer:hover, .rank-lead-developer:hover { box-shadow: 0 8px 25px rgba(34, 211, 238, 0.2); }
+    .rank-moderator:hover { box-shadow: 0 8px 25px rgba(0, 206, 209, 0.2); }
+    .rank-helper:hover { box-shadow: 0 8px 25px rgba(0, 255, 234, 0.2); }
+    .rank-staff:hover { box-shadow: 0 8px 25px rgba(162, 155, 254, 0.2); }
+
+    /* Circular PFP Rank Borders */
+    .rank-owner .avatar-img { border-color: rgba(255, 215, 0, 0.4); }
+    .rank-admin .avatar-img { border-color: rgba(255, 107, 129, 0.4); }
+    .rank-manager .avatar-img { border-color: rgba(250, 177, 160, 0.4); }
+    .rank-co-owner .avatar-img { border-color: rgba(253, 121, 168, 0.4); }
+    .rank-developer .avatar-img, .rank-lead-developer .avatar-img { border-color: rgba(34, 211, 238, 0.4); }
+    .rank-moderator .avatar-img { border-color: rgba(0, 206, 209, 0.4); }
+    .rank-helper .avatar-img { border-color: rgba(0, 255, 234, 0.4); }
+    .rank-staff .avatar-img { border-color: rgba(162, 155, 254, 0.4); }
+
+    .staff-card:hover .avatar-img { border-color: currentColor; }
+
+    /* DELETE BUTTON */
+    .btn-delete {
+      position: absolute;
+      top: 50%; right: 10px;
+      transform: translateY(-50%);
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: 0.2s;
+      z-index: 10;
+    }
+    .staff-card:hover .btn-delete { opacity: 1; }
+    .btn-delete:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    /* ── NOTIFICATIONS ── */
+    #notif-root {
+      position: fixed;
+      top: 30px; right: 30px;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .notif {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--glass-border);
+      color: #fff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      animation: slideIn 0.4s ease forwards;
+      display: flex; align-items: center; gap: 12px;
+    }
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ── AUTH MODAL ── */
+    .modal-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none; align-items: center; justify-content: center;
+    }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--glass-border);
+      padding: 40px;
+      border-radius: var(--radius-xl);
+      width: 90%; max-width: 420px;
+      position: relative;
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 768px) {
+      .hero { padding-top: 100px; }
+      .controls-wrapper { flex-direction: column; }
+      .staff-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-blobs">
+    <div class="blob" style="top: -10%; left: -10%;"></div>
+    <div class="blob" style="bottom: 10%; right: -5%; background: radial-gradient(circle, rgba(0, 191, 255, 0.05) 0%, transparent 70%);"></div>
+  </div>
+
+<!-- Navigation -->
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+      <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+      <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanNetwork</h1>
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="forums.html" class="forum"><i class="fas fa-newspaper"></i> Forums</a></li>
+      <li><a href="vote.html" class="vote"><i class="fas fa-vote-yea"></i> Vote</a></li>
+      <li><a href="index.html#store" class="store"><i class="fas fa-shopping-cart"></i> Store</a></li>
+      <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a>
+      </li>
+      <li><a href="team.html" class="staff active"><i class="fas fa-users"></i> Team</a></li>
+      <li class="more-btn">
+        <a href="#" id="moreBtn">More ▾</a>
+        <ul class="more-menu" id="moreMenu">
+          <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+          <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+          <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+          <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+        </ul>
+      </li>
+      <li class="user-menu">
+        <button class="user-btn" onclick="toggleUserMenu()">
+          <span id="user-btn-content" style="display: flex; align-items: center; gap: 0.25rem;">
+            <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+            <i id="navbar-user-icon" class="fas fa-user"></i>
+            <span id="user-btn-text">Account</span>
+          </span>
+        </button>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="user-info">
+            <div class="user-name" id="user-name">Guest</div>
+            <div class="user-role" id="user-role">Guest</div>
+            <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+          </div>
+          <a href="#" id="profile-link" style="display:none;">
+            <i class="fas fa-user-circle"></i> Profile
+          </a>
+          <a href="profile-settings.html" id="settings-link" style="display:none;">
+            <i class="fas fa-cog"></i> Settings
+          </a>
+          <a href="admin.html" id="admin-link" style="display:none;">
+            <i class="fas fa-shield-alt"></i> Admin Panel
+          </a>
+          <a href="#" onclick="showOwnerPanel()" id="owner-link" style="display:none;">
+            <i class="fas fa-crown"></i> Owner Panel
+          </a>
+          <a href="#" onclick="logout(); return false;" id="logout-link" style="display:none;">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+          <a href="#" onclick="showAuthModal(); return false;" id="login-link">
+            <i class="fas fa-sign-in-alt"></i> Login / Register
+          </a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Unified Auth Modal -->
+<div id="auth-modal" class="auth-modal" aria-hidden="true">
+  <div class="auth-content" role="dialog" aria-modal="true" aria-labelledby="auth-title" onclick="event.stopPropagation()">
+    <button class="auth-close" type="button" onclick="closeAuthModal()" aria-label="Close">×</button>
+    <h2 id="auth-title" style="color:white; margin-bottom: 1rem;">Account Access</h2>
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchAuthTab('login')">Login</div>
+      <div class="auth-tab" onclick="switchAuthTab('register')">Register</div>
+    </div>
+    <form id="login-form" class="auth-form active">
+      <div id="login-message" class="form-message"></div>
+      <div class="form-group">
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" class="form-control" placeholder="Enter your password" minlength="6" required>
+      </div>
+      <button id="login-btn" class="btn" type="submit" style="width:100%;background:var(--accent-color);color:#003366;font-weight:700;border-radius:var(--radius-md);padding:0.75rem;">Login</button>
+    </form>
+    <form id="register-form" class="auth-form">
+      <div id="register-message" class="form-message"></div>
+      <div class="form-group">
+        <label for="register-username">Username</label>
+        <input id="register-username" type="text" class="form-control" placeholder="Choose a username" minlength="3" maxlength="20" required>
+      </div>
+      <div class="form-group">
+        <label for="register-email">Email</label>
+        <input id="register-email" type="email" class="form-control" placeholder="Enter your email" required>
+      </div>
+      <div class="form-group">
+        <label for="register-password">Password</label>
+        <input id="register-password" type="password" class="form-control" placeholder="Create a password" minlength="6" required>
+      </div>
+      <div class="form-group">
+        <label for="register-confirm-password">Confirm Password</label>
+        <input id="register-confirm-password" type="password" class="form-control" placeholder="Re-enter your password" minlength="6" required>
+      </div>
+      <button id="register-btn" class="btn" type="submit" style="width:100%;background:var(--accent-color);color:#003366;font-weight:700;border-radius:var(--radius-md);padding:0.75rem;">Create Account</button>
+    </form>
+  </div>
+</div>
+
+
+  <header id="header-bg">
+    <div class="header-content">
+      <div class="logo-3d-container">
+        <div class="logo-3d">
+          <img src="supreme_logo1.webp" alt="Titan Logo" class="hero-logo">
+          <h2 class="titan-text">TITAN <span class="network-accent">TEAM</span></h2>
+          <div class="logo-aura"></div>
+        </div>
+        <div class="logo-subtitle">DEDICATED STAFF FORCE</div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="controls-wrapper">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="staffSearch" placeholder="Search by name, role, or rank...">
+      </div>
+      <div class="filter-box">
+        <select id="staffFilter">
+          <option value="all">Global Ranks</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="staff-root">
+      <!-- Dynamic Grid Sections -->
+    </div>
+  </main>
+
+  <footer style="padding: 60px 0; text-align: center; color: var(--text-dim);">
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork. Designed with Passion.</p>
+    </div>
+  </footer>
+
+  <div id="notif-root"></div>
+
+  <!-- Inline Admin Staff Modal -->
+  <div id="inline-staff-modal" class="modal-overlay">
+    <div class="modal-box" style="border: 1px solid var(--border-color); background: var(--card-bg);">
+      <h2 style="margin-top: 0; margin-bottom: 20px; color: var(--accent);"><i class="fas fa-user-plus"></i> Add Staff Member</h2>
+      <div style="margin-bottom: 15px;">
+        <label style="display:block; margin-bottom:5px; color:var(--text-secondary);">User Email OR UID <span style="font-size:0.8rem;color:#888;">(UID is more reliable)</span></label>
+        <input id="inline-staff-email" type="text" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: #fff;" placeholder="user@example.com OR abc123DEF456ghi">
+      </div>
+      <div style="margin-bottom: 20px;">
+        <label style="display:block; margin-bottom:5px; color:var(--text-secondary);">Role</label>
+        <select id="inline-staff-role" style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: rgba(255,255,255,0.05); color: #fff;">
+          <option value="staff">Staff</option>
+          <option value="helper">Helper</option>
+          <option value="moderator">Moderator</option>
+          <option value="developer">Developer</option>
+          <option value="lead developer">Lead Developer</option>
+          <option value="manager">Manager</option>
+          <option value="admin">Admin</option>
+          <option value="co-owner">Co-Owner</option>
+          <option value="owner">Owner</option>
+        </select>
+      </div>
+      <div id="inline-staff-status" style="margin-bottom: 15px; font-size: 0.9rem;"></div>
+      <div style="display: flex; gap: 10px; justify-content: flex-end;">
+        <button onclick="document.getElementById('inline-staff-modal').style.display='none'" style="padding: 10px 15px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: #fff; cursor: pointer;">Cancel</button>
+        <button onclick="inlineAddStaff()" style="padding: 10px 15px; border-radius: 8px; border: none; background: #2563eb; color: #fff; cursor: pointer; font-weight: bold;">Add to Team</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import './firebase-global.js';
+    import { updateUIForUser, initNavbar } from './navbar-logic.js';
+    import { renderBadges, getUserMetadata } from './user-metadata-logic.js';
+    import { 
+      auth, db, fs, ref, get, onValue, setDoc, deleteDoc, doc, collection, getDocs, onAuthStateChanged, fsTimestamp, fQuery, where, limit
+    } from './firebase-global.js';
+    import { initProfileCardTriggers } from './profile-card-logic.js';
+
+    // --- SHARED UTILITIES (FROM INDEX) ---
+    window.showNotification = function(message, type = "success") {
+      notify(message, type);
+    }
+
+    window.copyToClipboard = function(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        window.showNotification('Copied to clipboard!', 'success');
+      }).catch(err => {
+        console.error('Copy failed:', err);
+        window.showNotification('Copy failed', 'error');
+      });
+    };
+
+    window.copyIP = function() { window.copyToClipboard('titannetwork.eu'); };
+
+    window.joinServer = function() {
+      const instructions = `To join TitanNetwork:\n1. Open Minecraft\n2. Click "Multiplayer"\n3. Click "Add Server"\n4. Enter: titannetwork.eu\n5. Click "Done" and join!`;
+      alert(instructions);
+      window.copyIP();
+    };
+
+    window.joinDiscord = function() {
+      window.open('https://discord.gg/ExFhgvtFng', '_blank');
+    };
+
+    async function updateServerStatus() {
+      const playerCount = document.getElementById('player-count');
+      if (!playerCount) return;
+      try {
+        const response = await fetch('https://api.mcsrvstat.us/2/titannetwork.eu');
+        const data = await response.json();
+        if (data.online) {
+          const count = data.players?.online || 0;
+          playerCount.textContent = `${count} Player${count !== 1 ? 's' : ''} Online`;
+          playerCount.style.background = 'var(--accent-color)';
+        } else {
+          playerCount.textContent = 'Server Offline';
+          playerCount.style.background = '#e74c3c';
+        }
+      } catch (error) {
+        playerCount.textContent = 'Status Unavailable';
+      }
+    }
+
+    function notify(msg, type = 'info') {
+      const root = document.getElementById('notif-root');
+      if (!root) return;
+      const div = document.createElement('div');
+      div.className = 'notif';
+      const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle');
+      const color = type === 'success' ? '#10b981' : (type === 'error' ? '#ef4444' : '#00bfff');
+      div.innerHTML = `<i class="fas ${icon}" style="color: ${color}"></i> <span>${msg}</span>`;
+      root.appendChild(div);
+      setTimeout(() => {
+        div.style.opacity = '0';
+        div.style.transform = 'translateX(20px)';
+        setTimeout(() => div.remove(), 4000);
+      }, 4000);
+    }
+
+    let staffData = [];
+    let onlineStaff = new Set();
+    let isAdmin = false;
+
+    // --- ADMIN INLINE STAFF MANAGEMENT ---
+    async function inlineAddStaff() {
+      const emailInput = document.getElementById('inline-staff-email').value.trim();
+      const role = document.getElementById('inline-staff-role').value;
+      const status = document.getElementById('inline-staff-status');
+
+      if (!emailInput) { status.textContent = 'âš ï¸ Please enter an email address or UID.'; status.style.color = 'orange'; return; }
+      const inputStr = emailInput.toLowerCase();
+
+      try {
+        status.textContent = 'Looking up user...';
+        status.style.color = '#aaa';
+
+        let email = null;
+        let uid = null;
+
+        // Is it an email or UID?
+        if (inputStr.includes('@')) {
+           email = inputStr;
+           // 1. Resolve UID via Firestore
+           const usersQ = fQuery(collection(fs, "users"), where("email", "==", email), limit(1));
+           const userSnap = await getDocs(usersQ);
+           if (!userSnap.empty) uid = userSnap.docs[0].id;
+           
+           // 2. Fallback to RTDB search
+           if (!uid) {
+             status.textContent = 'Searching RTDB for user...';
+             const rtdbUsers = await get(ref(db, 'users'));
+             if (rtdbUsers.exists()) {
+               const usersDict = rtdbUsers.val();
+               uid = Object.keys(usersDict).find(k => usersDict[k].email?.toLowerCase() === email);
+             }
+           }
+        } else {
+           uid = inputStr;
+        }
+
+        let username = null;
+        let pfpUrl = null;
+
+        // 3. Fetch RTDB Data if UID found
+        if (uid) {
+           status.textContent = 'Fetching profile data...';
+           const [rtdbUserSnap, rtdbPfpSnap] = await Promise.all([
+             get(ref(db, `users/${uid}`)).catch(() => null),
+             get(ref(db, `pfp/${uid}`)).catch(() => null)
+           ]);
+           if (rtdbUserSnap && rtdbUserSnap.exists()) {
+              const ud = rtdbUserSnap.val();
+              username = ud.username || ud.displayName;
+              pfpUrl = ud.pfp || ud.photoURL || null;
+              if (!email && ud.email) email = ud.email.toLowerCase(); // Capture email from RTDB
+           }
+           if (rtdbPfpSnap && rtdbPfpSnap.exists()) pfpUrl = rtdbPfpSnap.val();
+        }
+
+        if (!email) email = uid; // Failsafe Document ID
+
+        status.textContent = 'Saving to public cache...';
+
+        // 4. Save to Public Team Collection
+        const teamData = {
+          email: email, role: role, ranks: [role], updatedAt: fsTimestamp()
+        };
+        if (uid) teamData.uid = uid;
+        if (username) teamData.username = username;
+        if (pfpUrl) teamData.pfp = pfpUrl;
+
+        await Promise.all([
+          setDoc(doc(fs, "team", email), teamData, { merge: true }),
+          setDoc(doc(fs, "email_roles", email), { role, email, updatedAt: fsTimestamp() }, { merge: true })
+        ]);
+
+        if (uid) {
+           await setDoc(doc(fs, "users", uid), { role: role, updatedAt: fsTimestamp() }, { merge: true });
+        }
+
+        status.textContent = `✅ Success! Added ${username || email}.`;
+        status.style.color = '#4caf50';
+        notify(`Added Staff: ${username || email}`, 'success');
+        
+        // Clean up and refresh
+        document.getElementById('inline-staff-email').value = '';
+        setTimeout(() => { document.getElementById('inline-staff-modal').style.display = 'none'; status.textContent=''; }, 1000);
+        refreshTeam();
+
+      } catch (err) {
+        console.error(err);
+        status.textContent = 'âŒ Failed: ' + err.message;
+        status.style.color = 'red';
+      }
+    }
+    window.inlineAddStaff = inlineAddStaff;
+    // ------------------------------------
+
+    async function refreshTeam() {
+      const root = document.getElementById('staff-root');
+      try {
+        console.log("--- START STAFF FETCH (SINGLE SOURCE: FIRESTORE) ---");
+        
+        let teamSnap = await getDocs(collection(fs, "team"));
+        let rawStaff = [];
+        
+        console.log("Primary 'team' collection size:", teamSnap.size);
+        teamSnap.forEach(d => {
+          rawStaff.push({ id: d.id, ...d.data() });
+        });
+
+        if (rawStaff.length === 0) {
+          console.error("No staff found in the public team collection.");
+          staffData = [];
+          renderTeam();
+          return;
+        }
+
+        console.log("Processing", rawStaff.length, "public entries...");
+        const finalPromises = rawStaff.map(async (s) => {
+          try {
+            // Firestore data serves as the base/registry
+            let pfpUrl = s.pfp || null;
+            let role = s.role || "Staff";
+            let username = s.username || (s.email ? s.email.split('@')[0] : (s.id && s.id.includes('@') ? s.id.split('@')[0] : "User"));
+            const uid = s.uid || (s.id && !s.id.includes('@') ? s.id : null);
+
+            // Fetch dynamic metadata if UID is available (Live Source of Truth)
+            if (uid) {
+              try {
+                const liveMeta = await getUserMetadata(uid);
+                if (liveMeta) {
+                  if (liveMeta.pfpUrl) pfpUrl = liveMeta.pfpUrl;
+                  if (liveMeta.username) username = liveMeta.username;
+                }
+              } catch (metaErr) {
+                console.warn(`Could not fetch live meta for ${uid}:`, metaErr);
+              }
+            }
+
+            return {
+              uid: uid || s.id,
+              email: s.email || (s.id && s.id.includes('@') ? s.id : null),
+              username: username,
+              role: role,
+              ranks: s.ranks || [role],
+              pfp: pfpUrl || `https://minotar.net/avatar/${encodeURIComponent(username || 'Steve')}/100.png`
+            };
+          } catch (e) {
+            console.error("Error processing staff member:", s, e);
+            return null;
+          }
+        });
+
+        staffData = (await Promise.all(finalPromises)).filter(s => s !== null);
+        console.log("Success: Final Team Size:", staffData.length);
+        populateFilters();
+        renderTeam();
+      } catch (err) {
+        console.error("CRITICAL UI ERROR:", err);
+        if (root) root.innerHTML = `<div style="text-align:center; padding:40px; color:#ff4444;"><i class="fas fa-exclamation-triangle" style="font-size:2rem; margin-bottom:10px;"></i><p>Failed to load team data: ${err.message}</p></div>`;
+      }
+    }
+
+    function renderTeam() {
+      const root = document.getElementById('staff-root');
+      if (!root) return;
+      
+      const searchEl = document.getElementById('staffSearch');
+      const filterEl = document.getElementById('staffFilter');
+      const queryText = (searchEl?.value || "").toLowerCase();
+      const filter = filterEl?.value || 'all';
+      
+      root.innerHTML = '';
+
+      const grouped = {};
+      const order = ["owner", "co-owner", "manager", "admin", "lead developer", "developer", "moderator", "helper", "staff"];
+      
+      staffData.forEach(s => {
+        if (!s.role) return; // Critical guard
+        const rNorm = s.role.toLowerCase() === 'mod' ? 'moderator' : s.role.toLowerCase();
+        
+        if (filter !== 'all' && rNorm !== filter) return;
+        if (queryText && !s.username.toLowerCase().includes(queryText) && !s.role.toLowerCase().includes(queryText)) return;
+        
+        if (!grouped[rNorm]) grouped[rNorm] = [];
+        grouped[rNorm].push(s);
+      });
+
+      const sortedRoles = Object.keys(grouped).sort((a,b) => {
+        const ai = order.indexOf(a), bi = order.indexOf(b);
+        return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+      });
+
+      if (sortedRoles.length === 0) {
+        root.innerHTML = `<div style="text-align:center; padding: 100px 0; color: var(--text-dim);"><i class="fas fa-search" style="font-size: 3rem; margin-bottom: 20px; opacity: 0.2;"></i><p>No staff members found.</p></div>`;
+        return;
+      }
+
+      sortedRoles.forEach(role => {
+        const members = grouped[role];
+        const section = document.createElement('div');
+        section.className = 'staff-section';
+        
+        const displayRole = role.charAt(0).toUpperCase() + role.slice(1);
+        const roleClass = `rank-${role.replace(/\s+/g, '-')}`;
+        
+        section.innerHTML = `
+          <div class="section-header">
+            <h2 class="${roleClass}">${displayRole} - ${members.length}</h2>
+          </div>
+          <div class="staff-grid"></div>
+        `;
+        
+        const grid = section.querySelector('.staff-grid');
+        members.forEach(m => {
+          const isOnline = m.email && onlineStaff.has(m.email.toLowerCase().replace(/\./g, '_'));
+          const mRoleClass = `rank-${m.role.toLowerCase().replace(/\s+/g, '-')}`;
+          
+          const card = document.createElement('div');
+          card.className = `staff-card ${mRoleClass}`;
+          
+          // Enable click for mini-profile-card
+          if (m.uid && !m.uid.includes('@')) {
+            card.dataset.userUid = m.uid;
+          }
+
+          const deleteBtnHtml = isAdmin ? `<div class="btn-delete" title="Remove from Team" onclick="event.stopPropagation(); window.deleteStaff('${m.uid}', '${m.username}')"><i class="fas fa-trash-alt"></i></div>` : '';
+
+          card.innerHTML = `
+            <div class="avatar-wrapper">
+              <img src="${m.pfp}" alt="${m.username}" class="avatar-img" onerror="this.src='supreme_logo1.webp'">
+              <span class="status-dot ${isOnline ? 'online' : ''}"></span>
+            </div>
+            <div class="staff-info">
+              <span class="staff-name">${m.username}</span>
+              <span class="staff-role-text">${m.role}</span>
+            </div>
+            ${deleteBtnHtml}
+          `;
+          grid.appendChild(card);
+        });
+        root.appendChild(section);
+      });
+    }
+
+    async function deleteStaff(uid, username) {
+      if (!confirm(`Are you sure you want to remove ${username} from the staff team?`)) return;
+      try {
+        const member = staffData.find(s => s.uid === uid);
+        const email = member?.email || (uid.includes('@') ? uid : null);
+        
+        const deletePromises = [];
+        if (email) {
+          deletePromises.push(deleteDoc(doc(fs, "team", email.toLowerCase())));
+          deletePromises.push(deleteDoc(doc(fs, "email_roles", email.toLowerCase())));
+        }
+        
+        if (uid && !uid.includes('@')) {
+          deletePromises.push(setDoc(doc(fs, "users", uid), { role: 'user', updatedAt: fsTimestamp() }, { merge: true }));
+        }
+
+        await Promise.all(deletePromises);
+        notify(`Removed ${username} from Team`, "success");
+        refreshTeam();
+      } catch (err) { 
+        console.error("Delete failed:", err);
+        notify("Failed to remove: " + err.message, "error"); 
+      }
+    }
+    window.deleteStaff = deleteStaff;
+
+    function populateFilters() {
+      const select = document.getElementById('staffFilter');
+      const current = select.value;
+      select.innerHTML = '<option value="all">Global Ranks</option>';
+      const roles = [...new Set(staffData.map(s => s.role.toLowerCase()))].sort();
+      roles.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r; opt.textContent = r; select.appendChild(opt);
+      });
+      select.value = current;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      updateServerStatus();
+      setInterval(updateServerStatus, 30000);
+
+      const root = document.getElementById('staff-root');
+      if (root) root.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim);"><i class="fas fa-spinner fa-spin" style="font-size:2rem; margin-bottom:10px;"></i><p>Loading Staff Team...</p></div>';
+      
+      initProfileCardTriggers();
+      document.getElementById('staffSearch').oninput = renderTeam;
+      document.getElementById('staffFilter').onchange = renderTeam;
+      onAuthStateChanged(auth, async (user) => {
+        updateUIForUser(user);
+        if (user) {
+          const meta = await getUserMetadata(user.uid);
+          isAdmin = ['owner', 'admin', 'manager'].includes((meta.rank || 'user').toLowerCase());
+          
+          // Inject Admin "Add Staff" button
+          if (isAdmin && !document.getElementById('open-staff-modal-btn')) {
+             const wrapper = document.querySelector('.controls-wrapper');
+             if (wrapper) {
+               const btn = document.createElement('button');
+               btn.id = 'open-staff-modal-btn';
+               btn.innerHTML = '<i class="fas fa-plus"></i> Add Staff';
+               btn.style.cssText = 'padding: 0 20px; border-radius: var(--radius-lg); border: none; background: #2563eb; color: #fff; cursor: pointer; font-weight: bold; font-family: inherit; margin-left: auto; height: 100%; transition: 0.2s;';
+               btn.onmouseover = () => btn.style.background = '#1d4ed8';
+               btn.onmouseout = () => btn.style.background = '#2563eb';
+               btn.onclick = () => document.getElementById('inline-staff-modal').style.display = 'flex';
+               wrapper.appendChild(btn);
+               wrapper.style.display = 'flex'; // Ensure wrapper is flex to align properly
+             }
+          }
+        } else { isAdmin = false; }
+        refreshTeam();
+      });
+      onValue(ref(db, 'online-staff'), (snap) => {
+        onlineStaff = new Set(snap.exists() ? Object.keys(snap.val()) : []);
+        renderTeam();
+      });
+    });
+  </script>
+</body>
+</html>

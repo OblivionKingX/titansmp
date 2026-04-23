@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - View Thread</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="navbar-shared.css">
+  <link rel="stylesheet" href="profile-card.css">
+  <link rel="stylesheet" href="bbcode.css">
+  <style>
+    :root {
+      --primary-bg: #0f1720;
+      --secondary-bg: #0a1425;
+      --accent-color: #00bfff;
+      --accent-hover: #0088cc;
+      --text-color: #d9f3ff;
+      --text-secondary: #87b7d4;
+      --border-color: rgba(0, 180, 255, 0.2);
+      --card-bg: rgba(10, 20, 40, 0.95);
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --transition-base: 300ms ease;
+    }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--primary-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+
+    /* Post Layout */
+    .post-main {
+      padding: var(--space-xl) 0;
+    }
+
+    .breadcrumbs {
+      margin-bottom: var(--space-lg);
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .breadcrumbs a {
+      color: var(--accent-color);
+      text-decoration: none;
+    }
+
+    .thread-title-area {
+      margin-bottom: var(--space-xl);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+    }
+
+    .thread-title-area h1 {
+      font-size: 2rem;
+      color: white;
+      font-weight: 800;
+      margin: 0;
+    }
+
+    .status-badge {
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      display: none;
+    }
+
+    .status-pending { background: #f39c12; color: white; }
+    .status-accepted { background: #2ecc71; color: white; }
+    .status-denied { background: #e74c3c; color: white; }
+    .status-under-review { background: #3498db; color: white; }
+
+    /* Reddit-Style Nesting Polished */
+    .replies-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      margin-top: var(--space-xl);
+    }
+
+    .post-wrapper {
+      margin-bottom: var(--space-md);
+      position: relative;
+    }
+
+    .post-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      display: grid;
+      grid-template-columns: 160px 1fr;
+      min-height: 100px;
+      position: relative;
+    }
+
+    .post-card:hover {
+      border-color: rgba(0, 191, 255, 0.4);
+    }
+
+    /* Flat Replies Layout */
+    .replies-container {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+
+    .post-sidebar {
+      background: rgba(0, 0, 0, 0.3);
+      padding: var(--space-md);
+      text-align: center;
+      border-right: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .post-author-pfp {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--border-color);
+      margin-bottom: 2px;
+    }
+
+    .post-author-name {
+      display: block;
+      font-weight: 800;
+      color: white;
+      font-size: 1rem;
+      margin-bottom: 5px;
+      text-shadow: 0 0 10px rgba(0, 191, 255, 0.3);
+      word-break: break-all;
+    }
+
+    .post-author-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+    }
+
+    .author-stats {
+      width: 100%;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 0.75rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 10px;
+    }
+
+    .author-stat {
+      display: flex;
+      justify-content: space-between;
+      color: var(--text-secondary);
+    }
+
+    .stat-ctx {
+      color: white;
+      font-weight: 600;
+    }
+
+    /* Quoted Reply Styles */
+    .quote-block {
+      background: rgba(255, 255, 255, 0.03);
+      border-left: 3px solid var(--accent-color);
+      padding: 0.75rem 1rem;
+      border-radius: 4px;
+      margin-bottom: var(--space-md);
+      cursor: pointer;
+      transition: background var(--transition-base), transform 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-block::before {
+      content: '\f10d';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      opacity: 0.1;
+    }
+
+    .quote-block:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateX(5px);
+    }
+
+    .quote-author {
+      display: block;
+      font-weight: 800;
+      font-size: 0.8rem;
+      color: var(--accent-color);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .quote-content {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      font-style: italic;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+      padding: var(--space-md);
+    }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid var(--accent-color);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 600px;
+      padding: var(--space-xl);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 191, 255, 0.1);
+      position: relative;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-xl);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: var(--space-md);
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color var(--transition-base);
+    }
+
+    .modal-close:hover {
+      color: white;
+    }
+
+    form .form-control {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 0.75rem 1rem;
+      color: white;
+      font-family: inherit;
+      margin-bottom: var(--space-md);
+      transition: border-color var(--transition-base);
+      min-height: auto;
+    }
+
+    form .form-control:focus {
+      outline: none;
+      border-color: var(--accent-color);
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: var(--space-xs);
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+
+
+
+    .post-content-area {
+      padding: var(--space-lg);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,0.02));
+      min-width: 0; /* Fix grid blowout */
+    }
+
+    .post-header-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      opacity: 0.8;
+    }
+
+    .post-body {
+      color: var(--text-color);
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      overflow-wrap: break-word; /* Fix long words */
+      word-break: break-word;
+      flex-grow: 1;
+      margin-bottom: var(--space-lg);
+      line-height: 1.6;
+    }
+
+    .edited-notice {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .post-footer-actions {
+      display: flex;
+      gap: var(--space-lg);
+      margin-top: auto;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: var(--space-sm);
+    }
+
+    .action-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .action-btn:hover {
+      color: var(--accent-color);
+    }
+
+    .action-btn.delete:hover {
+      color: #ff4757;
+    }
+
+    /* Staff Actions Bar */
+    .staff-actions-bar {
+      background: rgba(255, 140, 0, 0.1);
+      border: 1px solid orange;
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin-bottom: var(--space-lg);
+      display: none;
+      align-items: center;
+      gap: var(--space-md);
+    }
+
+    .staff-actions-bar span {
+      font-weight: 700;
+      color: orange;
+    }
+
+    /* Reply Form */
+    .reply-form-section {
+      margin-top: var(--space-2xl);
+    }
+
+    .reply-form-section h2 {
+      margin-bottom: var(--space-md);
+      color: white;
+    }
+
+    .reply-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: var(--space-lg);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: white;
+      font-family: inherit;
+      min-height: 200px;
+      resize: vertical;
+      margin-bottom: var(--space-md);
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all var(--transition-base);
+    }
+
+    .btn-primary { background: var(--accent-color); color: #003366; }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); }
+
+    .btn-accept { background: #2ecc71; color: white; }
+    .btn-deny { background: #e74c3c; color: white; }
+    .btn-review { background: #3498db; color: white; }
+
+    @media (max-width: 768px) {
+      .post-card {
+        grid-template-columns: 1fr;
+      }
+      .post-sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        text-align: left;
+        min-height: auto;
+      }
+      .post-author-pfp {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+        <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanNetwork</h1>
+      </div>
+      <button class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="forums.html" class="forum active"><i class="fas fa-newspaper"></i> Forums</a></li>
+        <li><a href="vote.html" class="vote"><i class="fas fa-vote-yea"></i> Vote</a></li>
+        <li><a href="index.html#store" class="store"><i class="fas fa-shopping-cart"></i> Store</a></li>
+        <li><a href="https://discord.gg/ExFhgvtFng" class="forum discord-nav"><i class="fab fa-discord"></i> Discord</a></li>
+        <li><a href="team.html" class="staff"><i class="fas fa-users"></i> Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More ▾</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html"><i class="fas fa-gavel"></i> Rules</a></li>
+            <li><a href="apply.html"><i class="fas fa-file-alt"></i> Apply</a></li>
+            <li><a href="appeal.html"><i class="fas fa-balance-scale"></i> Appeal</a></li>
+            <li><a href="wiki.html"><i class="fas fa-book"></i> Wiki</a></li>
+          </ul>
+        </li>
+        <li class="user-menu" id="user-menu-item">
+          <button class="user-btn" id="user-btn-desktop">
+            <span id="user-btn-content" style="display: flex; align-items: center; gap: var(--space-xs);">
+              <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+              <i id="navbar-user-icon" class="fas fa-user-circle"></i>
+              <span id="user-btn-text">Account</span>
+            </span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div class="user-name" id="user-name">Guest</div>
+              <div class="user-role" id="user-role">Guest</div>
+              <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+            </div>
+            <a href="index.html?login=true" id="login-link">
+              <i class="fas fa-sign-in-alt"></i> Login / Register
+            </a>
+            <a href="#" id="profile-link" style="display:none;">
+              <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a href="profile-settings.html" id="settings-link" style="display:none;">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="#" id="owner-link" style="display:none;">
+              <i class="fas fa-crown"></i> Owner Panel
+            </a>
+            <a href="#" id="logout-link" style="display:none;">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container post-main">
+    <div class="breadcrumbs">
+      <a href="index.html">Home</a> &raquo; <a href="forums.html">Forums</a> &raquo; <a id="forum-link" href="#">Loading...</a> &raquo; <span id="thread-name-breadcrumb">Loading...</span>
+    </div>
+
+    <div class="thread-title-area">
+      <h1 id="thread-title-display">Loading Thread...</h1>
+      <div style="display: flex; align-items: center; gap: var(--space-md);">
+        <div id="thread-status" class="status-badge">Pending</div>
+        <button class="btn btn-primary" id="open-post-modal" style="display: none;">
+          <i class="fas fa-edit"></i> Create Post
+        </button>
+      </div>
+    </div>
+
+    <!-- Thread Creation Modal (from Forums/Threads) -->
+    <div class="modal-overlay" id="post-modal">
+        <div class="modal-card">
+          <div class="modal-header">
+            <h2><i class="fas fa-edit"></i> Start a New Discussion</h2>
+            <button class="modal-close" id="close-post-modal">&times;</button>
+          </div>
+          <form id="new-thread-from-post-form">
+            <div class="form-group">
+              <label for="post-category-select">Select Category</label>
+              <select id="post-category-select" class="form-control" required>
+                <option value="" disabled selected>Choose a category...</option>
+                <option value="general-chat">General Chat</option>
+                <option value="off-topic">Off-Topic</option>
+                <option value="server-discussion">Server Discussion</option>
+                <option value="support">Support</option>
+                <option value="password-reset">Password Reset</option>
+                <option value="suggestions">Suggestions</option>
+                <option value="bug-reports">Bug Reports</option>
+                <option value="staff-apps">Staff Applications</option>
+              </select>
+            </div>
+  
+            <div class="form-group">
+              <label for="post-thread-title">Thread Title</label>
+              <input type="text" id="post-thread-title" class="form-control" placeholder="What's on your mind?" required>
+            </div>
+  
+            <div class="form-group">
+              <label for="post-thread-content">Content</label>
+              <div class="bb-toolbar">
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+                <span class="toolbar-divider"></span>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('size')" title="Text Size"><i class="fas fa-text-height"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.openColorPicker()" title="Text Color"><i class="fas fa-palette"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('bold')" title="Bold"><i class="fas fa-bold"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('italic')" title="Italic"><i class="fas fa-italic"></i></button>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('underline')" title="Underline"><i class="fas fa-underline"></i></button>
+                <span class="toolbar-divider"></span>
+                <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('reset')" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+              </div>
+              <textarea id="post-thread-content" class="form-control" placeholder="Share your thoughts with the community..." style="min-height: 150px; border-top-left-radius: 0; border-top-right-radius: 0;" required></textarea>
+            </div>
+
+            <div class="form-group">
+              <label>Live Preview</label>
+              <div id="thread-preview-area" class="bb-preview-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border: 1px dashed var(--border-color); min-height: 50px; color: white;">
+                <span style="color: var(--text-secondary); font-style: italic;">Preview will appear here as you type...</span>
+              </div>
+            </div>
+  
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary">Publish Thread</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+    <!-- Staff Actions -->
+    <div id="staff-actions" class="staff-actions-bar">
+      <i class="fas fa-shield-alt"></i>
+      <span>Staff Actions:</span>
+      <button class="btn btn-accept" onclick="updateThreadStatus('accepted')">Accept</button>
+      <button class="btn btn-deny" onclick="updateThreadStatus('denied')">Deny</button>
+      <button class="btn btn-review" onclick="updateThreadStatus('under-review')">Under Review</button>
+    </div>
+
+    <div class="post-container" id="replies-container"></div>
+
+    <!-- Reply Form -->
+    <section class="reply-form-section" id="reply-section">
+      <h2>Post a Reply</h2>
+      <div class="reply-card">
+        <form id="reply-form">
+          <div class="bb-toolbar">
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('left')" title="Align Left"><i class="fas fa-align-left"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('center')" title="Align Center"><i class="fas fa-align-center"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('right')" title="Align Right"><i class="fas fa-align-right"></i></button>
+            <span class="toolbar-divider"></span>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('size')" title="Text Size"><i class="fas fa-text-height"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.openColorPicker()" title="Text Color"><i class="fas fa-palette"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('bold')" title="Bold"><i class="fas fa-bold"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('italic')" title="Italic"><i class="fas fa-italic"></i></button>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('underline')" title="Underline"><i class="fas fa-underline"></i></button>
+            <span class="toolbar-divider"></span>
+            <button type="button" class="toolbar-btn" onclick="window.insertFormatTag('reset')" title="Clear Formatting"><i class="fas fa-eraser"></i></button>
+          </div>
+          <textarea id="reply-content" class="form-control" placeholder="Write your reply here..." required style="border-top-left-radius: 0; border-top-right-radius: 0; min-height: 120px;"></textarea>
+          <div class="form-group" style="margin-bottom: 15px;">
+            <label>Live Preview</label>
+            <div id="reply-preview-area" class="bb-preview-container" style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border: 1px dashed var(--border-color); min-height: 50px; color: white;">
+              <span style="color: var(--text-secondary); font-style: italic;">Preview will appear here as you type...</span>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" id="submit-reply-btn">Post Reply</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer style="padding: 40px 0; text-align: center; border-top: 1px solid var(--border-color); margin-top: 50px;">
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork Minecraft Server. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="bbcode.js"></script>
+  <script src="utils.js"></script>
+  <script type="module" src="post-logic.js"></script>
+</body>
+
+</html>
