@@ -28,6 +28,10 @@ class FirebaseService {
             decodedJSON = Buffer.from(serviceAccountJSON, 'base64').toString('utf-8');
           }
           serviceAccount = JSON.parse(decodedJSON);
+          // Fix for PEM formatting in environment variables
+          if (serviceAccount.private_key) {
+            serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+          }
           console.log('[Firebase] Initialized using JSON string.');
         } catch (e) {
           throw new Error('Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON. Ensure it is valid JSON or Base64.');
