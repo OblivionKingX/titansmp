@@ -20,9 +20,18 @@ class FirebaseService {
 
       let serviceAccount;
       if (serviceAccountJSON) {
-        // Option 1: Load from JSON string directly (Best for GitHub Actions)
-        serviceAccount = JSON.parse(serviceAccountJSON);
-        console.log('[Firebase] Initializing using JSON string.');
+        try {
+          // Check if it's Base64 and decode if necessary
+          let decodedJSON = serviceAccountJSON;
+          if (!serviceAccountJSON.trim().startsWith('{')) {
+            console.log('[Firebase] Detected Base64 JSON, decoding...');
+            decodedJSON = Buffer.from(serviceAccountJSON, 'base64').toString('utf-8');
+          }
+          serviceAccount = JSON.parse(decodedJSON);
+          console.log('[Firebase] Initialized using JSON string.');
+        } catch (e) {
+          throw new Error('Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON. Ensure it is valid JSON or Base64.');
+        }
       } else if (serviceAccountPath) {
         // Option 2: Load from file path (Best for local dev)
         const absolutePath = path.isAbsolute(serviceAccountPath) 
