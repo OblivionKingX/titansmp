@@ -11,18 +11,28 @@ class FirebaseService {
   init() {
     try {
       const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
+      const serviceAccountJSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
       const databaseURL = process.env.FIREBASE_DATABASE_URL;
 
-      if (!serviceAccountPath || !databaseURL) {
-        throw new Error('Missing FIREBASE_SERVICE_ACCOUNT_PATH or FIREBASE_DATABASE_URL in .env');
+      if (!databaseURL) {
+        throw new Error('Missing FIREBASE_DATABASE_URL in .env');
       }
 
-      // Handle relative paths for service account
-      const absolutePath = path.isAbsolute(serviceAccountPath) 
-        ? serviceAccountPath 
-        : path.join(process.cwd(), serviceAccountPath);
-
-      const serviceAccount = require(absolutePath);
+      let serviceAccount;
+      if (serviceAccountJSON) {
+        // Option 1: Load from JSON string directly (Best for GitHub Actions)
+        serviceAccount = JSON.parse(serviceAccountJSON);
+        console.log('[Firebase] Initializing using JSON string.');
+      } else if (serviceAccountPath) {
+        // Option 2: Load from file path (Best for local dev)
+        const absolutePath = path.isAbsolute(serviceAccountPath) 
+          ? serviceAccountPath 
+          : path.join(process.cwd(), serviceAccountPath);
+        serviceAccount = require(absolutePath);
+        console.log('[Firebase] Initializing using file path.');
+      } else {
+        throw new Error('Missing FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_SERVICE_ACCOUNT_PATH');
+      }
 
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
