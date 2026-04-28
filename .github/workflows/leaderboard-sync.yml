@@ -34,6 +34,7 @@ jobs:
           UPDATE_INTERVAL: 60000
           STATS_OBJECTIVES: ${{ secrets.STATS_OBJECTIVES }}
           FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+          FIREBASE_SERVICE_ACCOUNT_PATH: service-account.json
           # We'll pass the service account JSON as a secret
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: |
