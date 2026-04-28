@@ -24,6 +24,12 @@ jobs:
           cd rcon-bridge
           npm ci
 
+      - name: Decode service account
+        env:
+          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+        run: |
+          echo "$FIREBASE_SERVICE_ACCOUNT_JSON" | base64 -d > rcon-bridge/service-account.json
+
       - name: Run sync
         env:
           RCON_HOST: ${{ secrets.RCON_HOST }}
@@ -32,7 +38,7 @@ jobs:
           UPDATE_INTERVAL: 60000
           STATS_OBJECTIVES: ${{ secrets.STATS_OBJECTIVES }}
           FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
-          FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
+          FIREBASE_SERVICE_ACCOUNT_PATH: service-account.json
         run: |
           cd rcon-bridge
           node src/sync-once.js
