@@ -1,0 +1,23 @@
+{
+  "name": "titansmp-rcon-bridge",
+  "version": "1.0.0",
+  "description": "A bridge between Minecraft RCON and Firebase Realtime Database for live leaderboards.",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "firebase-admin": "^12.1.0",
+    "rcon-client": "^1.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "TitanSMP",
+  "license": "MIT"
+}

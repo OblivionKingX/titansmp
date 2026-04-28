@@ -1,0 +1,17 @@
+const rcon = require('../src/rcon');
+
+async function test() {
+  try {
+    await rcon.connect();
+    console.log('--- Testing RCON Commands ---');
+    
+    const list = await rcon.sendCommand('scoreboard players list OblivionKingX');
+    console.log('Player Stats Output:', list);
+    
+    await rcon.disconnect();
+  } catch (err) {
+    console.error('Test failed:', err.message);
+  }
+}
+
+test();

@@ -18,7 +18,10 @@
   "homepage": "https://github.com/OblivionKingX/titansmp#readme",
   "description": "",
   "dependencies": {
-    "firebase-admin": "^13.7.0",
-    "node-fetch": "^3.3.2"
+    "firebase-admin": "^13.8.0",
+    "minecraft-server-util": "^5.4.4",
+    "node-fetch": "^3.3.2",
+    "rcon": "^1.1.0",
+    "rcon-client": "^4.2.5"
   }
 }

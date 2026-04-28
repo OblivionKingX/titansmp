@@ -1,3 +1,21 @@
 {
-	"siteId": "7e14eb57-a053-4f8f-9366-95664401e8f3"
+	"siteId": "7e14eb57-a053-4f8f-9366-95664401e8f3",
+	"geolocation": {
+		"data": {
+			"city": "Cologne",
+			"country": {
+				"code": "DE",
+				"name": "Germany"
+			},
+			"subdivision": {
+				"code": "NW",
+				"name": "North Rhine-Westphalia"
+			},
+			"timezone": "Europe/Berlin",
+			"latitude": 50.9217,
+			"longitude": 6.9951,
+			"postalCode": "51105"
+		},
+		"timestamp": 1777311121439
+	}
 }

@@ -579,6 +579,92 @@
       background: var(--warning);
       color: white;
     }
+
+    /* ── RCON TERMINAL ── */
+    .terminal-container {
+      background: #000;
+      border-radius: 8px;
+      padding: 15px;
+      font-family: 'Courier New', Courier, monospace;
+      border: 1px solid #333;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .terminal-output {
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      padding-right: 10px;
+    }
+
+    .terminal-output::-webkit-scrollbar {
+      width: 6px;
+    }
+    .terminal-output::-webkit-scrollbar-track {
+      background: #111;
+    }
+    .terminal-output::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 3px;
+    }
+
+    .terminal-line {
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      word-break: break-all;
+      color: #0f0;
+    }
+
+    .terminal-line.command {
+      color: #fff;
+      font-weight: bold;
+    }
+
+    .terminal-line.error {
+      color: #f44336;
+    }
+
+    .terminal-line.info {
+      color: #4f8ef7;
+    }
+
+    .terminal-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-top: 1px solid #222;
+      padding-top: 10px;
+    }
+
+    .terminal-prompt {
+      color: #0f0;
+      font-weight: bold;
+    }
+
+    .terminal-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .terminal-send {
+      background: transparent;
+      border: none;
+      color: #0f0;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: 0.2s;
+    }
+
+    .terminal-send:hover {
+      color: #fff;
+      transform: scale(1.1);
+    }
   </style>
 </head>
 
@@ -700,6 +786,25 @@
       <div class="status-msg" id="ranks-status"></div>
     </div>
 
+    <!-- RCON CONSOLE -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-terminal"></i> Minecraft RCON Console</div>
+      <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+        Send commands directly to the Minecraft server. Use with caution.
+      </p>
+      <div class="terminal-container">
+        <div id="rcon-output" class="terminal-output">
+          <div class="terminal-line">Welcome to TitanNetwork RCON Console.</div>
+          <div class="terminal-line">Waiting for command...</div>
+        </div>
+        <div class="terminal-input-row">
+          <span class="terminal-prompt">></span>
+          <input id="rcon-input" class="terminal-input" type="text" placeholder="type command (e.g. list, help)..." onkeydown="handleRconKey(event)">
+          <button class="terminal-send" onclick="sendRcon()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+
     <!-- USER LIST -->
     <div class="card">
       <div class="card-title"><i class="fas fa-users"></i> All Users with Roles</div>
@@ -743,6 +848,58 @@
       const status = document.getElementById('ranks-status');
       status.textContent = 'ℹ️ All ranks deselected in UI. Click Update to save.';
       status.style.color = '#aaa';
+    }
+
+    // ── RCON LOGIC ──
+    async function sendRcon() {
+      const input = document.getElementById('rcon-input');
+      const command = input.value.trim();
+      if (!command) return;
+
+      const output = document.getElementById('rcon-output');
+      
+      // Log command
+      addTerminalLine(`> ${command}`, 'command');
+      input.value = '';
+
+      try {
+        addTerminalLine('Executing...', 'info');
+        
+        // Calling Netlify Function (Free) instead of Firebase Functions
+        const res = await fetch('/.netlify/functions/rcon', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ command })
+        });
+        
+        const result = await res.json();
+        
+        if (res.ok) {
+          if (result.response) {
+            addTerminalLine(result.response);
+          } else {
+            addTerminalLine('Command executed, no response.', 'info');
+          }
+        } else {
+          addTerminalLine(`Error: ${result.error || 'Failed to execute command'}`, 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        addTerminalLine(`Error: ${err.message}`, 'error');
+      }
+    }
+
+    function addTerminalLine(text, type = '') {
+      const output = document.getElementById('rcon-output');
+      const line = document.createElement('div');
+      line.className = `terminal-line ${type}`;
+      line.textContent = text;
+      output.appendChild(line);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function handleRconKey(e) {
+      if (e.key === 'Enter') sendRcon();
     }
 
     // Lookup user and populate UI fields

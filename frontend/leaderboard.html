@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TitanNetwork - Leaderboard</title>
+  <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="navbar-shared.css">
+  <link rel="stylesheet" href="index.css">
+  <style>
+    /* Custom Leaderboard Overrides */
+    .leaderboard-header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .controls-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
+    }
+
+    .search-box {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    .search-box input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 12px 12px 12px 45px;
+      border-radius: var(--radius-lg);
+      color: white;
+      font-family: inherit;
+      outline: none;
+      transition: all var(--transition-base);
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-color);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .stat-tabs {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-color);
+      padding: var(--space-md) var(--space-xl);
+      border-radius: var(--radius-lg);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-base);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Barlow', sans-serif;
+    }
+
+    .tab-btn:hover {
+      background: rgba(0, 191, 255, 0.1);
+      border-color: var(--accent-color);
+      transform: translateY(-2px);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-color);
+      color: #003366;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 20px rgba(0, 191, 255, 0.3);
+    }
+
+    .leaderboard-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--border-color);
+      overflow: hidden;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .leaderboard-table th {
+      text-align: left;
+      padding: var(--space-lg);
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--accent-color);
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      font-weight: 800;
+    }
+
+    .leaderboard-table td {
+      padding: var(--space-md) var(--space-lg);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: white;
+      vertical-align: middle;
+    }
+
+    .leaderboard-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .leaderboard-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .rank {
+      font-weight: 800;
+      font-size: 1.1rem;
+      width: 80px;
+    }
+
+    .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+    .rank-2 { color: #c0c0c0; text-shadow: 0 0 10px rgba(192, 192, 192, 0.5); }
+    .rank-3 { color: #cd7f32; text-shadow: 0 0 10px rgba(205, 127, 50, 0.5); }
+
+    .player-cell {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+    
+    .player-cell span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: inline-block;
+      max-width: 180px;
+    }
+
+    .player-head {
+      width: 36px;
+      height: 36px;
+      border-radius: 6px;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .score-cell {
+      text-align: right;
+      font-weight: 800;
+      color: var(--accent-color);
+      font-size: 1.1rem;
+    }
+
+    .loading-container {
+      text-align: center;
+      padding: 60px;
+    }
+
+    .loading-spinner {
+      font-size: 3rem;
+      color: var(--accent-color);
+      animation: spin 1s linear infinite;
+    }
+
+    @media (max-width: 768px) {
+      .leaderboard-header { margin-bottom: 15px; }
+      .section-title { font-size: 1.8rem; }
+      .controls-wrapper { padding: 0; gap: 10px; margin-bottom: 20px; }
+      .header-content { padding: 20px 10px; }
+      .server-info { padding: 15px; }
+      .logo-subtitle { font-size: 0.85rem; }
+      
+      /* Fix for TITANLEADERBOARD text */
+      .titan-text {
+        font-size: 2.2rem;
+        line-height: 1.1;
+        white-space: normal;
+        word-wrap: break-word;
+      }
+      
+      .tab-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+        flex: 1 1 calc(50% - 10px);
+        justify-content: center;
+      }
+
+      /* TRANSFORM TABLE TO GRID ROWS */
+      .leaderboard-table, .leaderboard-table tbody, .leaderboard-table tr, .leaderboard-table th, .leaderboard-table td {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .leaderboard-table thead {
+        display: none !important; /* Hide standard headers on mobile */
+      }
+      
+      .leaderboard-table tr {
+        display: grid !important;
+        grid-template-columns: 35px 1fr auto !important;
+        align-items: center;
+        gap: 5px;
+        padding: 12px 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      .leaderboard-table td {
+        border: none;
+        padding: 0 !important;
+      }
+      
+      .leaderboard-table td:nth-child(1) { /* Rank */
+        text-align: left;
+      }
+      
+      .leaderboard-table td:nth-child(2) { /* Player */
+        text-align: left;
+        overflow: hidden;
+      }
+      
+      .leaderboard-table td:nth-child(3) { /* Score */
+        text-align: right !important;
+      }
+
+      .rank { width: auto; font-size: 1rem; }
+      .player-cell { font-size: 0.95rem; gap: 8px; max-width: 100%; }
+      .player-head { width: 28px; height: 28px; flex-shrink: 0; }
+      .score-cell { font-size: 0.95rem; }
+      .player-cell span { max-width: 100%; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 10px; }
+      .tab-btn { flex: 1 1 100%; }
+      .titan-text { font-size: 1.8rem; }
+      
+      /* Extra shrinking for very small phones */
+      .player-cell span { font-size: 0.85rem; }
+      .score-cell { font-size: 0.85rem; }
+      .rank { font-size: 0.9rem; }
+      .player-head { width: 24px; height: 24px; }
+      .leaderboard-table tr { padding: 10px 5px; grid-template-columns: 30px 1fr auto !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="notification-container"></div>
+
+  <header id="header-bg">
+    <div class="header-content">
+      <div class="server-info">
+        <div class="jartex-ip-box" onclick="window.copyIP ? window.copyIP() : null">
+          <div class="click-to-copy-badge">Click to Copy IP</div>
+          <div class="server-ip-text">titannetwork.eu</div>
+          <div class="player-count" id="player-count">Loading players...</div>
+        </div>
+      </div>
+
+      <div class="logo-3d-container">
+        <div class="logo-3d">
+          <h2 class="titan-text">TITAN<span class="network-accent">LEADERBOARD</span></h2>
+          <div class="logo-aura"></div>
+        </div>
+        <div class="logo-subtitle">REAL-TIME RANKINGS</div>
+      </div>
+
+      <div class="header-actions">
+        <button class="play-button" onclick="window.joinServer ? window.joinServer() : null">
+          <i class="fas fa-play"></i> Play Now
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <nav id="navbar-placeholder"></nav>
+
+  <main class="container">
+    <section class="news-section">
+      <div class="leaderboard-header">
+        <h2 class="section-title">Hall of Fame</h2>
+        <p class="news-subtitle">The top performing players across all TitanNetwork game modes.</p>
+      </div>
+
+      <div class="controls-wrapper">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="playerSearch" placeholder="Search for a player...">
+        </div>
+        <div class="stat-tabs">
+          <button class="tab-btn" onclick="loadStat('money')">
+            <i class="fas fa-coins"></i> Money
+          </button>
+          <button class="tab-btn" onclick="loadStat('kills')">
+            <i class="fas fa-skull"></i> Kills
+          </button>
+          <button class="tab-btn" onclick="loadStat('deaths')">
+            <i class="fas fa-ghost"></i> Deaths
+          </button>
+          <button class="tab-btn" onclick="loadStat('playtime')">
+            <i class="fas fa-clock"></i> Playtime
+          </button>
+        </div>
+      </div>
+
+      <div class="leaderboard-card">
+        <div id="loading-indicator" class="loading-container">
+          <i class="fas fa-circle-notch loading-spinner"></i>
+          <p style="margin-top: 15px; color: var(--text-secondary);">Fetching latest scores...</p>
+        </div>
+
+        <div style="overflow-x: auto; width: 100%;">
+          <table class="leaderboard-table" id="leaderboard-table" style="display: none;">
+            <thead>
+              <tr>
+                <th class="rank">Rank</th>
+                <th>Player</th>
+                <th style="text-align: right;">Score</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <!-- Data injected here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+      <div class="footer-links">
+        <span class="footer-link">IP: titannetwork.eu</span>
+        <a href="https://discord.gg/ExFhgvtFng" class="footer-link">Join Discord</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="leaderboard-logic.js"></script>
+</body>
+
+</html>

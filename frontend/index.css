@@ -1085,9 +1085,7 @@ body {
     color: white;
 }
 
-/* BADGES & DELETION */
-box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
+
 
 /* NEWS ALIGNMENT BLOCKS */
 .news-description-content div {
@@ -2351,25 +2349,4 @@ footer p {
     .viewer-body {
         padding: var(--space-xl);
     }
-}
-
-
-@media (max-width: 768px) {
-    .viewer-image-container {
-        height: 350px;
-    }
-
-    .viewer-title {
-        font-size: 1.8rem;
-    }
-
-    .viewer-body {
-        padding: var(--space-xl);
-    }
-}
-}
-
-.viewer-body {
-    padding: var(--space-xl);
-}
-}
+}
