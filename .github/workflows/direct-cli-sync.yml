@@ -12,7 +12,11 @@ jobs:
       - name: Install RCON CLI
         run: |
           sudo apt-get update
-          sudo apt-get install -y mcrecon jq
+          sudo apt-get install -y jq wget
+          wget https://github.com/Tiiffi/mcrecon/releases/download/v0.7.2/mcrecon-0.7.2-linux-amd64.tar.gz
+          tar -xvf mcrecon-0.7.2-linux-amd64.tar.gz
+          sudo mv mcrecon-0.7.2-linux-amd64/mcrecon /usr/local/bin/mcrecon
+          chmod +x /usr/local/bin/mcrecon
 
       - name: Sync Data
         env:
