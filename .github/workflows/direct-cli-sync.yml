@@ -1,0 +1,39 @@
+name: DIRECT CLI SYNC
+
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install RCON CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mcrecon jq
+
+      - name: Sync Data
+        env:
+          RCON_HOST: ${{ secrets.RCON_HOST }}
+          RCON_PORT: ${{ secrets.RCON_PORT }}
+          RCON_PASSWORD: ${{ secrets.RCON_PASSWORD }}
+          FIREBASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+        run: |
+          # 1. Fetch Online Players
+          PLAYERS=$(mcrecon -H $RCON_HOST -P $RCON_PORT -p $RCON_PASSWORD "list" | grep -oP '(?<=: ).*' | sed 's/,//g')
+          
+          echo "Online players: $PLAYERS"
+          
+          # 2. Iterate and fetch stats (Example for one stat)
+          # Note: This is a simplified example of how terminal commands can work
+          for PLAYER in $PLAYERS; do
+            SCORE=$(mcrecon -H $RCON_HOST -P $RCON_PORT -p $RCON_PASSWORD "scoreboard players get $PLAYER kills" | grep -oP '\d+')
+            if [ ! -z "$SCORE" ]; then
+              echo "Player $PLAYER has $SCORE kills"
+              # 3. Push to Firebase via REST API
+              curl -X PATCH "$FIREBASE_URL/leaderboard/kills.json" \
+                -d "{\"$PLAYER\": $SCORE}"
+            fi
+          done
