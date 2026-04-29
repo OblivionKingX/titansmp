@@ -27,16 +27,13 @@ jobs:
 
       - name: Run sync
         env:
-          # These will be pulled from your GitHub Secrets
           RCON_HOST: ${{ secrets.RCON_HOST }}
           RCON_PORT: ${{ secrets.RCON_PORT }}
           RCON_PASSWORD: ${{ secrets.RCON_PASSWORD }}
           UPDATE_INTERVAL: 60000
           STATS_OBJECTIVES: ${{ secrets.STATS_OBJECTIVES }}
           FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
-          # We'll pass the service account JSON as a secret
           FIREBASE_SERVICE_ACCOUNT_JSON: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_JSON }}
         run: |
           cd rcon-bridge
-          # Run the script
           node src/sync-once.js

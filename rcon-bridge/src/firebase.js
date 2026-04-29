@@ -10,41 +10,22 @@ class FirebaseService {
 
   init() {
     try {
-      const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH;
-      const serviceAccountJSON = process.env.FIREBASE_SERVICE_ACCOUNT_JSON;
       const databaseURL = process.env.FIREBASE_DATABASE_URL;
+      let serviceAccount;
 
       if (!databaseURL) {
         throw new Error('Missing FIREBASE_DATABASE_URL in .env');
       }
 
-      let serviceAccount;
-      if (serviceAccountJSON) {
-        try {
-          // Check if it's Base64 and decode if necessary
-          let decodedJSON = serviceAccountJSON;
-          if (!serviceAccountJSON.trim().startsWith('{')) {
-            console.log('[Firebase] Detected Base64 JSON, decoding...');
-            decodedJSON = Buffer.from(serviceAccountJSON, 'base64').toString('utf-8');
-          }
-          serviceAccount = JSON.parse(decodedJSON);
-          // Fix for PEM formatting in environment variables
-          if (serviceAccount.private_key) {
-            serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
-          }
-          console.log('[Firebase] Initialized using JSON string.');
-        } catch (e) {
-          throw new Error('Failed to parse FIREBASE_SERVICE_ACCOUNT_JSON. Ensure it is valid JSON or Base64.');
-        }
-      } else if (serviceAccountPath) {
-        // Option 2: Load from file path (Best for local dev)
-        const absolutePath = path.isAbsolute(serviceAccountPath) 
-          ? serviceAccountPath 
-          : path.join(process.cwd(), serviceAccountPath);
-        serviceAccount = require(absolutePath);
-        console.log('[Firebase] Initializing using file path.');
+      // Check for raw JSON string in environment (preferred for CI)
+      if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
+        console.log('[Firebase] Initializing using FIREBASE_SERVICE_ACCOUNT_JSON env var.');
+        serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
       } else {
-        throw new Error('Missing FIREBASE_SERVICE_ACCOUNT_JSON or FIREBASE_SERVICE_ACCOUNT_PATH');
+        const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH || '../service-account.json';
+        const resolvedPath = path.resolve(__dirname, serviceAccountPath);
+        console.log(`[Firebase] Initializing using path: ${resolvedPath}`);
+        serviceAccount = require(resolvedPath);
       }
 
       admin.initializeApp({
