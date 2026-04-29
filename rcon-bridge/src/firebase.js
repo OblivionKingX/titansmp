@@ -21,6 +21,10 @@ class FirebaseService {
       if (process.env.FIREBASE_SERVICE_ACCOUNT_JSON) {
         console.log('[Firebase] Initializing using FIREBASE_SERVICE_ACCOUNT_JSON env var.');
         serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT_JSON);
+        // Fix for PEM formatting errors in CI environments
+        if (serviceAccount.private_key) {
+          serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, '\n');
+        }
       } else {
         const serviceAccountPath = process.env.FIREBASE_SERVICE_ACCOUNT_PATH || '../service-account.json';
         const resolvedPath = path.resolve(__dirname, serviceAccountPath);
