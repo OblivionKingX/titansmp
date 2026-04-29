@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/sync", "destination": "/api/sync.js" }
+  ],
+  "installCommand": "npm install",
+  "build": {
+    "env": {
+      "NODE_VERSION": "20"
+    }
+  }
+}
