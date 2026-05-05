@@ -69,6 +69,17 @@ class FirebaseService {
       throw error;
     }
   }
+
+  async updatePlayerMetadata(playerName, metadata) {
+    try {
+      if (!this.db) throw new Error('Database not initialized');
+      
+      const ref = this.db.ref(`playerData/${playerName}`);
+      await ref.update(metadata);
+    } catch (error) {
+      console.error(`[Firebase] Error updating metadata for ${playerName}:`, error.message);
+    }
+  }
 }
 
 module.exports = new FirebaseService();

@@ -11,53 +11,21 @@ class RconService {
     };
   }
 
-  /**
-   * Connects and authenticates with the RCON server.
-   * Returns a Promise that resolves when authenticated.
-   */
   async connect() {
-    if (this.client && this.client.authenticated) {
+    // Check if client exists and socket is still active
+    if (this.client && this.client.socket && !this.client.socket.destroyed) {
       return this.client;
     }
 
-    return new Promise((resolve, reject) => {
+    try {
       console.log(`[RCON] Connecting to ${this.config.host}:${this.config.port}...`);
-      
-      try {
-        this.client = new Rcon(this.config);
-
-        const timeout = setTimeout(() => {
-          cleanup();
-          reject(new Error('RCON connection/auth timeout'));
-        }, 10000);
-
-        const onAuthenticated = () => {
-          console.log('[RCON] Successfully connected and authenticated.');
-          cleanup();
-          resolve(this.client);
-        };
-
-        const onError = (err) => {
-          console.error('[RCON] Connection error:', err.message);
-          cleanup();
-          this.client = null;
-          reject(err);
-        };
-
-        const cleanup = () => {
-          clearTimeout(timeout);
-          this.client.removeListener('authenticated', onAuthenticated);
-          this.client.removeListener('error', onError);
-        };
-
-        this.client.on('authenticated', onAuthenticated);
-        this.client.on('error', onError);
-
-        this.client.connect();
-      } catch (err) {
-        reject(err);
-      }
-    });
+      this.client = await Rcon.connect(this.config);
+      console.log('[RCON] Connected successfully');
+      return this.client;
+    } catch (err) {
+      this.client = null;
+      throw err;
+    }
   }
 
   /**
@@ -65,22 +33,16 @@ class RconService {
    */
   async sendCommand(command) {
     const client = await this.connect();
-    
-    return new Promise((resolve, reject) => {
-      const timeout = setTimeout(() => {
-        reject(new Error(`RCON command timeout: ${command}`));
-      }, 5000);
-
-      client.send(command, (response) => {
-        clearTimeout(timeout);
-        resolve(response);
-      });
-    });
+    return await client.send(command);
   }
 
   async disconnect() {
     if (this.client) {
-      this.client.disconnect();
+      try {
+        await this.client.end();
+      } catch (err) {
+        // Ignore errors during disconnect
+      }
       this.client = null;
     }
   }

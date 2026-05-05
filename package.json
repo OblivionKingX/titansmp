@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "npm start --prefix rcon-bridge",
+    "dev": "npm run dev --prefix rcon-bridge",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

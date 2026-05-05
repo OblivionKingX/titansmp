@@ -35,8 +35,13 @@ class SyncManager {
       const playerListResponse = await rcon.sendCommand('scoreboard players list');
       const trackedPlayers = parser.parsePlayerList(playerListResponse);
 
-      // 2. Add tracked players to our memory
-      trackedPlayers.forEach(p => this.knownPlayers.add(p));
+      // 2. Add tracked players to our memory (Cleaned)
+      trackedPlayers.forEach(p => {
+        const clean = parser.cleanName(p);
+        if (clean && clean.length <= 16) {
+          this.knownPlayers.add(clean);
+        }
+      });
 
       // 3. Use all known players for the sync
       const players = Array.from(this.knownPlayers);
@@ -110,17 +115,33 @@ class SyncManager {
       const listResponse = await rcon.sendCommand('list');
       if (!listResponse) return;
 
-      const parts = listResponse.split(':');
-      if (parts.length < 2) return;
+      console.log(`[Sync] Parsing list response: ${listResponse.replace(/\n/g, ' ')}`);
 
-      const playerNames = parts[parts.length - 1]
-        .split(',')
-        .map(name => name.replace(/B'.|§./g, '').replace(/[^a-zA-Z0-9_]/g, '').trim())
-        .filter(name => name.length > 0);
+      // Handle multi-line responses and various formats
+      // We look for parts after a colon that contain commas or single names
+      const allPlayerNames = [];
+      const lines = listResponse.split('\n');
+      
+      for (const line of lines) {
+        const parts = line.split(':');
+        if (parts.length < 2) continue;
+        
+        const possiblePlayers = parts[parts.length - 1].split(',');
+        possiblePlayers.forEach(p => {
+          const clean = parser.cleanName(p);
+          if (clean && clean.length >= 3 && clean.length <= 16) {
+            allPlayerNames.push(clean);
+          }
+        });
+      }
+
+      const playerNames = [...new Set(allPlayerNames)]; // Unique names
 
       if (playerNames.length > 0) {
         console.log(`[Sync] Syncing PAPI stats for: ${playerNames.join(', ')}`);
         playerNames.forEach(name => this.knownPlayers.add(name));
+      } else {
+        console.log('[Sync] No online players detected via list.');
       }
 
       for (const name of playerNames) {
@@ -145,6 +166,12 @@ class SyncManager {
         const playtimeResponse = await rcon.sendCommand(`papi parse ${name} %statistic_seconds_played%`);
         const playtime = parseInt(playtimeResponse);
         if (!isNaN(playtime)) this.directStats[name]['playtime'] = playtime;
+
+        // Fetch Rank/Prefix
+        const prefixResponse = await rcon.sendCommand(`papi parse ${name} %luckperms_prefix%`);
+        if (prefixResponse && prefixResponse.trim().length > 0) {
+          await firebase.updatePlayerMetadata(name, { rank: prefixResponse.trim() });
+        }
       }
     } catch (err) {
       console.warn('[Sync] PAPI sync failed:', err.message);

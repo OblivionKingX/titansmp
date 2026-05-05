@@ -139,6 +139,12 @@ window.BBCode = (function () {
     // Final newlines
     html = html.replace(/\n/g, '<br>');
 
+    // --- STAGE 4: MINECRAFT COLOR CODES ---
+    // Process any remaining § or & color codes using the shared utility
+    if (window.formatRichText) {
+      html = window.formatRichText(html);
+    }
+
     return html;
   }
 

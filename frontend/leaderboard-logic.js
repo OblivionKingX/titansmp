@@ -78,6 +78,14 @@ window.loadStat = function(stat) {
     });
 }
 
+let allPlayerData = {};
+
+// Subscribe to player metadata (ranks, etc.)
+onValue(ref(db, 'playerData'), (snapshot) => {
+    allPlayerData = snapshot.val() || {};
+    renderLeaderboard();
+});
+
 function renderLeaderboard() {
     const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
     const filteredPlayers = currentPlayersData.filter(p => p.name.toLowerCase().includes(searchTerm));
@@ -90,6 +98,22 @@ function renderLeaderboard() {
         filteredPlayers.forEach((player) => {
             const originalRank = currentPlayersData.findIndex(p => p.name === player.name) + 1;
             const rankClass = originalRank <= 3 ? `rank-${originalRank}` : '';
+            const metadata = allPlayerData[player.name] || {};
+
+            // Format rank if available (normalize § to & for utils.js)
+            let rankHtml = '';
+            if (metadata.rank) {
+                let rankText = metadata.rank.replace(/§/g, '&');
+                
+                // Strip the player's name from the rank if it's included (e.g. "Member Steve" -> "Member")
+                const nameRegex = new RegExp(`\\s*${player.name}\\s*`, 'gi');
+                rankText = rankText.replace(nameRegex, '').trim();
+
+                if (rankText.length > 0) {
+                    const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                    rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                }
+            }
             
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -97,7 +121,10 @@ function renderLeaderboard() {
                 <td>
                     <div class="player-cell">
                         <img class="player-head" src="https://mc-heads.net/avatar/${player.name}/32" alt="${player.name}">
-                        <span>${player.name}</span>
+                        <div class="player-info">
+                            ${rankHtml}
+                            <span class="player-name">${player.name}</span>
+                        </div>
                     </div>
                 </td>
                 <td class="score-cell">${formatValue(player.value, currentStat)}</td>

@@ -2,4 +2,5 @@ node_modules/
 .env
 *.log
 service-account.json
+termux-setup.sh
 .DS_Store
