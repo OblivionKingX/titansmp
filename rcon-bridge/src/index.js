@@ -18,6 +18,17 @@ async function main() {
   // Start the sync loop
   updater.start();
 
+  // --- RENDER KEEP-ALIVE SERVER ---
+  const http = require('http');
+  const port = process.env.PORT || 3000;
+  http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('TitanSMP RCON Bridge is Running!\n');
+  }).listen(port, '0.0.0.0', () => {
+    console.log(`[Keep-Alive] Server listening on port ${port}`);
+  });
+  // --------------------------------
+
   // Handle graceful shutdown
   process.on('SIGINT', async () => {
     console.log('\n[Shutdown] Closing connections...');
