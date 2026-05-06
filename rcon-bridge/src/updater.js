@@ -213,8 +213,11 @@ class SyncManager {
           // Fetch rank for the leader
           if (leaderName && leaderName.length > 0) {
             const prefixResponse = await rcon.sendCommand(`papi parse ${target} %luckperms_prefix_${leaderName}%`);
-            if (prefixResponse && prefixResponse.trim().length > 0) {
-              await firebase.updatePlayerMetadata(leaderName, { rank: prefixResponse.trim() });
+            const cleanPrefix = prefixResponse ? prefixResponse.trim() : '';
+            
+            // Only save if it's a real rank (doesn't contain the placeholder % symbols)
+            if (cleanPrefix.length > 0 && !cleanPrefix.includes('%')) {
+              await firebase.updatePlayerMetadata(leaderName, { rank: cleanPrefix });
             }
           }
         }
