@@ -14,8 +14,12 @@ class SyncManager {
 
   async start() {
     console.log(`[Sync] Starting sync loop every ${this.interval / 1000}s...`);
-    this.sync(); // Initial run
-    setInterval(() => this.sync(), this.interval);
+    const runAll = async () => {
+      await this.sync();
+      await this.syncIslandTop();
+    };
+    runAll(); // Initial run
+    setInterval(runAll, this.interval);
   }
 
   async sync() {
@@ -175,6 +179,36 @@ class SyncManager {
       }
     } catch (err) {
       console.warn('[Sync] PAPI sync failed:', err.message);
+    }
+  }
+
+  async syncIslandTop() {
+    console.log('[Sync] Syncing Island Top leaderboard...');
+    const islandData = {};
+    const topCount = 10;
+
+    try {
+      for (let i = 1; i <= topCount; i++) {
+        const nameResponse = await rcon.sendCommand(`papi parse %superior_island_top_worth_${i}%`);
+        const name = nameResponse ? nameResponse.trim() : null;
+
+        const valueResponse = await rcon.sendCommand(`papi parse %superior_island_top_worth_value_${i}%`);
+        const value = valueResponse ? parseFloat(valueResponse.replace(/,/g, '')) : 0;
+
+        // Skip if name is empty, 'None', '---', or still a placeholder string
+        if (name && name !== 'None' && name !== '---' && !name.includes('%')) {
+          islandData[name] = value;
+        }
+      }
+
+      if (Object.keys(islandData).length > 0) {
+        await firebase.updateLeaderboard('islands', islandData);
+        console.log(`[Sync] Successfully synced ${Object.keys(islandData).length} islands.`);
+      } else {
+        console.log('[Sync] No valid islands found to sync.');
+      }
+    } catch (err) {
+      console.error('[Sync] Island Top sync failed:', err.message);
     }
   }
 }

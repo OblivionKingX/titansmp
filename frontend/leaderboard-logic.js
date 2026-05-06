@@ -43,7 +43,7 @@ function formatValue(value, stat) {
         const minutes = Math.floor((value % 3600) / 60);
         return `${hours}h ${minutes}m`;
     }
-    if (stat === 'money') {
+    if (stat === 'money' || stat === 'islands') {
         return `$${value.toLocaleString()}`;
     }
     return value.toLocaleString();
