@@ -191,8 +191,9 @@ class SyncManager {
       const target = 'OblivionKingX'; 
 
       for (let i = 1; i <= topCount; i++) {
-        const islandName = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_name_${i}%`)).trim();
-        const leaderName = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_${i}%`)).trim();
+        // Use the placeholders that we verified work on your server
+        const islandName = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_${i}%`)).trim();
+        const leaderName = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_${i}_leader%`)).trim();
         const worthValue = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_value_${i}%`)).trim();
         
         const value = worthValue ? parseFloat(worthValue.replace(/,/g, '')) : 0;
