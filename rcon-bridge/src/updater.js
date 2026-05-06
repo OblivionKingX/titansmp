@@ -197,9 +197,18 @@ class SyncManager {
         
         const value = worthValue ? parseFloat(worthValue.replace(/,/g, '')) : 0;
 
-        if (islandName && islandName !== 'None' && islandName !== '---' && !islandName.includes('%')) {
-          const combinedName = `${islandName} (${leaderName})`;
-          islandData[combinedName] = value;
+        // Use leaderName as fallback if islandName is empty
+        const finalIslandName = (islandName && islandName !== 'None' && islandName !== '---' && !islandName.includes('%')) 
+                                ? islandName 
+                                : leaderName;
+
+        if (finalIslandName && finalIslandName !== 'None' && finalIslandName !== '---' && !finalIslandName.includes('%')) {
+          // If the island has a custom name, show "IslandName (LeaderName)". Otherwise just show "LeaderName"
+          const displayLabel = (islandName && islandName !== leaderName && islandName.length > 0) 
+                               ? `${islandName} (${leaderName})` 
+                               : leaderName;
+          
+          islandData[displayLabel] = value;
         }
       }
 
