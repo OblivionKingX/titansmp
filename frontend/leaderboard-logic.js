@@ -125,12 +125,19 @@ function renderLeaderboard() {
                         }
                     }
                     
+                    let headName = player.name;
+                    if (currentStat === 'islands') {
+                        // Extract leader name from "(LeaderName)"
+                        const match = player.name.match(/\((.*?)\)/);
+                        if (match) headName = match[1];
+                    }
+
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="rank ${rankClass}">#${originalRank}</td>
                         <td>
                             <div class="player-cell">
-                                <img class="player-head" src="https://mc-heads.net/avatar/${player.name}/32" alt="${player.name}">
+                                <img class="player-head" src="https://mc-heads.net/avatar/${headName}/32" alt="${headName}">
                                 <div class="player-info">
                                     ${rankHtml}
                                     <span class="player-name">${player.name}</span>
