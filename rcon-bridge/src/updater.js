@@ -191,15 +191,15 @@ class SyncManager {
       const target = 'OblivionKingX'; 
 
       for (let i = 1; i <= topCount; i++) {
-        const nameResponse = await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_${i}%`);
-        const name = nameResponse ? nameResponse.trim() : null;
+        const islandName = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_name_${i}%`)).trim();
+        const leaderName = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_${i}%`)).trim();
+        const worthValue = (await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_value_${i}%`)).trim();
+        
+        const value = worthValue ? parseFloat(worthValue.replace(/,/g, '')) : 0;
 
-        const valueResponse = await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_value_${i}%`);
-        const value = valueResponse ? parseFloat(valueResponse.replace(/,/g, '')) : 0;
-
-        // Skip if name is empty, 'None', '---', or still a placeholder string
-        if (name && name !== 'None' && name !== '---' && !name.includes('%')) {
-          islandData[name] = value;
+        if (islandName && islandName !== 'None' && islandName !== '---' && !islandName.includes('%')) {
+          const combinedName = `${islandName} (${leaderName})`;
+          islandData[combinedName] = value;
         }
       }
 
