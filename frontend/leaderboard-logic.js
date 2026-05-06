@@ -73,7 +73,12 @@ window.loadStat = function(stat) {
         if (data) {
             currentPlayersData = Object.entries(data)
                 .map(([name, value]) => ({ name, value }))
-                .sort((a, b) => b.value - a.value);
+                .sort((a, b) => {
+                    // Custom sort for objects (islands) vs numbers (players)
+                    const valA = typeof a.value === 'object' ? a.value.worth : a.value;
+                    const valB = typeof b.value === 'object' ? b.value.worth : b.value;
+                    return valB - valA;
+                });
         } else {
             currentPlayersData = [];
         }
@@ -96,7 +101,15 @@ function renderLeaderboard() {
     console.log('[Debug] Rendering leaderboard with', currentPlayersData.length, 'players');
     try {
         const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-        const filteredPlayers = currentPlayersData.filter(p => p && p.name && p.name.toLowerCase().includes(searchTerm));
+        const filteredPlayers = currentPlayersData.filter(p => {
+            if (!p || !p.name) return false;
+            // For islands, check islandName and leaderName
+            if (typeof p.value === 'object') {
+                return p.value.islandName.toLowerCase().includes(searchTerm) || 
+                       p.value.leaderName.toLowerCase().includes(searchTerm);
+            }
+            return p.name.toLowerCase().includes(searchTerm);
+        });
 
         leaderboardBody.innerHTML = '';
         
@@ -107,7 +120,20 @@ function renderLeaderboard() {
                 try {
                     const originalRank = currentPlayersData.findIndex(p => p.name === player.name) + 1;
                     const rankClass = originalRank <= 3 ? `rank-${originalRank}` : '';
-                    const metadata = allPlayerData[player.name] || {};
+                    
+                    let displayName = player.name;
+                    let displayValue = player.value;
+                    let headName = player.name;
+                    let metadata = allPlayerData[player.name] || {};
+
+                    // IF IT'S AN ISLAND (OBJECT)
+                    if (typeof player.value === 'object') {
+                        displayName = `<div style="font-size: 0.9em; color: var(--accent-color);">Island: ${player.value.islandName}</div>
+                                       <div style="font-size: 0.8em; opacity: 0.8;">Leader: ${player.value.leaderName}</div>`;
+                        displayValue = player.value.worth;
+                        headName = player.value.leaderName;
+                        metadata = allPlayerData[player.value.leaderName] || {};
+                    }
 
                     // Format rank if available (normalize § to & for utils.js)
                     let rankHtml = '';
@@ -115,7 +141,7 @@ function renderLeaderboard() {
                         let rankText = metadata.rank.replace(/§/g, '&');
                         
                         // Escape special characters in the name for the regex
-                        const escapedName = player.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        const escapedName = headName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
                         const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
                         rankText = rankText.replace(nameRegex, '').trim();
 
@@ -125,13 +151,6 @@ function renderLeaderboard() {
                         }
                     }
                     
-                    let headName = player.name;
-                    if (currentStat === 'islands') {
-                        // Extract leader name from "(LeaderName)"
-                        const match = player.name.match(/\((.*?)\)/);
-                        if (match) headName = match[1];
-                    }
-
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td class="rank ${rankClass}">#${originalRank}</td>
@@ -140,11 +159,11 @@ function renderLeaderboard() {
                                 <img class="player-head" src="https://mc-heads.net/avatar/${headName}/32" alt="${headName}">
                                 <div class="player-info">
                                     ${rankHtml}
-                                    <span class="player-name">${player.name}</span>
+                                    <span class="player-name">${displayName}</span>
                                 </div>
                             </div>
                         </td>
-                        <td class="score-cell">${formatValue(player.value, currentStat)}</td>
+                        <td class="score-cell">${formatValue(displayValue, currentStat)}</td>
                     `;
                     leaderboardBody.appendChild(row);
                 } catch (innerError) {
