@@ -86,20 +86,19 @@ class SyncManager {
         }
       }
 
-      // 3. Transform data for Realtime Database structure requested by user
-      // Structure: leaderboard -> objective -> player: value
-      const leaderboardData = {};
-      this.objectives.forEach(obj => {
-        leaderboardData[obj] = {};
+      // 3. Update each category individually using the new no-wipe method
+      for (const stat of this.objectives) {
+        const statData = {};
         for (const [name, stats] of Object.entries(allStats.players)) {
-          if (stats[obj] !== undefined) {
-            leaderboardData[obj][name] = stats[obj];
+          if (stats[stat] !== undefined) {
+            statData[name] = stats[stat];
           }
         }
-      });
-
-      // 4. Update Firebase
-      await firebase.updateLeaderboard(leaderboardData);
+        
+        if (Object.keys(statData).length > 0) {
+          await firebase.updateLeaderboard(stat, statData);
+        }
+      }
       
       console.log(`[Sync] Successfully synced ${players.length} players.`);
     } catch (error) {
