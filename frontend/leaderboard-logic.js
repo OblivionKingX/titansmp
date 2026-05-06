@@ -140,14 +140,19 @@ function renderLeaderboard() {
                     if (metadata.rank) {
                         let rankText = metadata.rank.replace(/§/g, '&');
                         
-                        // Escape special characters in the name for the regex
-                        const escapedName = headName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                        const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
-                        rankText = rankText.replace(nameRegex, '').trim();
+                        // FOOLPROOF FILTER: If it contains %, it's a broken placeholder. Hide it!
+                        if (rankText.includes('%')) {
+                            rankHtml = '';
+                        } else {
+                            // Escape special characters in the name for the regex
+                            const escapedName = headName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                            const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
+                            rankText = rankText.replace(nameRegex, '').trim();
 
-                        if (rankText.length > 0) {
-                            const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
-                            rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                            if (rankText.length > 0) {
+                                const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                                rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                            }
                         }
                     }
                     
