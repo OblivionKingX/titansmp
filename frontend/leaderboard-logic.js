@@ -87,59 +87,64 @@ onValue(ref(db, 'playerData'), (snapshot) => {
 });
 
 function renderLeaderboard() {
-    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-    const filteredPlayers = currentPlayersData.filter(p => p.name.toLowerCase().includes(searchTerm));
+    try {
+        const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+        const filteredPlayers = currentPlayersData.filter(p => p && p.name && p.name.toLowerCase().includes(searchTerm));
 
-    leaderboardBody.innerHTML = '';
-    
-    if (filteredPlayers.length === 0) {
-        leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No players found.</td></tr>';
-    } else {
-        filteredPlayers.forEach((player) => {
-            const originalRank = currentPlayersData.findIndex(p => p.name === player.name) + 1;
-            const rankClass = originalRank <= 3 ? `rank-${originalRank}` : '';
-            const metadata = allPlayerData[player.name] || {};
+        leaderboardBody.innerHTML = '';
+        
+        if (filteredPlayers.length === 0) {
+            leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No players found.</td></tr>';
+        } else {
+            filteredPlayers.forEach((player) => {
+                try {
+                    const originalRank = currentPlayersData.findIndex(p => p.name === player.name) + 1;
+                    const rankClass = originalRank <= 3 ? `rank-${originalRank}` : '';
+                    const metadata = allPlayerData[player.name] || {};
 
-            // Format rank if available (normalize § to & for utils.js)
-            let rankHtml = '';
-            try {
-                if (metadata.rank) {
-                    let rankText = metadata.rank.replace(/§/g, '&');
-                    
-                    // Escape special characters in the name for the regex
-                    const escapedName = player.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                    const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
-                    rankText = rankText.replace(nameRegex, '').trim();
+                    // Format rank if available (normalize § to & for utils.js)
+                    let rankHtml = '';
+                    if (metadata.rank) {
+                        let rankText = metadata.rank.replace(/§/g, '&');
+                        
+                        // Escape special characters in the name for the regex
+                        const escapedName = player.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                        const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
+                        rankText = rankText.replace(nameRegex, '').trim();
 
-                    if (rankText.length > 0) {
-                        const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
-                        rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                        if (rankText.length > 0) {
+                            const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                            rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                        }
                     }
+                    
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="rank ${rankClass}">#${originalRank}</td>
+                        <td>
+                            <div class="player-cell">
+                                <img class="player-head" src="https://mc-heads.net/avatar/${player.name}/32" alt="${player.name}">
+                                <div class="player-info">
+                                    ${rankHtml}
+                                    <span class="player-name">${player.name}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="score-cell">${formatValue(player.value, currentStat)}</td>
+                    `;
+                    leaderboardBody.appendChild(row);
+                } catch (innerError) {
+                    console.error('Error rendering row for:', player, innerError);
                 }
-            } catch (e) {
-                console.error('Error formatting rank for:', player.name, e);
-            }
-            
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="rank ${rankClass}">#${originalRank}</td>
-                <td>
-                    <div class="player-cell">
-                        <img class="player-head" src="https://mc-heads.net/avatar/${player.name}/32" alt="${player.name}">
-                        <div class="player-info">
-                            ${rankHtml}
-                            <span class="player-name">${player.name}</span>
-                        </div>
-                    </div>
-                </td>
-                <td class="score-cell">${formatValue(player.value, currentStat)}</td>
-            `;
-            leaderboardBody.appendChild(row);
-        });
+            });
+        }
+    } catch (outerError) {
+        console.error('Critical error in renderLeaderboard:', outerError);
+        leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--accent-color);">Failed to load rankings. Please refresh.</td></tr>';
+    } finally {
+        if (loadingIndicator) loadingIndicator.style.display = 'none';
+        if (leaderboardTable) leaderboardTable.style.display = 'table';
     }
-    
-    loadingIndicator.style.display = 'none';
-    if(leaderboardTable) leaderboardTable.style.display = 'table';
 }
 
 if (searchInput) {
