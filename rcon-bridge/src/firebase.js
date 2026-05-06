@@ -45,15 +45,16 @@ class FirebaseService {
     }
   }
 
-  async updateLeaderboard(data) {
+  async updateLeaderboard(stat, data) {
     try {
       if (!this.db) throw new Error('Database not initialized');
-      
-      const ref = this.db.ref('leaderboard');
-      await ref.set(data);
-      console.log('[Firebase] Leaderboard updated successfully.');
+      if (!data || Object.keys(data).length === 0) return;
+
+      const ref = this.db.ref(`leaderboard/${stat}`);
+      await ref.update(data);
+      console.log(`[Firebase] ${stat} leaderboard updated successfully.`);
     } catch (error) {
-      console.error('[Firebase] Update error:', error.message);
+      console.error(`[Firebase] ${stat} update error:`, error.message);
       throw error;
     }
   }
