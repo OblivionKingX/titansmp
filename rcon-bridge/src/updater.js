@@ -187,11 +187,14 @@ class SyncManager {
     const topCount = 10;
 
     try {
+      // We need a target player for PAPI to work on some servers
+      const target = 'OblivionKingX'; 
+
       for (let i = 1; i <= topCount; i++) {
-        const nameResponse = await rcon.sendCommand(`papi parse %superior_island_top_worth_${i}%`);
+        const nameResponse = await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_${i}%`);
         const name = nameResponse ? nameResponse.trim() : null;
 
-        const valueResponse = await rcon.sendCommand(`papi parse %superior_island_top_worth_value_${i}%`);
+        const valueResponse = await rcon.sendCommand(`papi parse ${target} %superior_island_top_worth_value_${i}%`);
         const value = valueResponse ? parseFloat(valueResponse.replace(/,/g, '')) : 0;
 
         // Skip if name is empty, 'None', '---', or still a placeholder string
