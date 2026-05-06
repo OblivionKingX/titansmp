@@ -102,17 +102,22 @@ function renderLeaderboard() {
 
             // Format rank if available (normalize § to & for utils.js)
             let rankHtml = '';
-            if (metadata.rank) {
-                let rankText = metadata.rank.replace(/§/g, '&');
-                
-                // Strip the player's name from the rank if it's included (e.g. "Member Steve" -> "Member")
-                const nameRegex = new RegExp(`\\s*${player.name}\\s*`, 'gi');
-                rankText = rankText.replace(nameRegex, '').trim();
+            try {
+                if (metadata.rank) {
+                    let rankText = metadata.rank.replace(/§/g, '&');
+                    
+                    // Escape special characters in the name for the regex
+                    const escapedName = player.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
+                    rankText = rankText.replace(nameRegex, '').trim();
 
-                if (rankText.length > 0) {
-                    const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
-                    rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                    if (rankText.length > 0) {
+                        const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                        rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
+                    }
                 }
+            } catch (e) {
+                console.error('Error formatting rank for:', player.name, e);
             }
             
             const row = document.createElement('tr');
