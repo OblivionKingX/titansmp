@@ -203,17 +203,18 @@ class SyncManager {
                                 : leaderName;
 
         if (finalIslandName && finalIslandName !== 'None' && finalIslandName !== '---' && !finalIslandName.includes('%')) {
-          const displayLabel = (islandName && islandName !== leaderName && islandName.length > 0) 
-                               ? `${islandName} (${leaderName})` 
-                               : leaderName;
-          
-          islandData[displayLabel] = value;
+          // Store all details separately so the frontend can draw them nicely
+          islandData[`slot_${i}`] = {
+            islandName: (islandName && islandName.length > 0) ? islandName : 'Unnamed Island',
+            leaderName: leaderName,
+            worth: value
+          };
 
-          // Fetch rank for the leader so they get a badge on the website
+          // Fetch rank for the leader
           if (leaderName && leaderName.length > 0) {
             const prefixResponse = await rcon.sendCommand(`papi parse ${target} %luckperms_prefix_${leaderName}%`);
             if (prefixResponse && prefixResponse.trim().length > 0) {
-              await firebase.updatePlayerMetadata(displayLabel, { rank: prefixResponse.trim() });
+              await firebase.updatePlayerMetadata(leaderName, { rank: prefixResponse.trim() });
             }
           }
         }
