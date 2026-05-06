@@ -52,6 +52,7 @@ function formatValue(value, stat) {
 let unsubscribeCurrentStat = null;
 
 window.loadStat = function(stat) {
+    console.log('[Debug] loadStat called for:', stat);
     currentStat = stat;
     updateTabUI(stat);
     
@@ -67,6 +68,8 @@ window.loadStat = function(stat) {
     
     unsubscribeCurrentStat = onValue(leaderboardRef, (snapshot) => {
         const data = snapshot.val();
+        console.log(`[Debug] Data received for ${stat}:`, data ? Object.keys(data).length + ' entries' : 'Empty');
+        
         if (data) {
             currentPlayersData = Object.entries(data)
                 .map(([name, value]) => ({ name, value }))
@@ -75,6 +78,8 @@ window.loadStat = function(stat) {
             currentPlayersData = [];
         }
         renderLeaderboard();
+    }, (error) => {
+        console.error(`[Debug] Firebase Error for ${stat}:`, error);
     });
 }
 
@@ -82,11 +87,13 @@ let allPlayerData = {};
 
 // Subscribe to player metadata (ranks, etc.)
 onValue(ref(db, 'playerData'), (snapshot) => {
+    console.log('[Debug] PlayerData updated');
     allPlayerData = snapshot.val() || {};
     renderLeaderboard();
 });
 
 function renderLeaderboard() {
+    console.log('[Debug] Rendering leaderboard with', currentPlayersData.length, 'players');
     try {
         const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
         const filteredPlayers = currentPlayersData.filter(p => p && p.name && p.name.toLowerCase().includes(searchTerm));
