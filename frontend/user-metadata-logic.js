@@ -246,16 +246,20 @@ export function renderBadges(meta) {
   // 1. Primary Role Badge
   let primaryRoleClass = 'role-member';
   const rank = (meta.rank || 'Member').toLowerCase();
-  if (rank === 'owner') primaryRoleClass = 'role-owner';
-  else if (rank === 'co-owner') primaryRoleClass = 'role-co-owner';
-  else if (rank === 'admin') primaryRoleClass = 'role-admin';
-  else if (rank === 'manager') primaryRoleClass = 'role-manager';
-  else if (['moderator', 'mod'].includes(rank)) primaryRoleClass = 'role-moderator';
-  else if (rank === 'helper') primaryRoleClass = 'role-helper';
-  else if (rank === 'developer' || rank === 'lead developer') primaryRoleClass = 'role-developer';
-  else if (rank === 'staff') primaryRoleClass = 'role-staff';
-  
-  badgesHtml += `<span class="user-role ${primaryRoleClass}">${meta.rank || 'Member'}</span>`;
+  if (rank.includes('failed to find player')) {
+    // Skip rendering the broken rank badge
+  } else {
+    if (rank === 'owner') primaryRoleClass = 'role-owner';
+    else if (rank === 'co-owner') primaryRoleClass = 'role-co-owner';
+    else if (rank === 'admin') primaryRoleClass = 'role-admin';
+    else if (rank === 'manager') primaryRoleClass = 'role-manager';
+    else if (['moderator', 'mod'].includes(rank)) primaryRoleClass = 'role-moderator';
+    else if (rank === 'helper') primaryRoleClass = 'role-helper';
+    else if (rank === 'developer' || rank === 'lead developer') primaryRoleClass = 'role-developer';
+    else if (rank === 'staff') primaryRoleClass = 'role-staff';
+    
+    badgesHtml += `<span class="user-role ${primaryRoleClass}">${meta.rank || 'Member'}</span>`;
+  }
 
   // 2. Additional Rank Badges
   if (meta.ranks && meta.ranks.length > 0) {

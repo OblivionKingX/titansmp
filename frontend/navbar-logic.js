@@ -7,7 +7,7 @@ const {
   onAuthStateChanged, getAuth,
   signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut,
   getDatabase, ref, get, set,
-  doc, setDoc, serverTimestamp: rtdbTimestamp, fsTimestamp
+  doc, setDoc, serverTimestamp, fsTimestamp
 } = window.firebaseApp;
 
 let navbarInitialized = false;
@@ -108,7 +108,7 @@ window.register = async function (event) {
       email: email.toLowerCase(),
       role: 'member',
       ranks: [], // Initial empty additional ranks
-      updatedAt: serverTimestamp()
+      updatedAt: fsTimestamp()
     }, { merge: true });
     if (msg) { msg.textContent = 'Account created! Welcome!'; msg.className = 'form-message success'; msg.style.display = 'block'; }
     setTimeout(() => { window.closeAuthModal(); }, 1500);
@@ -218,6 +218,20 @@ export async function updateUIForUser(user) {
       profileLink.href = `profile.html?user=${user.uid}`;
     }
     if (settingsLink) settingsLink.style.display = 'block';
+
+    // Update Gold Display
+    const goldDisplay = document.getElementById('user-gold');
+    const goldVal = document.getElementById('user-gold-val');
+    if (meta && meta.username) {
+      const goldRef = ref(db, `playerData/${meta.username}/gold`);
+      onValue(goldRef, (snap) => {
+        const gold = snap.val() || 0;
+        if (goldVal) goldVal.innerText = gold.toLocaleString();
+        if (goldDisplay) goldDisplay.style.display = 'block';
+      });
+    } else {
+      if (goldDisplay) goldDisplay.style.display = 'none';
+    }
 
   } else {
     // Guest user

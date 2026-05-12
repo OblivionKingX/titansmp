@@ -7,13 +7,13 @@ class SyncManager {
   constructor() {
     this.interval = parseInt(process.env.UPDATE_INTERVAL) || 60000;
     this.isRunning = false;
-    this.objectives = (process.env.STATS_OBJECTIVES || 'kills,deaths,playtime,money').split(',');
+    this.objectives = (process.env.STATS_OBJECTIVES || 'kills,deaths,playtime,money,gold').split(',');
     this.knownPlayers = new Set(); // Keep track of all players ever seen
     this.directStats = {}; // Store stats fetched directly (like Vault money)
   }
 
   async start() {
-    console.log(`[Sync] Starting sync loop every ${this.interval / 1000}s...`);
+    console.log(`[Sync] Starting sync loop Version 2.0 (Gold Sync) every ${this.interval / 1000}s...`);
     const runAll = async () => {
       await this.sync();
       await this.syncIslandTop();
@@ -88,15 +88,20 @@ class SyncManager {
 
       // 3. Update each category individually using the new no-wipe method
       for (const stat of this.objectives) {
-        const statData = {};
-        for (const [name, stats] of Object.entries(allStats.players)) {
-          if (stats[stat] !== undefined) {
-            statData[name] = stats[stat];
+        try {
+          const statData = {};
+          for (const [name, stats] of Object.entries(allStats.players)) {
+            // Final safety check for Firebase keys
+            if (stats[stat] !== undefined && name && !/[.#$/\[\]]/.test(name)) {
+              statData[name] = stats[stat];
+            }
           }
-        }
-        
-        if (Object.keys(statData).length > 0) {
-          await firebase.updateLeaderboard(stat, statData);
+          
+          if (Object.keys(statData).length > 0) {
+            await firebase.updateLeaderboard(stat, statData);
+          }
+        } catch (statErr) {
+          console.error(`[Sync] Failed to update leaderboard for ${stat}:`, statErr.message);
         }
       }
       
@@ -106,6 +111,51 @@ class SyncManager {
     } finally {
       this.isRunning = false;
     }
+  }
+
+  /**
+   * Cleans a prefix/rank response from RCON/PAPI.
+   * Returns null if the response is an error or invalid.
+   */
+  cleanPrefix(response) {
+    if (!response || typeof response !== 'string') return null;
+    
+    const lines = response.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+    if (lines.length === 0) return null;
+    
+    let clean = lines[lines.length - 1];
+    
+    // Check for common PAPI error messages or unreplaced placeholders
+    const errorIndicators = [
+      'Failed to find player',
+      'not found',
+      'Unknown player',
+      'Invalid player',
+      'null',
+      'None',
+      '---'
+    ];
+    
+    if (errorIndicators.some(err => clean.toLowerCase().includes(err.toLowerCase()))) {
+      return null;
+    }
+    
+    if (clean.includes('%')) return null;
+
+    // Remove common command result prefixes
+    if (clean.includes('is: ')) {
+      clean = clean.split('is: ')[1];
+    } else if (clean.includes(': ')) {
+      const parts = clean.split(': ');
+      const lastPart = parts[parts.length - 1];
+      // If the last part has color codes or is short, it's the prefix
+      if (lastPart.includes('§') || lastPart.includes('&') || lastPart.length < 30) {
+        clean = lastPart;
+      }
+    }
+    
+    const finalClean = clean.trim();
+    return finalClean.length > 0 ? finalClean : null;
   }
 
   /**
@@ -139,6 +189,11 @@ class SyncManager {
       }
 
       const playerNames = [...new Set(allPlayerNames)]; // Unique names
+      
+      // Always include the owner for priority sync
+      if (!playerNames.includes('OblivionKingX')) {
+        playerNames.push('OblivionKingX');
+      }
 
       if (playerNames.length > 0) {
         console.log(`[Sync] Syncing PAPI stats for: ${playerNames.join(', ')}`);
@@ -154,6 +209,18 @@ class SyncManager {
         const balanceResponse = await rcon.sendCommand(`papi parse ${name} %vault_eco_balance_fixed%`);
         const balance = parseFloat(balanceResponse);
         if (!isNaN(balance)) this.directStats[name]['money'] = balance;
+
+        // Fetch Gold (PlayerPoints)
+        const goldResponse = await rcon.sendCommand(`papi parse ${name} %playerpoints_points%`);
+        console.log(`[Sync] Gold response for ${name}: "${goldResponse.trim()}"`);
+        const gold = parseInt(goldResponse.trim());
+        if (!isNaN(gold)) {
+          console.log(`[Sync] Updating Gold for ${name} to ${gold}`);
+          this.directStats[name]['gold'] = gold;
+          await firebase.updatePlayerMetadata(name, { gold: gold });
+        } else {
+          console.warn(`[Sync] Failed to parse gold for ${name}. Raw: "${goldResponse}"`);
+        }
 
         // Fetch Kills
         const killsResponse = await rcon.sendCommand(`papi parse ${name} %statistic_player_kills%`);
@@ -171,9 +238,11 @@ class SyncManager {
         if (!isNaN(playtime)) this.directStats[name]['playtime'] = playtime;
 
         // Fetch Rank/Prefix
-        const prefixResponse = await rcon.sendCommand(`papi parse ${name} %luckperms_prefix%`);
-        if (prefixResponse && prefixResponse.trim().length > 0) {
-          await firebase.updatePlayerMetadata(name, { rank: prefixResponse.trim() });
+        const prefixResponse = await rcon.sendCommand(`papi parse ${name} %luckperms_prefix_${name}%`);
+        const cleanPrefix = this.cleanPrefix(prefixResponse);
+        
+        if (cleanPrefix) {
+          await firebase.updatePlayerMetadata(name, { rank: cleanPrefix });
         }
       }
     } catch (err) {
@@ -214,10 +283,9 @@ class SyncManager {
           // Fetch rank for the leader
           if (leaderName && leaderName.length > 0) {
             const prefixResponse = await rcon.sendCommand(`papi parse ${target} %luckperms_prefix_${leaderName}%`);
-            const cleanPrefix = prefixResponse ? prefixResponse.trim() : '';
+            const cleanPrefix = this.cleanPrefix(prefixResponse);
             
-            // Only save if it's a real rank (doesn't contain the placeholder % symbols)
-            if (cleanPrefix.length > 0 && !cleanPrefix.includes('%')) {
+            if (cleanPrefix) {
               await firebase.updatePlayerMetadata(leaderName, { rank: cleanPrefix });
             }
           }

@@ -103,7 +103,6 @@ function renderLeaderboard() {
         const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
         const filteredPlayers = currentPlayersData.filter(p => {
             if (!p || !p.name) return false;
-            // For islands, check islandName and leaderName
             if (typeof p.value === 'object') {
                 return p.value.islandName.toLowerCase().includes(searchTerm) || 
                        p.value.leaderName.toLowerCase().includes(searchTerm);
@@ -126,31 +125,66 @@ function renderLeaderboard() {
                     let headName = player.name;
                     let metadata = allPlayerData[player.name] || {};
 
-                    // IF IT'S AN ISLAND (OBJECT)
+                    // SPECIAL RENDERING FOR ISLANDS
                     if (typeof player.value === 'object') {
-                        displayName = `<div style="font-size: 0.9em; color: var(--accent-color);">Island: ${player.value.islandName}</div>
-                                       <div style="font-size: 0.8em; opacity: 0.8;">Leader: ${player.value.leaderName}</div>`;
+                        const islandName = player.value.islandName || 'Unnamed Island';
+                        const leaderName = player.value.leaderName || 'Unknown';
                         displayValue = player.value.worth;
-                        headName = player.value.leaderName;
-                        metadata = allPlayerData[player.value.leaderName] || {};
+                        headName = leaderName;
+                        metadata = allPlayerData[leaderName] || {};
+
+                        let leaderRankHtml = '';
+                        if (metadata.rank && !metadata.rank.toLowerCase().includes('failed to find player')) {
+                            let rankText = metadata.rank.replace(/§/g, '&');
+                            Object.keys(allPlayerData).forEach(pName => {
+                                if (pName.length < 3) return;
+                                const pNameRegex = new RegExp(`\\s*${pName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*`, 'gi');
+                                rankText = rankText.replace(pNameRegex, ' ');
+                            });
+                            rankText = rankText.replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim();
+                            if (rankText.length > 0 && !rankText.includes('%')) {
+                                let formatted = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                                formatted = formatted.replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
+                                leaderRankHtml = `<span class="player-rank-badge" style="font-size: 0.75rem; padding: 2px 6px;">${formatted}</span>`;
+                            }
+                        }
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td class="rank ${rankClass}">#${originalRank}</td>
+                            <td>
+                                <div class="player-cell">
+                                    <img class="player-head" src="https://mc-heads.net/avatar/${headName}/32" alt="">
+                                    <div class="player-info" style="flex-direction: column; align-items: flex-start; gap: 2px; white-space: normal;">
+                                        <span class="player-name" style="font-size: 1.1rem; color: var(--accent-color); font-weight: 800; line-height: 1.2;">${islandName}</span>
+                                        <div style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+                                            <span style="font-size: 0.85rem; opacity: 0.8; font-weight: 400;">Leader: ${leaderName}</span>
+                                            ${leaderRankHtml}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="score-cell">${formatValue(displayValue, currentStat)}</td>
+                        `;
+                        leaderboardBody.appendChild(row);
+                        return;
                     }
 
-                    // Format rank if available (normalize § to & for utils.js)
+                    // STANDARD PLAYER RENDERING
                     let rankHtml = '';
-                    if (metadata.rank) {
+                    if (metadata.rank && !metadata.rank.toLowerCase().includes('failed to find player')) {
                         let rankText = metadata.rank.replace(/§/g, '&');
-                        
-                        // FOOLPROOF FILTER: If it contains %, it's a broken placeholder. Hide it!
-                        if (rankText.includes('%')) {
-                            rankHtml = '';
-                        } else {
-                            // Escape special characters in the name for the regex
-                            const escapedName = headName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-                            const nameRegex = new RegExp(`\\s*${escapedName}\\s*`, 'gi');
-                            rankText = rankText.replace(nameRegex, '').trim();
+                        if (!rankText.includes('%')) {
+                            Object.keys(allPlayerData).forEach(pName => {
+                                if (pName.length < 3) return;
+                                const pNameRegex = new RegExp(`\\s*${pName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*`, 'gi');
+                                rankText = rankText.replace(pNameRegex, ' ').trim();
+                            });
+                            rankText = rankText.replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim();
 
                             if (rankText.length > 0) {
-                                const formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                                let formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
+                                formattedRank = formattedRank.replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
                                 rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
                             }
                         }
@@ -161,7 +195,7 @@ function renderLeaderboard() {
                         <td class="rank ${rankClass}">#${originalRank}</td>
                         <td>
                             <div class="player-cell">
-                                <img class="player-head" src="https://mc-heads.net/avatar/${headName}/32" alt="${headName}">
+                                <img class="player-head" src="https://mc-heads.net/avatar/${headName}/32" alt="">
                                 <div class="player-info">
                                     ${rankHtml}
                                     <span class="player-name">${displayName}</span>
@@ -172,13 +206,13 @@ function renderLeaderboard() {
                     `;
                     leaderboardBody.appendChild(row);
                 } catch (innerError) {
-                    console.error('Error rendering row for:', player, innerError);
+                    console.error('Error rendering row:', innerError);
                 }
             });
         }
     } catch (outerError) {
         console.error('Critical error in renderLeaderboard:', outerError);
-        leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--accent-color);">Failed to load rankings. Please refresh.</td></tr>';
+        leaderboardBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--accent-color);">Failed to load rankings.</td></tr>';
     } finally {
         if (loadingIndicator) loadingIndicator.style.display = 'none';
         if (leaderboardTable) leaderboardTable.style.display = 'table';

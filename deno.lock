@@ -13,7 +13,9 @@
       "dependencies": [
         "npm:firebase-admin@^13.8.0",
         "npm:minecraft-server-util@^5.4.4",
-        "npm:node-fetch@^3.3.2"
+        "npm:node-fetch@^3.3.2",
+        "npm:rcon-client@^4.2.5",
+        "npm:rcon@^1.1.0"
       ]
     }
   }

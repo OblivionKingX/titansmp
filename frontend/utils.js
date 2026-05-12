@@ -3,17 +3,28 @@
  * Supports Minecraft color codes, stacking, hex colors, and font sizes.
  */
 
-window.formatRichText = function (text) {
+window.formatRichText = function (text, skipBBCode = false) {
     if (!text) return '';
 
-    // 1. Convert & to § for internal processing if needed
-    let html = text.replace(/&/g, '§');
+    let html = text;
 
-    // 2. Handle Hex Codes §x§r§r§g§g§b§b (standard Minecraft hex)
-    // Also handles §xRRGGBB or &#RRGGBB styles
+    // 1. Process BBCode first if available and not skipped
+    if (!skipBBCode && window.BBCode && typeof window.BBCode.parse === 'function') {
+        html = window.BBCode.parse(text, true); // Pass true to skip recursive call
+    }
+
+    // 2. Convert Hex Codes first (High Priority)
+    // Supports: &#RRGGBB, &amp;#RRGGBB
+    html = html.replace(/&(?:amp;)?#([0-9a-f]{6})/gi, '§#$1');
+
+    // 3. Convert standard & or &amp; to §
+    // Stricter check to avoid matching parts of &amp;
+    html = html.replace(/&amp;([0-9a-fA-Fk-oK-OrR])/g, '§$1');
+    html = html.replace(/&([0-9a-fA-Fk-oK-OrR])/g, '§$1');
+
+    // 3. Handle Hex Codes §x§r§r§g§g§b§b (standard Minecraft hex)
     html = html.replace(/§x§([0-9a-f])§([0-9a-f])§([0-9a-f])§([0-9a-f])§([0-9a-f])§([0-9a-f])/gi, '§#$1$2$3$4$5$6');
     html = html.replace(/§x([0-9a-f]{6})/gi, '§#$1');
-    html = html.replace(/&#([0-9a-f]{6})/gi, '§#$1');
 
     const colors = {
         '0': '#000000', '1': '#0000AA', '2': '#00AA00', '3': '#00AAAA',
@@ -50,7 +61,6 @@ window.formatRichText = function (text) {
         if (html[i] === '§' && i + 1 < html.length) {
             const code = html[i + 1].toLowerCase();
             
-            // Handle Hex Code §#RRGGBB (pre-converted above)
             if (code === '#' && i + 7 < html.length) {
                 const hex = html.substring(i + 2, i + 8);
                 if (/^[0-9a-f]{6}$/i.test(hex)) {
@@ -62,7 +72,6 @@ window.formatRichText = function (text) {
                 }
             }
 
-            // Handle Standard Codes
             if (colors[code]) {
                 output += closeSpan();
                 activeStyles.color = colors[code];

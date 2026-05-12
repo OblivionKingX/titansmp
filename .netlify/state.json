@@ -12,10 +12,11 @@
 				"name": "North Rhine-Westphalia"
 			},
 			"timezone": "Europe/Berlin",
-			"latitude": 50.9217,
-			"longitude": 6.9951,
-			"postalCode": "51105"
+			"latitude": 50.9663,
+			"longitude": 6.9564,
+			"postalCode": "50733"
 		},
-		"timestamp": 1777311121439
-	}
+		"timestamp": 1778518413378
+	},
+	"dbConnectionString": "postgres://localhost:58361/postgres"
 }

@@ -13,7 +13,7 @@
     import './firebase-global.js';
     import { renderBadges } from './user-metadata-logic.js';
 
-    const { auth, signOut, doc, getDoc, setDoc, collection, fQuery: query, where, getDocs, limit, fOrderBy: orderBy, fsTimestamp: serverTimestamp, db, get: getRTDB } = window.firebaseApp;
+    const { auth, signOut, doc, getDoc, setDoc, collection, fQuery: query, where, getDocs, limit, fOrderBy: orderBy, fsTimestamp: serverTimestamp, db, get: getRTDB, ref } = window.firebaseApp;
     const fs = window.firebaseApp.fs;
     const app = window.firebaseApp.app;
 
@@ -76,20 +76,56 @@
 
     const listUsers = async () => {
       try {
-        const usersQuery = query(collection(fs, "users"), limit(100)); // Removed orderBy to show all users
-        const snapshot = await getDocs(usersQuery);
-        const users = [];
-        snapshot.forEach(doc => {
-          const data = doc.data();
-          users.push({
-            uid: doc.id,
-            role: data.role || "user",
-            ranks: data.ranks || [],
-            email: data.email || "",
-            updatedAt: data.updatedAt?.toDate?.() || null
+        const [firestoreSnap, rtdbUsersSnap, playerDataSnap] = await Promise.all([
+          getDocs(query(collection(fs, "users"), limit(1000))),
+          getRTDB(ref(db, 'users')),
+          getRTDB(ref(db, 'playerData'))
+        ]);
+
+        const firestoreUsers = {};
+        firestoreSnap.forEach(d => firestoreUsers[d.id] = d.data());
+        const rtdbUsers = rtdbUsersSnap.exists() ? rtdbUsersSnap.val() : {};
+        const playerData = playerDataSnap.exists() ? playerDataSnap.val() : {};
+
+        const unifiedUsers = new Map();
+
+        // 1. Process all website accounts (Firestore + RTDB Sync)
+        const allUids = new Set([...Object.keys(firestoreUsers), ...Object.keys(rtdbUsers)]);
+        allUids.forEach(uid => {
+          const fsData = firestoreUsers[uid] || {};
+          const rData = rtdbUsers[uid] || {};
+          const username = rData.username || rData.displayName || null;
+          const mcRank = username ? (playerData[username]?.rank || 'None') : 'No Account Linked';
+
+          unifiedUsers.set(uid, {
+            uid: uid,
+            role: fsData.role || "user",
+            ranks: fsData.ranks || [],
+            email: fsData.email || rData.email || "",
+            mcRank: mcRank,
+            username: username,
+            status: 'Website'
           });
         });
-        return { data: { users } };
+
+        // 2. Process Minecraft players who haven't registered
+        Object.entries(playerData).forEach(([name, pData]) => {
+          // Check if any registered user has this username
+          const isRegistered = Array.from(unifiedUsers.values()).some(u => u.username === name);
+          if (isRegistered) return;
+
+          unifiedUsers.set(`mc_${name}`, {
+            uid: `mc_${name}`,
+            role: "player",
+            ranks: [],
+            email: "",
+            mcRank: pData.rank || "None",
+            username: name,
+            status: 'Game Only'
+          });
+        });
+
+        return { data: { users: Array.from(unifiedUsers.values()) } };
       } catch (err) {
         console.error(err);
         return { data: { users: [] } };
@@ -415,6 +451,21 @@
       letter-spacing: 1px;
     }
 
+    /* Checkbox Styling */
+    .user-select-check,
+    .user-table th input[type="checkbox"] {
+      cursor: pointer;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent);
+      margin-top: 4px;
+    }
+
+    .user-table tr:hover .user-select-check {
+      transform: scale(1.15);
+      transition: 0.15s;
+    }
+
     .user-table td {
       padding: 13px 14px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
@@ -587,7 +638,7 @@
       padding: 15px;
       font-family: 'Courier New', Courier, monospace;
       border: 1px solid #333;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
     }
 
     .terminal-output {
@@ -600,9 +651,11 @@
     .terminal-output::-webkit-scrollbar {
       width: 6px;
     }
+
     .terminal-output::-webkit-scrollbar-track {
       background: #111;
     }
+
     .terminal-output::-webkit-scrollbar-thumb {
       background: #333;
       border-radius: 3px;
@@ -707,9 +760,11 @@
         <button id="role-btn-owner" class="role-btn owner" onclick="applyRole('owner')">👑 Owner</button>
         <button id="role-btn-co-owner" class="role-btn co-owner" onclick="applyRole('co-owner')">👑 Co-Owner</button>
         <button id="role-btn-admin" class="role-btn admin" onclick="applyRole('admin')">🛡️ Admin</button>
-        <button id="role-btn-moderator" class="role-btn moderator" onclick="applyRole('moderator')">🛡️ Moderator</button>
+        <button id="role-btn-moderator" class="role-btn moderator" onclick="applyRole('moderator')">🛡️
+          Moderator</button>
         <button id="role-btn-helper" class="role-btn helper" onclick="applyRole('helper')">🤝 Helper</button>
-        <button id="role-btn-developer" class="role-btn developer" onclick="applyRole('developer')">🛠️ Developer</button>
+        <button id="role-btn-developer" class="role-btn developer" onclick="applyRole('developer')">🛠️
+          Developer</button>
         <button id="role-btn-staff" class="role-btn staff" onclick="applyRole('staff')">⭐ Staff</button>
         <button id="role-btn-user" class="role-btn user" onclick="applyRole('user')">👤 Regular User</button>
       </div>
@@ -740,7 +795,8 @@
           onclick="removeStaffByEmail()">Remove</button>
       </div>
       <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
-        <button class="refresh-btn" style="background: #2563eb; border: none; padding: 10px 16px; font-weight: 600;" onclick="forceMassSync()">
+        <button class="refresh-btn" style="background: #2563eb; border: none; padding: 10px 16px; font-weight: 600;"
+          onclick="forceMassSync()">
           <i class="fas fa-sync-alt" style="margin-right: 6px;"></i> Force Sync All Profiles
         </button>
       </div>
@@ -799,18 +855,49 @@
         </div>
         <div class="terminal-input-row">
           <span class="terminal-prompt">></span>
-          <input id="rcon-input" class="terminal-input" type="text" placeholder="type command (e.g. list, help)..." onkeydown="handleRconKey(event)">
+          <input id="rcon-input" class="terminal-input" type="text" placeholder="type command (e.g. list, help)..."
+            onkeydown="handleRconKey(event)">
           <button class="terminal-send" onclick="sendRcon()"><i class="fas fa-paper-plane"></i></button>
         </div>
       </div>
+    </div>
+
+    <!-- MASS EMAIL -->
+    <div class="card">
+      <div class="card-title"><i class="fas fa-envelope"></i> Send Email (Nuntly)</div>
+      <p style="margin-bottom: 15px; font-size: 0.9rem; color: var(--text-secondary);">
+        Send transactional or mass emails to your users using the Nuntly API.
+      </p>
+      <div class="uid-row" style="flex-direction: column; align-items: stretch; gap: 15px;">
+        <input id="email-subject" class="uid-input" type="text" placeholder="Email Subject">
+        <textarea id="email-body" class="uid-input" style="min-height: 150px; font-family: inherit; resize: vertical;"
+          placeholder="Email Content (HTML supported)"></textarea>
+
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+          <button class="refresh-btn" style="flex: 1; background: #6366f1;" onclick="sendMassEmail('all')">
+            <i class="fas fa-paper-plane"></i> Send to All
+          </button>
+          <button class="refresh-btn" style="flex: 1; background: #8b5cf6;" onclick="sendMassEmail('selected')">
+            <i class="fas fa-check-square"></i> Send to Selected (<span id="selected-count">0</span>)
+          </button>
+          <button class="btn-nav" style="flex: 0.5;" onclick="clearEmailForm()">Clear Form</button>
+        </div>
+      </div>
+      <div class="status-msg" id="email-status"></div>
     </div>
 
     <!-- USER LIST -->
     <div class="card">
       <div class="card-title"><i class="fas fa-users"></i> All Users with Roles</div>
       <div class="table-header">
-        <input id="search-input" class="search-input" type="text" placeholder="Search by email or UID..."
-          oninput="filterTable()">
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <div id="user-count"
+            style="background: rgba(255,255,255,0.05); padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.9rem;">
+            Total Users: <span style="color: var(--accent); font-weight: 800;">0</span>
+          </div>
+          <input id="search-input" class="search-input" type="text" placeholder="Search by email or UID..."
+            oninput="filterTable()">
+        </div>
         <button class="refresh-btn" onclick="loadUsers()"><i class="fas fa-sync-alt"></i> Refresh</button>
       </div>
       <div id="table-container">
@@ -825,6 +912,7 @@
   <!-- TOAST -->
   <div id="toast"></div>
 
+  <script src="utils.js"></script>
   <script>
     let allUsers = [];
     let currentUserUid = null;
@@ -857,23 +945,23 @@
       if (!command) return;
 
       const output = document.getElementById('rcon-output');
-      
+
       // Log command
       addTerminalLine(`> ${command}`, 'command');
       input.value = '';
 
       try {
         addTerminalLine('Executing...', 'info');
-        
+
         // Calling Netlify Function (Free) instead of Firebase Functions
         const res = await fetch('/.netlify/functions/rcon', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ command })
         });
-        
+
         const result = await res.json();
-        
+
         if (res.ok) {
           if (result.response) {
             addTerminalLine(result.response);
@@ -1016,15 +1104,15 @@
       const status = document.getElementById('uid-status');
       if (!identifier) { status.textContent = '⚠️ Please enter a UID or Email.'; status.style.color = 'orange'; return; }
 
-      const roleLabels = { 
-        owner: '👑 Owner', 
-        admin: '🛡️ Admin', 
-        moderator: '🛡️ Moderator', 
-        helper: '🤝 Helper', 
-        developer: '🛠️ Developer', 
-        staff: '⭐ Staff', 
+      const roleLabels = {
+        owner: '👑 Owner',
+        admin: '🛡️ Admin',
+        moderator: '🛡️ Moderator',
+        helper: '🤝 Helper',
+        developer: '🛠️ Developer',
+        staff: '⭐ Staff',
         manager: '💎 Manager',
-        user: '👤 User' 
+        user: '👤 User'
       };
 
       try {
@@ -1048,7 +1136,7 @@
         status.textContent = `Updating...`;
         const { setUserRole } = window.adminApp;
         const result = await setUserRole({ targetUid: uid, newRole });
-        
+
         if (result.data && result.data.success) {
           let pfpUrl = null;
           try {
@@ -1063,7 +1151,7 @@
               pfpUrl = ud.pfp || ud.photoURL || null;
             }
             if (pfpSnap.exists()) pfpUrl = pfpSnap.val();
-          } catch(e) { console.warn("RTDB fetch failed:", e); }
+          } catch (e) { console.warn("RTDB fetch failed:", e); }
 
           await syncUserToTeam(uid, email, newRole, username, pfpUrl);
 
@@ -1113,7 +1201,7 @@
               pfpUrl = ud.pfp || ud.photoURL || null;
             }
             if (pfpSnap.exists()) pfpUrl = pfpSnap.val();
-          } catch(e) {}
+          } catch (e) { }
           // Update primary role if user exists
           await setUserRole({ targetUid: uid, newRole: role });
         }
@@ -1134,36 +1222,36 @@
     }
 
     async function removeStaffByEmail() {
-        const emailInput = document.getElementById('add-staff-email').value.trim();
-        const status = document.getElementById('add-staff-status');
-        if (!emailInput) return;
-        const email = emailInput.toLowerCase();
+      const emailInput = document.getElementById('add-staff-email').value.trim();
+      const status = document.getElementById('add-staff-status');
+      if (!emailInput) return;
+      const email = emailInput.toLowerCase();
 
-        try {
-            const { fs, doc, deleteDoc } = window.firebaseApp;
-            status.textContent = 'Removing from team...';
-            
-            const { getUidByEmail, setUserRole } = window.adminApp;
-            const uid = await getUidByEmail(email);
-            
-            const deletePromises = [
-                deleteDoc(doc(fs, "team", email)),
-                deleteDoc(doc(fs, "email_roles", email))
-            ];
-            
-            if (uid) {
-               // Demote to regular user when removed from team
-               deletePromises.push(setUserRole({ targetUid: uid, newRole: 'user' }));
-            }
-            
-            await Promise.all(deletePromises);
-            
-            status.textContent = `✅ Removed ${email} from Team.`;
-            status.style.color = '#4caf50';
-            toast(`Removed ${email} from team`);
-        } catch (err) {
-            status.textContent = '❌ ' + err.message;
+      try {
+        const { fs, doc, deleteDoc } = window.firebaseApp;
+        status.textContent = 'Removing from team...';
+
+        const { getUidByEmail, setUserRole } = window.adminApp;
+        const uid = await getUidByEmail(email);
+
+        const deletePromises = [
+          deleteDoc(doc(fs, "team", email)),
+          deleteDoc(doc(fs, "email_roles", email))
+        ];
+
+        if (uid) {
+          // Demote to regular user when removed from team
+          deletePromises.push(setUserRole({ targetUid: uid, newRole: 'user' }));
         }
+
+        await Promise.all(deletePromises);
+
+        status.textContent = `✅ Removed ${email} from Team.`;
+        status.style.color = '#4caf50';
+        toast(`Removed ${email} from team`);
+      } catch (err) {
+        status.textContent = '❌ ' + err.message;
+      }
     }
 
     async function forceMassSync() {
@@ -1171,7 +1259,7 @@
       try {
         const { fs, db, doc, setDoc, get, ref, getDocs, collection, fsTimestamp } = window.firebaseApp;
         const { getUidByEmail } = window.adminApp;
-        
+
         status.textContent = 'Starting Mass Sync... Fetching staff list...';
         status.style.color = '#aaa';
 
@@ -1186,7 +1274,7 @@
 
           // Resolve UID
           const uid = await getUidByEmail(email);
-          
+
           let username = null;
           let pfpUrl = null;
 
@@ -1205,7 +1293,7 @@
               if (pfpSnap && pfpSnap.exists()) {
                 pfpUrl = pfpSnap.val();
               }
-            } catch(e) { console.warn(`Failed RTDB fetch for ${email}:`, e); }
+            } catch (e) { console.warn(`Failed RTDB fetch for ${email}:`, e); }
           }
 
           // Build complete public snapshot
@@ -1215,7 +1303,7 @@
             ranks: data.ranks || [data.role || "Staff"],
             updatedAt: fsTimestamp()
           };
-          
+
           if (uid) teamData.uid = uid;
           if (username) teamData.username = username;
           if (pfpUrl) teamData.pfp = pfpUrl;
@@ -1257,7 +1345,7 @@
           if (!uid) {
             status.textContent = 'ℹ️ User not found. Pre-assigning ranks to email...';
             status.style.color = '#ff9800';
-            
+
             await setDoc(doc(fs, "email_roles", identifier.toLowerCase()), {
               ranks: selectedRanks,
               email: identifier.toLowerCase(),
@@ -1296,7 +1384,7 @@
       try {
         const { db, get, ref } = window.firebaseApp;
         const { setUserRole } = window.adminApp;
-        
+
         // Update Primary Role
         const result = await setUserRole({ targetUid: uid, newRole });
         if (result.data && result.data.success) {
@@ -1310,7 +1398,7 @@
               email = ud.email;
               username = ud.username || ud.displayName;
             }
-          } catch(e) { console.warn("RTDB fetch failed during quickRole sync:", e); }
+          } catch (e) { console.warn("RTDB fetch failed during quickRole sync:", e); }
 
           await syncUserToTeam(uid, email, newRole, username);
           toast(`✅ Updated to ${newRole}!`, 'success');
@@ -1345,20 +1433,43 @@
       const rows = users.map(u => {
         const nextUp = getNextRole(u.role);
         const isMe = u.uid === currentUserUid;
+        const isGameOnly = u.status === 'Game Only';
+
+        // Clean up Minecraft rank (normalize and format)
+        let formattedMcRank = u.mcRank;
+        if (formattedMcRank && formattedMcRank !== 'None' && formattedMcRank !== 'No Account Linked') {
+          const cleanRank = formattedMcRank.replace(/§/g, '&');
+          formattedMcRank = window.formatRichText ? window.formatRichText(cleanRank) : cleanRank;
+          // Strip any duplicate names or weird symbols like in leaderboard
+          formattedMcRank = formattedMcRank.replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
+          if (u.username) {
+            const nameRegex = new RegExp(`\\s*${u.username}\\s*`, 'gi');
+            formattedMcRank = formattedMcRank.replace(nameRegex, ' ').trim();
+          }
+        }
+
         return `
-        <tr>
-          <td class="uid-cell" title="${u.uid}">${u.uid.slice(0, 12)}...</td>
-          <td class="email-cell">${u.email || '<em style="color:#555">unknown</em>'}</td>
-          <td>${getRoleBadge(u)}</td>
+        <tr style="${isGameOnly ? 'opacity: 0.7; font-style: italic;' : ''}">
+          <td style="text-align: center;">
+            ${u.email ? `<input type="checkbox" class="user-select-check" value="${u.email}" onchange="updateSelectedCount()">` : ''}
+          </td>
+          <td class="uid-cell" title="${u.uid}">${u.uid.startsWith('mc_') ? '—' : u.uid.slice(0, 10) + '...'}</td>
+          <td class="email-cell">${u.email || '<em style="color:#555">not registered</em>'}</td>
+          <td style="color:var(--accent); font-weight:600;">${u.username || '<em style="color:#555">none</em>'}</td>
+          <td>${isGameOnly ? '<span class="role-badge" style="opacity:0.5">PLAYER</span>' : getRoleBadge(u)}</td>
+          <td><div class="player-rank-badge" style="font-size: 0.8rem;">${formattedMcRank}</div></td>
           <td class="action-cell">
-            ${!isMe ? `
+            ${!isMe && !isGameOnly ? `
+              <button class="inline-btn" style="background: #6366f1; color: white;" onclick="openQuickEmail('${u.email}')" title="Email User">
+                <i class="fas fa-envelope"></i>
+              </button>
               <button class="inline-btn promote" onclick="quickRole('${u.uid}', '${nextUp}')" title="Promote to ${nextUp}">
                 ↑ ${nextUp}
               </button>
               <button class="inline-btn demote" onclick="quickRole('${u.uid}', 'user')" title="Demote to user">
                 ↓ User
               </button>
-            ` : '<span style="color:#555;font-size:0.8rem">(you)</span>'}
+            ` : isGameOnly ? '<span style="color:#555;font-size:0.8rem">Register to manage</span>' : '<span style="color:#555;font-size:0.8rem">(you)</span>'}
           </td>
         </tr>
       `;
@@ -1368,9 +1479,12 @@
       <table class="user-table">
         <thead>
           <tr>
+            <th style="width: 40px; text-align: center;"><input type="checkbox" onclick="toggleSelectAll(this)"></th>
             <th>UID</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>Minecraft IGN</th>
+            <th>Website Role</th>
+            <th>MC Rank</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -1396,12 +1510,145 @@
     function filterTable() {
       const q = document.getElementById('search-input').value.toLowerCase();
       const filtered = allUsers.filter(u =>
-        !q || u.uid.includes(q) || (u.email || '').toLowerCase().includes(q) || (u.role || '').includes(q)
+        !q || u.uid.includes(q) || (u.email || '').toLowerCase().includes(q) || (u.role || '').includes(q) || (u.username || '').toLowerCase().includes(q)
       );
+      // Update counter
+      const counter = document.getElementById('user-count');
+      if (counter) counter.querySelector('span').textContent = allUsers.length;
+
       renderTable(filtered);
     }
 
-    // Auth check on page load
+    // ── EMAIL LOGIC ──
+    function clearEmailForm() {
+      document.getElementById('email-subject').value = '';
+      document.getElementById('email-body').value = '';
+      document.getElementById('email-status').textContent = '';
+    }
+
+    function openQuickEmail(email) {
+      if (!email) {
+        toast('User has no email registered.', 'error');
+        return;
+      }
+      document.getElementById('email-subject').value = `Message from TitanNetwork Admin`;
+      document.getElementById('email-body').focus();
+      // Scroll to email section
+      document.getElementById('email-subject').scrollIntoView({ behavior: 'smooth' });
+      toast(`Ready to email: ${email}`);
+    }
+
+    function updateSelectedCount() {
+      const count = document.querySelectorAll('.user-select-check:checked').length;
+      const el = document.getElementById('selected-count');
+      if (el) el.textContent = count;
+    }
+
+    function toggleSelectAll(masterCb) {
+      document.querySelectorAll('.user-select-check').forEach(cb => {
+        cb.checked = masterCb.checked;
+      });
+      updateSelectedCount();
+    }
+
+    async function sendMassEmail(mode = 'all') {
+      const subject = document.getElementById('email-subject').value.trim();
+      const body = document.getElementById('email-body').value.trim();
+      const status = document.getElementById('email-status');
+
+      if (!subject || !body) {
+        status.textContent = '⚠️ Subject and Body are required.';
+        status.style.color = 'orange';
+        return;
+      }
+
+      let recipients = [];
+      if (mode === 'selected') {
+        const checks = document.querySelectorAll('.user-select-check:checked');
+        recipients = Array.from(checks).map(c => c.value);
+      } else {
+        // Collect all registered emails
+        recipients = allUsers
+          .filter(u => u.email && u.status === 'Website')
+          .map(u => u.email);
+      }
+
+      if (recipients.length === 0) {
+        status.textContent = `❌ No recipients ${mode === 'selected' ? 'selected' : 'found'}.`;
+        status.style.color = 'red';
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to send this email to ${recipients.length} users?`)) return;
+
+      status.textContent = `Sending to ${recipients.length} users...`;
+      status.style.color = '#aaa';
+
+      try {
+        // Try the standard Netlify path first
+        let res = await fetch('/.netlify/functions/send-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            to: recipients,
+            subject: subject,
+            html: body.includes('<') ? body : `<p>${body.replace(/\n/g, '<br>')}</p>`,
+            text: body.replace(/<[^>]*>?/gm, ''),
+            fromName: 'TitanNetwork Admin'
+          })
+        });
+
+        // If 404, try the alternative path
+        if (res.status === 404) {
+          console.log("Standard path failed, trying alternative /functions/ path...");
+          res = await fetch('/functions/send-email', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              to: recipients,
+              subject: subject,
+              html: body.includes('<') ? body : `<p>${body.replace(/\n/g, '<br>')}</p>`,
+              text: body.replace(/<[^>]*>?/gm, ''),
+              fromName: 'TitanNetwork Admin'
+            })
+          });
+        }
+
+        // Try to parse as JSON regardless of header, then check status
+        let result;
+        try {
+          const rawText = await res.text();
+          result = JSON.parse(rawText);
+        } catch (e) {
+          result = { error: "Failed to parse server response" };
+        }
+
+        // Robust success check:
+        // Some local environments (like netlify dev) might return a 200/500 status 
+        // with an error-like string that still contains the successful JSON.
+        const isSuccessful = result.success === true || 
+                           (result.data && result.data.id) || 
+                           (res.ok && !result.error);
+
+        if (isSuccessful) {
+          status.textContent = `✅ Successfully sent to ${recipients.length} users!`;
+          status.style.color = '#4caf50';
+          toast('Emails sent successfully!');
+          clearEmailForm();
+          // Uncheck all
+          document.querySelectorAll('.user-select-check').forEach(cb => cb.checked = false);
+          updateSelectedCount();
+        } else {
+          const errorMessage = result.error || result.message || 'Failed to send emails';
+          throw new Error(errorMessage);
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = `❌ Error: ${ err.message }`;
+        status.style.color = 'red';
+        toast(err.message, 'error');
+      }
+    }
     document.addEventListener('DOMContentLoaded', () => {
       const { auth, getUserRole } = window.adminApp;
       const panel = document.getElementById('panel');

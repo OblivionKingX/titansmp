@@ -17,32 +17,20 @@ class Parser {
   cleanName(name) {
     if (!name) return '';
     
-    // 1. Remove Minecraft color codes (§ codes) - handles standard and hex
+    // 1. Remove Minecraft color codes (§ codes)
     let cleaned = name.replace(/§./g, '');
     
-    // 2. Remove common prefix/suffix patterns like [Admin], (Member), etc.
-    cleaned = cleaned.replace(/[\[\(].*?[\]\)]/g, '');
-
-    // 3. Trim and handle multiple rank keywords (e.g. "Developer Steve STAFF")
-    cleaned = cleaned.trim();
-
-    const rankPrefixes = [
-      'owner', 'co-owner', 'manager', 'admin', 'lead developer', 'developer', 
-      'moderator', 'mod', 'helper', 'staff', 'builder', 'pvper', 'grinder', 'member',
-      'vip', 'mvp', 'elite', 'titan'
-    ];
-    
-    // Split into words and filter out rank keywords
-    const words = cleaned.split(/\s+/);
-    const filteredWords = words.filter(word => {
-      return !rankPrefixes.includes(word.toLowerCase());
+    // 2. Strip out common rank/status tags that appear in /list
+    const tags = ['STAFF', 'OWNER', 'ADMIN', 'MODERATOR', 'HELPER', 'VIP', 'MVP', 'BUILDER'];
+    tags.forEach(tag => {
+      const regex = new RegExp(`\\b${tag}\\b`, 'gi');
+      cleaned = cleaned.replace(regex, '');
     });
 
-    // Take the first word that remains (usually the username)
-    cleaned = filteredWords[0] || '';
-
-    // 4. Remove "B'." prefix sometimes seen in RCON responses
-    cleaned = cleaned.replace(/^B'\./g, '');
+    // 3. IMPORTANT: Remove all characters that are NOT valid in a Minecraft name 
+    // This also ensures the name is a valid Firebase key.
+    // Minecraft names only allow A-Z, a-z, 0-9 and _
+    cleaned = cleaned.replace(/[^A-Za-z0-9_]/g, '');
 
     return cleaned.trim();
   }

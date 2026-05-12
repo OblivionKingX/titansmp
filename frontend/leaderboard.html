@@ -155,6 +155,8 @@
       align-items: center;
       gap: 8px;
       overflow: hidden;
+      white-space: nowrap;
+      min-width: 0;
     }
 
     .player-rank-badge {
@@ -162,12 +164,17 @@
       font-weight: 700;
       white-space: nowrap;
       display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
     }
     
     .player-name {
       font-size: 1.05rem;
       white-space: nowrap;
       font-weight: 600;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      min-width: 0;
     }
 
     .player-head {
