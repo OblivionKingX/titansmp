@@ -110,6 +110,11 @@
           ".write": "auth != null && auth.uid === $uid"
         }
       }
+    },
+    "point_transactions": {
+      ".read": true,
+      ".write": false,
+      ".indexOn": ["playerName"]
     }
   }
 }

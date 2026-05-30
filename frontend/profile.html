@@ -257,16 +257,29 @@
                     <span id="posts-display" class="stat-val">---</span>
                     <span class="stat-lbl">Posts</span>
                 </div>
+                <div class="stat-box" id="gold-stat-box" style="display: none;">
+                    <span id="gold-display" class="stat-val" style="color: #ffd700;">0</span>
+                    <span class="stat-lbl"><i class="fas fa-coins"></i> Gold</span>
+                </div>
+                <div class="stat-box" id="points-stat-box" style="display: none;">
+                    <span id="points-display" class="stat-val" style="color: #00ccff;">0</span>
+                    <span class="stat-lbl"><i class="fas fa-star"></i> Points</span>
+                </div>
             </div>
         </div>
 
         <!-- Activity Section -->
         <div class="profile-tabs">
-            <button class="tab-btn active">Recent Activity</button>
+            <button class="tab-btn active" id="activity-tab-btn" onclick="switchProfileTab('activity')">Recent Activity</button>
+            <button class="tab-btn" id="points-tab-btn" onclick="switchProfileTab('points')" style="display: none;">Points History</button>
         </div>
 
         <div id="activity-list" class="activity-list">
             <!-- Items injected here -->
+        </div>
+
+        <div id="points-history-list" class="activity-list" style="display: none;">
+            <!-- Point transactions injected here -->
         </div>
     </div>
   </div>

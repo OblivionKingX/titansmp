@@ -5,66 +5,117 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TitanNetwork - Store</title>
+  <meta name="description"
+    content="Browse and claim premium rewards, ranks and items in the TitanNetwork Titan Store. Spend your Gold and dominate the server!">
   <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
+  <meta name="theme-color" content="#ff8c00">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="navbar-shared.css">
   <link rel="stylesheet" href="profile-card.css">
+  <link rel="stylesheet" href="index.css">
   <style>
-    :root {
-      --primary-bg: #0f1720;
-      --secondary-bg: #0a1425;
-      --accent-color: #00bfff;
-      --accent-hover: #0088cc;
-      --text-color: #d9f3ff;
-      --text-secondary: #87b7d4;
-      --border-color: rgba(0, 180, 255, 0.2);
-      --card-bg: rgba(10, 20, 40, 0.95);
-      --success-color: #2ecc71;
-      --warning-color: #f39c12;
-      --error-color: #e74c3c;
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Barlow', sans-serif; background: var(--primary-bg); color: var(--text-color); overflow-x: hidden; }
-
-    .shop-header {
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=2070');
-      background-size: cover;
-      background-position: center;
-      padding: 100px 20px;
+    /* ── Shop-specific overrides ── */
+    .shop-section-header {
       text-align: center;
-      border-bottom: 2px solid var(--accent-color);
+      padding: 60px 20px 30px;
     }
 
-    .shop-title { font-size: 3rem; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
-    .shop-subtitle { font-size: 1.2rem; color: var(--accent-color); font-weight: 600; opacity: 0.9; }
+    .shop-section-header h2 {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
 
-    .container { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .shop-section-header p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 20px;
+    }
 
-    .shop-tabs { display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap; }
+    /* Balance row */
+    .balance-row {
+      display: none;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    .balance-wrapper {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 10px 22px;
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .balance-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .balance-value {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: white;
+    }
+
+    /* Filter tabs */
+    .shop-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
     .shop-tab {
-      background: var(--card-bg);
+      background: var(--card-bg, rgba(10, 20, 40, 0.95));
       border: 1px solid var(--border-color);
       color: var(--text-color);
-      padding: 12px 24px;
+      padding: 11px 22px;
       border-radius: 8px;
       cursor: pointer;
       font-weight: 700;
-      transition: 0.3s;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      transition: 0.25s;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
-    .shop-tab:hover, .shop-tab.active { background: var(--accent-color); color: #0a1425; transform: translateY(-2px); border-color: var(--accent-color); }
 
-    .items-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
-    
+    .shop-tab:hover,
+    .shop-tab.active {
+      background: var(--accent-color);
+      color: #0a1425;
+      transform: translateY(-2px);
+      border-color: var(--accent-color);
+    }
+
+    /* Items grid */
+    .items-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 28px;
+      padding-bottom: 60px;
+    }
+
     .item-card {
-      background: var(--card-bg);
+      background: var(--card-bg, rgba(10, 20, 40, 0.95));
       border: 1px solid var(--border-color);
-      border-radius: 12px;
-      padding: 25px;
+      border-radius: 14px;
+      padding: 28px 24px;
       text-align: center;
       transition: 0.3s;
       position: relative;
@@ -72,126 +123,443 @@
       display: flex;
       flex-direction: column;
     }
-    .item-card:hover { transform: translateY(-5px); border-color: var(--accent-color); box-shadow: 0 10px 30px rgba(0, 191, 255, 0.1); }
-    
-    .item-icon { font-size: 3rem; margin-bottom: 20px; color: var(--accent-color); }
-    .item-name { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; }
-    .item-desc { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; flex-grow: 1; }
-    
-    .item-price { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: var(--success-color); }
-    .item-price.free { color: var(--accent-color); }
+
+    .item-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-color);
+      box-shadow: 0 12px 32px rgba(0, 191, 255, 0.12);
+    }
+
+    .item-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-color), #0077ff);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .item-card:hover::before {
+      opacity: 1;
+    }
+
+    .item-icon {
+      font-size: 3rem;
+      margin-bottom: 18px;
+      color: var(--accent-color);
+    }
+
+    .item-name {
+      font-size: 1.45rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .item-desc {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      margin-bottom: 18px;
+      flex-grow: 1;
+      line-height: 1.5;
+    }
+
+    .item-price {
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 18px;
+      color: #2ecc71;
+    }
+
+    .item-price.free {
+      color: var(--accent-color);
+    }
 
     .claim-btn {
       background: var(--accent-color);
       color: #0a1425;
       border: none;
-      padding: 12px 25px;
+      padding: 12px 22px;
       border-radius: 8px;
       font-weight: 800;
+      font-family: 'Barlow', sans-serif;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.25s;
       width: 100%;
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-size: 0.9rem;
     }
-    .claim-btn:hover { background: var(--text-color); transform: scale(1.02); }
-    .claim-btn:disabled { background: #333; color: #666; cursor: not-allowed; transform: none; }
 
-    .badge { position: absolute; top: 15px; right: 15px; background: var(--accent-color); color: #0a1425; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800; }
+    .claim-btn:hover {
+      background: white;
+      transform: scale(1.03);
+    }
 
-    /* Modal Styling */
+    .claim-btn:disabled {
+      background: #2a3a4a;
+      color: #556677;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: var(--accent-color);
+      color: #0a1425;
+      padding: 3px 11px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Purchase Modal */
     .modal {
       display: none;
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      z-index: 1000;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(6px);
+      z-index: 2000;
       align-items: center;
       justify-content: center;
     }
+
     .modal-content {
-      background: var(--card-bg);
+      background: #0d1b2a;
       border: 2px solid var(--accent-color);
-      border-radius: 15px;
-      padding: 40px;
-      max-width: 500px;
+      border-radius: 16px;
+      padding: 40px 36px;
+      max-width: 480px;
       width: 90%;
       text-align: center;
-      box-shadow: 0 0 50px rgba(0, 191, 255, 0.2);
+      box-shadow: 0 0 60px rgba(0, 191, 255, 0.18);
+      position: relative;
+      animation: modalSlide 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .modal-title { font-size: 2rem; font-weight: 800; margin-bottom: 20px; }
-    .modal-body { margin-bottom: 30px; line-height: 1.6; }
-    
-    .ign-input {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border-color);
+
+    @keyframes modalSlide {
+      from {
+        transform: translateY(30px) scale(0.95);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 18px;
+      right: 22px;
+      font-size: 1.6rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+
+    .close-modal:hover {
       color: white;
-      padding: 12px;
-      border-radius: 8px;
-      width: 100%;
-      margin-bottom: 20px;
-      font-family: inherit;
-      text-align: center;
-      font-size: 1.1rem;
     }
-    .ign-input:focus { outline: none; border-color: var(--accent-color); }
 
-    #claim-status { margin-top: 15px; font-weight: 700; }
+    .modal-title {
+      font-size: 1.9rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: white;
+    }
 
+    .modal-desc {
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+      font-size: 0.95rem;
+    }
+
+    .form-group {
+      margin-bottom: 22px;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      padding: 14px 18px;
+      border-radius: 10px;
+      color: white;
+      font-size: 1rem;
+      font-family: 'Barlow', sans-serif;
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 12px rgba(0, 191, 255, 0.12);
+    }
+
+    .confirm-btn {
+      width: 100%;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+      transition: all 0.3s;
+    }
+
+    .confirm-btn:hover {
+      background: #00d4ff;
+    }
+
+    .confirm-btn:disabled {
+      background: #34495e;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .status-msg {
+      margin-top: 18px;
+      font-weight: 600;
+      min-height: 22px;
+      font-size: 0.95rem;
+    }
+
+    /* ── Responsive ── */
     @media (max-width: 768px) {
-      .shop-title { font-size: 2.2rem; }
+      .shop-section-header h2 {
+        font-size: 1.9rem;
+      }
+
+      .items-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-content {
+        padding: 30px 22px;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div id="navbar-placeholder"></div>
 
-  <header class="shop-header">
-    <div class="container">
-      <h1 class="shop-title">Titan Store</h1>
-      <p class="shop-subtitle">Claim your rewards and spend your Gold!</p>
-      
-      <div id="gold-balance-container" style="display: none; justify-content: center; margin-top: 30px;">
-        <div style="background: rgba(255, 215, 0, 0.15); border: 1px solid #ffd700; padding: 15px 30px; border-radius: 50px; display: flex; align-items: center; gap: 15px; box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);">
-          <i class="fas fa-coins" style="color: #ffd700; font-size: 1.5rem;"></i>
-          <span style="font-size: 1.2rem; font-weight: 800; color: #ffd700;">Balance: <span id="user-gold-balance">0</span> Gold</span>
+  <div id="notification-container"></div>
+
+  <!-- ═══════════════ HEADER (same as index.html) ═══════════════ -->
+  <header id="header-bg">
+    <div class="header-content">
+      <div class="server-info">
+        <div class="jartex-ip-box" onclick="copyIP()">
+          <div class="click-to-copy-badge">Click to Copy IP</div>
+          <div class="server-ip-text">titannetwork.eu</div>
+          <div class="player-count" id="player-count">Loading players...</div>
         </div>
+        <p class="server-motto">Join the ultimate premium experience</p>
+      </div>
+
+      <div class="logo-3d-container">
+        <div class="logo-3d">
+          <h2 class="titan-text">TITAN<span class="network-accent">NETWORK</span></h2>
+          <div class="logo-aura"></div>
+        </div>
+        <div class="logo-subtitle">PREMIUM MINECRAFT EXPERIENCE</div>
+      </div>
+
+      <div class="header-actions">
+        <button class="play-button" onclick="joinServer()">
+          <i class="fas fa-play"></i> Play Now
+        </button>
+        <button class="discord-widget" onclick="joinDiscord()">
+          <span><i class="fab fa-discord"></i> Discord</span>
+        </button>
       </div>
     </div>
   </header>
 
+  <!-- ═══════════════ NAVBAR (same as index.html) ═══════════════ -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="supreme_logo1.webp" alt="TitanNetwork Logo" style="height: 40px; border-radius: 8px;">
+        <h1 style="color: #0088cc; text-shadow: 0px 0px 10px blue; margin: 0;">TitanShop</h1>
+      </div>
+      <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="index.html" class="home">Home</a></li>
+        <li><a href="forums.html" class="forum">Forums</a></li>
+        <li><a href="leaderboard.html" class="leaderboard">Stats</a></li>
+        <li><a href="vote.html" class="vote">Vote</a></li>
+        <li><a href="shop.html" class="store active">Store</a></li>
+        <li><a href="team.html" class="staff">Team</a></li>
+        <li class="more-btn">
+          <a href="#" id="moreBtn">More</a>
+          <ul class="more-menu" id="moreMenu">
+            <li><a href="rules.html">Rules</a></li>
+            <li><a href="apply.html">Apply</a></li>
+            <li><a href="appeal.html">Appeal</a></li>
+            <li><a href="wiki.html">Wiki</a></li>
+          </ul>
+        </li>
+        <li class="user-menu">
+          <button class="user-btn" onclick="toggleUserMenu()">
+            <span id="user-btn-content" style="display: flex; align-items: center; gap: var(--space-xs);">
+              <img id="navbar-pfp" class="navbar-pfp" src="" alt="Profile" style="display: none;">
+              <i id="navbar-user-icon" class="fas fa-user"></i>
+              <span id="user-btn-text">Account</span>
+            </span>
+          </button>
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <div class="user-name" id="user-name">Guest</div>
+              <div class="user-role" id="user-role">Guest</div>
+              <div class="user-gold" id="user-gold"
+                style="color: #ffd700; font-weight: 800; font-size: 0.85rem; margin-top: 5px; display: none;">
+                <i class="fas fa-coins"></i> <span id="user-gold-val">0</span> Gold
+              </div>
+              <div class="user-path-role" id="user-path-role">Path: Not selected</div>
+            </div>
+            <a href="#" onclick="showAuthModal(); return false;" id="login-link">
+              <i class="fas fa-sign-in-alt"></i> Login / Register
+            </a>
+            <a href="#" id="profile-link" style="display:none;">
+              <i class="fas fa-user-circle"></i> Profile
+            </a>
+            <a href="profile-settings.html" id="settings-link" style="display:none;">
+              <i class="fas fa-cog"></i> Settings
+            </a>
+            <a href="admin.html" id="admin-link" style="display:none;">
+              <i class="fas fa-shield-alt"></i> Admin Panel
+            </a>
+            <a href="#" onclick="showOwnerPanel && showOwnerPanel(); return false;" id="owner-link"
+              style="display:none;">
+              <i class="fas fa-crown"></i> Owner Panel
+            </a>
+            <a href="#" onclick="logout(); return false;" id="logout-link" style="display:none;">
+              <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ STORE CONTENT ═══════════════ -->
   <main class="container">
-    <div class="shop-tabs">
-      <div class="shop-tab active" onclick="filterItems('all')"><i class="fas fa-th-large"></i> All Items</div>
-      <div class="shop-tab" onclick="filterItems('ranks')"><i class="fas fa-crown"></i> Ranks</div>
-      <div class="shop-tab" onclick="filterItems('items')"><i class="fas fa-box"></i> Items</div>
-      <div class="shop-tab" onclick="filterItems('currency')"><i class="fas fa-coins"></i> Currency</div>
+
+    <!-- Store header / balance display -->
+    <div class="shop-section-header">
+      <h2><i class="fas fa-store" style="color: var(--accent-color); margin-right: 12px;"></i>Titan Store</h2>
+      <p>Premium rewards for our dedicated players. Spend your Gold and dominate the server!</p>
+
+      <!-- Live currency balances (shown when logged in) -->
+      <div class="balance-row" id="gold-balance-container">
+        <div class="balance-wrapper">
+          <div class="balance-label">Gold Balance</div>
+          <div class="balance-value">
+            <i class="fas fa-coins" style="color: #ffd700;"></i>
+            <span id="user-gold-balance">0</span> Gold
+          </div>
+        </div>
+        <div class="balance-wrapper" id="points-balance-wrapper" style="display: none;">
+          <div class="balance-label">Points Balance</div>
+          <div class="balance-value" style="color: #00ccff;">
+            <i class="fas fa-star" style="color: #00ccff;"></i>
+            <span id="user-points-balance">0</span> Points
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="items-grid" id="items-grid">
-      <!-- Items will be injected here by shop-logic.js -->
+    <!-- Category filter tabs -->
+    <div class="shop-tabs">
+      <div class="shop-tab active" onclick="filterItems('all')">
+        <i class="fas fa-th-large"></i> All Items
+      </div>
+      <div class="shop-tab" onclick="filterItems('ranks')">
+        <i class="fas fa-crown"></i> Ranks
+      </div>
+      <div class="shop-tab" onclick="filterItems('items')">
+        <i class="fas fa-box-open"></i> Items
+      </div>
+      <div class="shop-tab" onclick="filterItems('currency')">
+        <i class="fas fa-coins"></i> Currency
+      </div>
     </div>
+
+    <!-- Items injected here by shop-logic.js -->
+    <div class="items-grid" id="items-grid"></div>
+
   </main>
 
-  <div id="claim-modal" class="modal">
-    <div class="modal-content">
-      <h2 class="modal-title" id="modal-item-name">Claim Item</h2>
-      <div class="modal-body">
-        <p id="modal-item-desc" style="margin-bottom: 20px;">Confirm your claim for this item.</p>
-        <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 10px;">Enter your Minecraft Username:</p>
-        <input type="text" id="mc-username" class="ign-input" placeholder="Minecraft IGN">
-        <p style="color: var(--warning-color); font-size: 0.8rem;">Note: You must be online on the server to receive the item instantly.</p>
+  <!-- ═══════════════ FOOTER (same as index.html) ═══════════════ -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
+      <div class="footer-links">
+        <span class="footer-link" onclick="copyIP()">IP: titannetwork.eu</span>
+        <a href="https://discord.gg/ExFhgvtFng" class="footer-link" onclick="joinDiscord()">Join Discord</a>
+        <a href="privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="terms.html" class="footer-link">Terms of Service</a>
       </div>
-      <button class="claim-btn" id="confirm-claim-btn" onclick="executeClaim()">Confirm Claim</button>
-      <button class="claim-btn" style="background: transparent; border: 1px solid #333; color: #666; margin-top: 10px;" onclick="closeClaimModal()">Cancel</button>
-      <div id="claim-status"></div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════ PURCHASE MODAL ═══════════════ -->
+  <div class="modal" id="claim-modal">
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeClaimModal()">&times;</span>
+      <h2 class="modal-title" id="modal-item-name">Confirm Purchase</h2>
+      <p class="modal-desc" id="modal-item-desc">Securely claim your item by entering your username below.</p>
+
+      <div class="form-group">
+        <label class="form-label">Minecraft Username</label>
+        <input type="text" id="mc-username" class="form-input" placeholder="e.g. OblivionKingX">
+        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 10px; text-align: center;">
+          <i class="fas fa-info-circle"></i> You must be online to receive the item instantly.
+        </p>
+      </div>
+
+      <div id="modal-price-display"
+        style="text-align: center; margin-bottom: 28px; font-size: 1.3rem; font-weight: 800; color: #ffd700;">
+        Price: 50 Gold
+      </div>
+
+      <button class="confirm-btn" id="confirm-claim-btn" onclick="executeClaim()">Confirm Purchase</button>
+      <div class="status-msg" id="claim-status"></div>
     </div>
   </div>
-
-  <div id="notification-container"></div>
 
   <script src="utils.js"></script>
   <script type="module" src="shop-logic.js"></script>
 </body>
+
 </html>

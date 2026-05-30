@@ -103,6 +103,9 @@ function renderLeaderboard() {
         const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
         const filteredPlayers = currentPlayersData.filter(p => {
             if (!p || !p.name) return false;
+            // Filter out legacy/invalid AFK duplicate player entries from database
+            if (/^AFK([A-Z_])/.test(p.name)) return false;
+            
             if (typeof p.value === 'object') {
                 return p.value.islandName.toLowerCase().includes(searchTerm) || 
                        p.value.leaderName.toLowerCase().includes(searchTerm);

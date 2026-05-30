@@ -6,7 +6,7 @@ const {
   auth, db, fs, functions, httpsCallable,
   onAuthStateChanged, getAuth,
   signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut,
-  getDatabase, ref, get, set,
+  getDatabase, ref, onValue, get, set,
   doc, setDoc, serverTimestamp, fsTimestamp
 } = window.firebaseApp;
 
@@ -219,18 +219,63 @@ export async function updateUIForUser(user) {
     }
     if (settingsLink) settingsLink.style.display = 'block';
 
-    // Update Gold Display
-    const goldDisplay = document.getElementById('user-gold');
-    const goldVal = document.getElementById('user-gold-val');
-    if (meta && meta.username) {
+    // Update Gold & Points Displays dynamically
+    const userInfo = document.querySelector('.user-info');
+    if (userInfo && meta && meta.username) {
+      // Inject gold element if missing
+      let goldDisplay = document.getElementById('user-gold');
+      let goldVal = document.getElementById('user-gold-val');
+      if (!goldDisplay) {
+        goldDisplay = document.createElement('div');
+        goldDisplay.id = 'user-gold';
+        goldDisplay.className = 'user-gold';
+        goldDisplay.style.cssText = 'color: #ffd700; font-weight: 800; font-size: 0.85rem; margin-top: 5px; display: none;';
+        goldDisplay.innerHTML = '<i class="fas fa-coins"></i> <span id="user-gold-val">0</span> Gold';
+        
+        const pathRole = document.getElementById('user-path-role');
+        if (pathRole) userInfo.insertBefore(goldDisplay, pathRole);
+        else userInfo.appendChild(goldDisplay);
+        
+        goldVal = document.getElementById('user-gold-val');
+      }
+
+      // Inject points element if missing
+      let pointsDisplay = document.getElementById('user-points');
+      let pointsVal = document.getElementById('user-points-val');
+      if (!pointsDisplay) {
+        pointsDisplay = document.createElement('div');
+        pointsDisplay.id = 'user-points';
+        pointsDisplay.className = 'user-points';
+        pointsDisplay.style.cssText = 'color: #00ccff; font-weight: 800; font-size: 0.85rem; margin-top: 5px; display: none;';
+        pointsDisplay.innerHTML = '<i class="fas fa-star"></i> <span id="user-points-val">0</span> Points';
+        
+        const pathRole = document.getElementById('user-path-role');
+        if (pathRole) userInfo.insertBefore(pointsDisplay, pathRole);
+        else userInfo.appendChild(pointsDisplay);
+        
+        pointsVal = document.getElementById('user-points-val');
+      }
+
+      // Sync Gold from playerData
       const goldRef = ref(db, `playerData/${meta.username}/gold`);
       onValue(goldRef, (snap) => {
         const gold = snap.val() || 0;
         if (goldVal) goldVal.innerText = gold.toLocaleString();
         if (goldDisplay) goldDisplay.style.display = 'block';
       });
+
+      // Sync Points from playerData
+      const pointsRef = ref(db, `playerData/${meta.username}/points`);
+      onValue(pointsRef, (snap) => {
+        const points = snap.val() || 0;
+        if (pointsVal) pointsVal.innerText = points.toLocaleString();
+        if (pointsDisplay) pointsDisplay.style.display = 'block';
+      });
     } else {
+      const goldDisplay = document.getElementById('user-gold');
+      const pointsDisplay = document.getElementById('user-points');
       if (goldDisplay) goldDisplay.style.display = 'none';
+      if (pointsDisplay) pointsDisplay.style.display = 'none';
     }
 
   } else {

@@ -20,8 +20,8 @@ class Parser {
     // 1. Remove Minecraft color codes (§ codes)
     let cleaned = name.replace(/§./g, '');
     
-    // 2. Strip out common rank/status tags that appear in /list
-    const tags = ['STAFF', 'OWNER', 'ADMIN', 'MODERATOR', 'HELPER', 'VIP', 'MVP', 'BUILDER'];
+    // 2. Strip out common rank/status/AFK tags that appear in /list
+    const tags = ['STAFF', 'OWNER', 'ADMIN', 'MODERATOR', 'HELPER', 'VIP', 'MVP', 'BUILDER', 'AFK'];
     tags.forEach(tag => {
       const regex = new RegExp(`\\b${tag}\\b`, 'gi');
       cleaned = cleaned.replace(regex, '');
@@ -31,6 +31,10 @@ class Parser {
     // This also ensures the name is a valid Firebase key.
     // Minecraft names only allow A-Z, a-z, 0-9 and _
     cleaned = cleaned.replace(/[^A-Za-z0-9_]/g, '');
+
+    // 4. Safe fallback for direct concatenation (e.g. AFKOblivionKingX -> OblivionKingX)
+    // Only strip if it starts with "AFK" followed by an uppercase letter or underscore
+    cleaned = cleaned.replace(/^AFK([A-Z_])/, '$1');
 
     return cleaned.trim();
   }

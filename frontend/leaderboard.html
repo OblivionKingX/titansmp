@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TitanNetwork - Leaderboard</title>
+  <title>TitanNetwork - Stats</title>
   <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -162,10 +162,16 @@
     .player-rank-badge {
       font-size: 0.85rem;
       font-weight: 700;
-      white-space: nowrap;
+      white-space: nowrap !important;
       display: inline-flex;
       align-items: center;
       flex-shrink: 0;
+    }
+
+    .player-rank-badge span {
+      white-space: nowrap !important;
+      word-break: keep-all !important;
+      display: inline-block !important;
     }
     
     .player-name {
@@ -301,7 +307,7 @@
 
       <div class="logo-3d-container">
         <div class="logo-3d">
-          <h2 class="titan-text">TITAN<span class="network-accent">LEADERBOARD</span></h2>
+          <h2 class="titan-text">TITAN<span class="network-accent">STATS</span></h2>
           <div class="logo-aura"></div>
         </div>
         <div class="logo-subtitle">REAL-TIME RANKINGS</div>
