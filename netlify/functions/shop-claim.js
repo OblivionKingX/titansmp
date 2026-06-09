@@ -189,21 +189,34 @@ exports.handler = async (event) => {
     }
 
 
-    // 2. Connect to RCON to process Gold and deliver item
+    // Helper: save a pending purchase to Firebase for offline delivery
+    async function savePendingPurchase(token) {
+      const entry = {
+        ign,
+        itemId,
+        command: commandTemplate.replace('{player}', ign),
+        goldDeducted: goldPrice,
+        timestamp: Date.now(),
+        delivered: false
+      };
+      await fbRequest('POST', 'pending_purchases', entry, token);
+      console.log(`[Shop] Saved pending purchase for offline player ${ign}: ${itemId}`);
+    }
+
+    // 2. Connect to RCON to check balance, deduct gold, check online status, and deliver item
     return new Promise((resolve) => {
       const conn = new Rcon(host, port, password);
       let finished = false;
-      let step = needGoldDeduct ? 'check_balance' : 'deliver_item';
+      let step = needGoldDeduct ? 'check_balance' : 'check_online';
 
       conn.on('auth', () => {
         if (step === 'check_balance') {
           conn.send(`papi parse ${ign} %playerpoints_points%`);
         } else {
-          const finalCommand = commandTemplate.replace('{player}', ign);
-          console.log(`[Shop] Executing RCON: ${finalCommand}`);
-          conn.send(finalCommand);
+          // check_online: use /list and see if the player appears
+          conn.send(`list`);
         }
-      }).on('response', (str) => {
+      }).on('response', async (str) => {
         if (finished) return;
         
         console.log(`[Shop] RCON Response (${step}): ${str}`);
@@ -234,11 +247,38 @@ exports.handler = async (event) => {
           conn.send(`p take ${ign} ${goldPrice}`);
         } 
         else if (step === 'deduct_gold') {
+          // Gold deducted — now check if the player is currently online
+          step = 'check_online';
+          conn.send(`list`);
+        }
+        else if (step === 'check_online') {
+          // /list returns something like: "There are X of a max Y players online: Player1, Player2"
+          const isOnline = str.toLowerCase().includes(ign.toLowerCase());
+          
+          if (!isOnline) {
+            // Player is offline — save to pending queue and respond with success
+            finished = true;
+            conn.disconnect();
+            try {
+              const token = await getAccessToken();
+              await savePendingPurchase(token);
+            } catch (pendingErr) {
+              console.error('[Shop] Failed to save pending purchase:', pendingErr.message);
+            }
+            resolve({
+              statusCode: 200,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ success: true, message: `You were offline, so your item (${itemId}) has been queued and will be delivered automatically when you join the server!` }),
+            });
+            return;
+          }
+
+          // Player is online — deliver immediately
           step = 'deliver_item';
           const finalCommand = commandTemplate.replace('{player}', ign);
           console.log(`[Shop] Executing RCON: ${finalCommand}`);
           conn.send(finalCommand);
-        } 
+        }
         else if (step === 'deliver_item') {
           finished = true;
           conn.disconnect();

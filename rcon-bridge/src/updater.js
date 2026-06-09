@@ -17,6 +17,7 @@ class SyncManager {
     const runAll = async () => {
       await this.sync();
       await this.syncIslandTop();
+      await this.deliverPendingPurchases();
     };
     runAll(); // Initial run
     setInterval(runAll, this.interval);
@@ -371,6 +372,61 @@ class SyncManager {
       }
     } catch (err) {
       console.error('[Sync] Island Top sync failed:', err.message);
+    }
+  }
+  /**
+   * Checks Firebase for pending (offline) purchases and delivers them if the player is now online.
+   */
+  async deliverPendingPurchases() {
+    try {
+      if (!firebase.db) return;
+
+      const snap = await firebase.db.ref('pending_purchases').orderByChild('delivered').equalTo(false).once('value');
+      const pending = snap.val();
+      if (!pending) return;
+
+      const keys = Object.keys(pending);
+      console.log(`[PendingShop] Found ${keys.length} undelivered purchase(s). Checking online players...`);
+
+      // Get current online player list via RCON
+      let onlinePlayers = [];
+      try {
+        const listResponse = await rcon.sendCommand('list');
+        if (listResponse) {
+          const parts = listResponse.split(':');
+          if (parts.length >= 2) {
+            onlinePlayers = parts[parts.length - 1].split(',').map(p => p.trim().toLowerCase()).filter(p => p.length > 0);
+          }
+        }
+      } catch (listErr) {
+        console.warn('[PendingShop] Could not fetch online player list:', listErr.message);
+        return;
+      }
+
+      for (const key of keys) {
+        const purchase = pending[key];
+        const { ign, command, itemId } = purchase;
+
+        if (!onlinePlayers.includes(ign.toLowerCase())) {
+          // Player still offline, skip
+          continue;
+        }
+
+        // Player is now online — deliver the item
+        try {
+          console.log(`[PendingShop] Delivering pending item "${itemId}" to ${ign}...`);
+          const result = await rcon.sendCommand(command);
+          console.log(`[PendingShop] Delivered "${itemId}" to ${ign}. RCON response: ${result}`);
+
+          // Mark as delivered in Firebase
+          await firebase.db.ref(`pending_purchases/${key}`).update({ delivered: true, deliveredAt: Date.now() });
+          console.log(`[PendingShop] Marked purchase ${key} as delivered.`);
+        } catch (deliverErr) {
+          console.error(`[PendingShop] Failed to deliver "${itemId}" to ${ign}:`, deliverErr.message);
+        }
+      }
+    } catch (err) {
+      console.error('[PendingShop] Failed to process pending purchases:', err.message);
     }
   }
 }
