@@ -55,45 +55,11 @@
     "badge": "TOP RANK",
     "command": "t-vouchers:voucher give divine-rank {player} 1"
   },
-  {
-    "id": "nightveil_special_set",
-    "name": "Nightveil Special Set",
-    "category": "items",
-    "icon": "fa-shield",
-    "description": "Legendary armor set with powerful bonuses.",
-    "priceGold": 25000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "badge": "LEGENDARY",
-    "command": "t-vouchers:voucher give nightveil_special_set {player} 1"
-  },
-  {
-    "id": "swiftstep_special_set",
-    "name": "Swiftstep Special Set",
-    "category": "items",
-    "icon": "fa-person-running",
-    "description": "Special armor set focused on speed and mobility.",
-    "priceGold": 20000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "badge": "LEGENDARY",
-    "command": "t-vouchers:voucher give swiftstep_special_set {player} 1"
-  },
-  {
-    "id": "end_set",
-    "name": "End Set Voucher",
-    "category": "items",
-    "icon": "fa-shield-halved",
-    "description": "End-game armor set with powerful effects.",
-    "priceGold": 30000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give EndSet {player} 1"
-  },
+
   {
     "id": "100k_xp_voucher",
     "name": "100,000 XP Bottle",
-    "category": "items",
+    "category": "xp",
     "icon": "fa-flask",
     "description": "Instantly gain 100,000 XP.",
     "priceGold": 8000,
@@ -104,7 +70,7 @@
   {
     "id": "30k_xp_voucher",
     "name": "30,000 XP Bottle",
-    "category": "items",
+    "category": "xp",
     "icon": "fa-flask",
     "description": "Instantly gain 30,000 XP.",
     "priceGold": 3000,
@@ -115,7 +81,7 @@
   {
     "id": "15k_xp_voucher",
     "name": "15,000 XP Bottle",
-    "category": "items",
+    "category": "xp",
     "icon": "fa-flask",
     "description": "Instantly gain 15,000 XP.",
     "priceGold": 1500,
@@ -126,7 +92,7 @@
   {
     "id": "5k_xp_voucher",
     "name": "5,000 XP Bottle",
-    "category": "items",
+    "category": "xp",
     "icon": "fa-flask",
     "description": "Instantly gain 5,000 XP.",
     "priceGold": 600,
@@ -178,39 +144,7 @@
     "currencyType": "gold",
     "command": "t-vouchers:voucher give 30kmoneyvoucher {player} 1"
   },
-  {
-    "id": "emerald_beacon_voucher",
-    "name": "Emerald Beacon Kit",
-    "category": "items",
-    "icon": "fa-tower-observation",
-    "description": "Full emerald beacon setup.",
-    "priceGold": 6000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give emeraldbeaconvoucher {player} 1"
-  },
-  {
-    "id": "gold_beacon_voucher",
-    "name": "Gold Beacon Kit",
-    "category": "items",
-    "icon": "fa-tower-observation",
-    "description": "Full gold beacon setup.",
-    "priceGold": 4000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give goldbeaconvoucher {player} 1"
-  },
-  {
-    "id": "iron_beacon_voucher",
-    "name": "Iron Beacon Kit",
-    "category": "items",
-    "icon": "fa-tower-observation",
-    "description": "Full iron beacon setup.",
-    "priceGold": 2000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give ironbeaconvoucher {player} 1"
-  },
+
   {
     "id": "25_shulkers_voucher",
     "name": "25 Shulkers Voucher",
@@ -291,7 +225,7 @@
   {
     "id": "skill_xp_voucher",
     "name": "Skill XP Voucher",
-    "category": "items",
+    "category": "xp",
     "icon": "fa-scroll",
     "description": "Gain 20,000 XP in your Defense skill.",
     "priceGold": 4000,
