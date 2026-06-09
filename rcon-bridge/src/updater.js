@@ -170,8 +170,8 @@ class SyncManager {
       for (const playerName of players) {
         try {
           // Combined placeholder string:
-          // money (%vault_eco_balance_fixed%) | gold (%playerpoints_points%) | kills (%statistic_player_kills%) | deaths (%statistic_deaths%) | playtime (%statistic_seconds_played%) | rank (%luckperms_prefix_playerName%)
-          const papiQuery = `%vault_eco_balance_fixed%|%playerpoints_points%|%statistic_player_kills%|%statistic_deaths%|%statistic_seconds_played%|%luckperms_prefix_${playerName}%`;
+          // money (%vault_eco_balance_fixed%) | gold (%playerpoints_points%) | kills (%statistic_player_kills%) | deaths (%statistic_deaths%) | playtime (%statistic_seconds_played%) | rank (%luckperms_prefix%)
+          const papiQuery = `%vault_eco_balance_fixed%|%playerpoints_points%|%statistic_player_kills%|%statistic_deaths%|%statistic_seconds_played%|%luckperms_prefix%`;
           const papiResponse = await rcon.sendCommand(`papi parse ${playerName} ${papiQuery}`);
 
           if (!papiResponse || papiResponse.toLowerCase().includes('failed to find player') || papiResponse.toLowerCase().includes('invalid player')) {
@@ -185,13 +185,19 @@ class SyncManager {
             continue;
           }
 
-          // Parse results safely
-          const money = parseFloat(parts[0]);
+          let moneyStr = parts[0] || '0';
+          if (moneyStr.includes('is: ')) {
+            moneyStr = moneyStr.split('is: ')[1];
+          } else if (moneyStr.includes(': ')) {
+            const spl = moneyStr.split(': ');
+            moneyStr = spl[spl.length - 1];
+          }
+          const money = parseFloat(moneyStr.trim());
           const gold = parseInt(parts[1]);
           const kills = parseInt(parts[2]);
           const deaths = parseInt(parts[3]);
           const playtime = parseInt(parts[4]);
-          const rawRank = parts[5];
+          const rawRank = parts.length > 5 ? parts[5] : '';
 
           // Save standard stats to our local accumulator
           allStats.players[playerName] = {
@@ -241,12 +247,12 @@ class SyncManager {
           if (!isNaN(gold)) {
             metaUpdates.gold = gold;
           }
-          if (rawRank) {
+          
+          if (rawRank !== undefined) {
             const cleanRank = this.cleanPrefix(rawRank);
-            if (cleanRank) {
-              metaUpdates.rank = cleanRank;
-            }
+            metaUpdates.rank = cleanRank || '';
           }
+          
           if (newLastPlaytime !== lastPlaytimeVal) {
             metaUpdates.lastPlaytime = newLastPlaytime;
           }
@@ -342,7 +348,7 @@ class SyncManager {
           };
 
           if (leaderName && leaderName.length > 0) {
-            const prefixResponse = await rcon.sendCommand(`papi parse ${target} %luckperms_prefix_${leaderName}%`);
+            const prefixResponse = await rcon.sendCommand(`papi parse ${leaderName} %luckperms_prefix%`);
             const cleanPrefix = this.cleanPrefix(prefixResponse);
             
             if (cleanPrefix) {
