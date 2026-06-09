@@ -17,13 +17,14 @@ class Parser {
   cleanName(name) {
     if (!name) return '';
     
-    // 1. Remove Minecraft color codes (§ codes)
-    let cleaned = name.replace(/§./g, '');
+    // 1. Remove Minecraft color codes (§ and & codes)
+    let cleaned = name.replace(/[§&]./g, '');
     
     // 2. Strip out common rank/status/AFK tags that appear in /list
-    const tags = ['STAFF', 'OWNER', 'ADMIN', 'MODERATOR', 'HELPER', 'VIP', 'MVP', 'BUILDER', 'AFK'];
+    const tags = ['STAFF', 'OWNER', 'ADMIN', 'MODERATOR', 'HELPER', 'VIP', 'MVP', 'BUILDER', 'AFK', 'ROYALTY', 'KNIGHT', 'MEMBER', 'CO'];
     tags.forEach(tag => {
-      const regex = new RegExp(`\\b${tag}\\b`, 'gi');
+      // Match tag at the start of the string, even if no space follows it
+      const regex = new RegExp(`^${tag}\\b?`, 'i');
       cleaned = cleaned.replace(regex, '');
     });
 
