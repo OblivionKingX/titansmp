@@ -20,12 +20,35 @@ class Parser {
     // 1. Remove Minecraft color codes (§ and & codes)
     let cleaned = name.replace(/[§&]./g, '');
     
+    // Trim leading/trailing whitespace to avoid issues with prefix/suffix spaces
+    cleaned = cleaned.trim();
+    
     // 2. Strip out common rank/status/AFK tags that appear in /list
-    const tags = ['STAFF', 'OWNER', 'ADMIN', 'MODERATOR', 'HELPER', 'VIP', 'MVP', 'BUILDER', 'AFK', 'ROYALTY', 'KNIGHT', 'MEMBER', 'CO'];
+    // Ordered from longest to shortest to ensure prefix matching works correctly (e.g., CO-OWNER before CO)
+    const tags = [
+      'MODERATOR',
+      'CO-OWNER',
+      'ROYALTY',
+      'BUILDER',
+      'HELPER',
+      'MEMBER',
+      'KNIGHT',
+      'STAFF',
+      'OWNER',
+      'ADMIN',
+      'AFK',
+      'MVP',
+      'VIP',
+      'CO'
+    ];
     tags.forEach(tag => {
-      // Match tag at the start of the string, even if no space follows it
-      const regex = new RegExp(`^${tag}\\b?`, 'i');
-      cleaned = cleaned.replace(regex, '');
+      // Match tag at the start of the string
+      const startRegex = new RegExp(`^${tag}`, 'i');
+      cleaned = cleaned.replace(startRegex, '').trim();
+      
+      // Match tag at the end of the string (e.g., STAFF suffix)
+      const endRegex = new RegExp(`${tag}$`, 'i');
+      cleaned = cleaned.replace(endRegex, '').trim();
     });
 
     // 3. IMPORTANT: Remove all characters that are NOT valid in a Minecraft name 
