@@ -192,11 +192,14 @@ class SyncManager {
             const spl = moneyStr.split(': ');
             moneyStr = spl[spl.length - 1];
           }
-          const money = parseFloat(moneyStr.trim());
-          const gold = parseInt(parts[1]);
-          const kills = parseInt(parts[2]);
-          const deaths = parseInt(parts[3]);
-          const playtime = parseInt(parts[4]);
+          
+          const cleanNumStr = (str) => (str || '').replace(/[§&]./g, '').replace(/,/g, '').replace(/[^\d.-]/g, '').trim();
+
+          const money = parseFloat(cleanNumStr(moneyStr));
+          const gold = parseInt(cleanNumStr(parts[1]));
+          const kills = parseInt(cleanNumStr(parts[2]));
+          const deaths = parseInt(cleanNumStr(parts[3]));
+          const playtime = parseInt(cleanNumStr(parts[4]));
           const rawRank = parts.length > 5 ? parts[5] : '';
 
           // Save standard stats to our local accumulator
@@ -248,9 +251,11 @@ class SyncManager {
             metaUpdates.gold = gold;
           }
           
-          if (rawRank !== undefined) {
+          // Only push rank if it's not empty, because PAPI returns "" for offline players
+          // and we don't want to wipe their ranks!
+          if (rawRank && rawRank.trim().length > 0) {
             const cleanRank = this.cleanPrefix(rawRank);
-            metaUpdates.rank = cleanRank || '';
+            if (cleanRank) metaUpdates.rank = cleanRank;
           }
           
           if (newLastPlaytime !== lastPlaytimeVal) {
