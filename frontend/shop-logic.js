@@ -136,7 +136,7 @@ function renderItems() {
     card.innerHTML = `
       ${item.badge ? `<div class="badge ${currencyType === 'points' || currencyType === 'both' ? 'points-badge' : ''}">${item.badge}</div>` : ''}
       <div class="item-icon">
-        <i class="fas ${item.icon}" style="${iconColor}"></i>
+        ${item.image ? `<img src="${item.image}" alt="item image" style="height: 64px; object-fit: contain;">` : `<i class="fas ${item.icon}" style="${iconColor}"></i>`}
       </div>
       <h3 class="item-name">${item.name}</h3>
       <p class="item-desc">${item.description}</p>
@@ -277,9 +277,13 @@ window.executeClaim = async () => {
   status.style.color = "var(--text-secondary)";
 
   try {
+    const idToken = await auth.currentUser.getIdToken();
     const res = await fetch('/.netlify/functions/shop-claim', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`
+      },
       body: JSON.stringify({
         uid: auth.currentUser.uid,
         ign: ign,
@@ -369,10 +373,10 @@ window.copyToClipboard = function (text) {
   });
 };
 
-window.copyIP = function () { window.copyToClipboard('titannetwork.eu'); };
+window.copyIP = function () { window.copyToClipboard('play.titannetwork.eu'); };
 
 window.joinServer = function () {
-  const instructions = `To join TitanNetwork:\n1. Open Minecraft\n2. Click "Multiplayer"\n3. Click "Add Server"\n4. Enter: titannetwork.eu\n5. Click "Done" and join!`;
+  const instructions = `To join TitanNetwork:\n1. Open Minecraft\n2. Click "Multiplayer"\n3. Click "Add Server"\n4. Enter: play.titannetwork.eu\n5. Click "Done" and join!`;
   alert(instructions);
   window.copyIP();
 };
@@ -386,7 +390,7 @@ async function updateServerStatus() {
   if (!playerCount) return;
 
   try {
-    const response = await fetch('https://api.mcsrvstat.us/2/titannetwork.eu');
+    const response = await fetch('https://api.mcsrvstat.us/2/play.titannetwork.eu');
     if (!response.ok) throw new Error('Network response fallback');
     const data = await response.json();
 

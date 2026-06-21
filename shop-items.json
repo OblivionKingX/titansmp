@@ -1,61 +1,80 @@
 [
   {
-    "id": "vip_rank_voucher",
-    "name": "VIP Rank Voucher",
+    "id": "knight_rank_voucher",
+    "name": "<span style=\"color: #6fb8c5; font-weight: bold; text-decoration: underline;\">Knight Rank Voucher</span>",
     "category": "ranks",
-    "icon": "fa-star",
-    "description": "Unlock the VIP rank permanently.",
+    "icon": "fa-gem",
+    "image": "ranks/knight.png",
+    "description": "<div style=\"background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;\"><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">The Knight rank will give you</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">various usefull perks on the server.</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">You can obtain Knight in the coinshop!</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #FFAA00;\">Rank Perks:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Prefix: </span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Access to set 5x Homes</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Kit Knight</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #FFAA00;\">Rank Commands:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Nick</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Back</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Recipe</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Feed</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Disposal</span></div></div>",
     "priceGold": 10000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give vip-rank {player} 1"
+    "commands": [
+      "t-vouchers:voucher give knight-rank {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &rKnight Rank Voucher&a!"
+    ]
   },
   {
-    "id": "elite_rank_voucher",
-    "name": "Elite Rank Voucher",
+    "id": "lord_rank_voucher",
+    "name": "<span style=\"color: #55FF55; font-weight: bold; text-decoration: underline;\">Lord Rank Voucher</span>",
     "category": "ranks",
     "icon": "fa-gem",
-    "description": "Unlock the Elite rank permanently.",
+    "image": "ranks/lord.png",
+    "description": "<div style=\"background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;\"><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">The Lord rank will give you</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">various usefull perks on the server.</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">You can obtain Lord in the coinshop!</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #55FF55;\">Rank Perks:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Prefix: </span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Access to set 10x Homes</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Kit Lord</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #55FF55;\">Rank Commands:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Nick</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Back</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Recipe</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Feed</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Disposal</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Near</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Craft</span></div></div>",
     "priceGold": 20000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give elite-rank {player} 1"
+    "commands": [
+      "t-vouchers:voucher give lord-rank {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &rLord Rank Voucher&a!"
+    ]
   },
   {
-    "id": "legend_rank_voucher",
-    "name": "Legend Rank Voucher",
-    "category": "ranks",
-    "icon": "fa-crown",
-    "description": "Unlock the Legend rank permanently.",
-    "priceGold": 35000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give legend-rank {player} 1"
-  },
-  {
-    "id": "wizzard_rank_voucher",
-    "name": "Wizzard Rank Voucher",
-    "category": "ranks",
-    "icon": "fa-hat-wizard",
-    "description": "Unlock the Wizzard rank permanently.",
-    "priceGold": 55000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give wizzard-rank {player} 1"
-  },
-  {
-    "id": "divine_rank_voucher",
-    "name": "Divine Rank Voucher",
+    "id": "paladin_rank_voucher",
+    "name": "<span style=\"color: #55FF55; font-weight: bold; text-decoration: underline;\">Paladin Rank Voucher</span>",
     "category": "ranks",
     "icon": "fa-gem",
-    "description": "<span style=\"color: #ff00ff; font-weight: 700;\">The highest rank</span> on Titan Network. Includes everything from Duke, plus <span style=\"color: #2ecc71; font-weight: 700;\">20 homes</span>, <span style=\"color: #2ecc71; font-weight: 700;\">8 personal vaults</span>, <span style=\"color: #9b59b6; font-weight: 700;\">/fly, /anvil, /stonecutter</span>, a daily Royalty Kit, <span style=\"color: #ff9900; font-weight: 700;\">30 auction slots</span>, exclusive particles, chat effects, <span style=\"color: #ffd700; font-weight: 700;\">monthly rewards</span>,<span style=\"color: #00eaffff; font-weight: 700;\"> Fly in Spawn and Island</span> and a unique Royalty prefix and more...",
+    "image": "ranks/paladin.png",
+    "description": "<div style=\"background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;\"><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">The Paladin rank will give you</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">various usefull perks on the server.</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">You can obtain Paladin in the coinshop!</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #55FF55;\">Rank Perks:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Prefix: </span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Access to set 10x Homes</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Kit Paladin</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #55FF55;\">Rank Commands:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Nick</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Back</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Recipe</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Feed</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Disposal</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Near</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Craft</span></div></div>",
+    "priceGold": 40000,
+    "pricePoints": 0,
+    "currencyType": "gold",
+    "commands": [
+      "t-vouchers:voucher give paladin-rank {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &rPaladin Rank Voucher&a!"
+    ]
+  },
+  {
+    "id": "duke_rank_voucher",
+    "name": "<span style=\"color: #FF5555; font-weight: bold; text-decoration: underline;\">Duke Rank Voucher</span>",
+    "category": "ranks",
+    "icon": "fa-gem",
+    "image": "ranks/duke.png",
+    "description": "<div style=\"background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;\"><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">The Duke rank will give you</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">various usefull perks on the server.</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">You can obtain Duke in the coinshop!</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #FF5555;\">Rank Perks:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Prefix: </span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Access to set Unlimited Homes</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Kit Duke</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #FF5555;\">Rank Commands:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Nick</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Back</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Recipe</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Feed</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Disposal</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Near</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Craft</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Enderchest</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Ptime</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Heal</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Fly</span></div></div>",
+    "priceGold": 60000,
+    "pricePoints": 0,
+    "currencyType": "gold",
+    "commands": [
+      "t-vouchers:voucher give duke-rank {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &rDuke Rank Voucher&a!"
+    ]
+  },
+  {
+    "id": "king_rank_voucher",
+    "name": "<span style=\"color: #FFFF55; font-weight: bold; text-decoration: underline;\">King Rank Voucher</span>",
+    "category": "ranks",
+    "icon": "fa-gem",
+    "image": "ranks/king.png",
+    "description": "<div style=\"background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; margin-top: 10px;\"><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">The King rank will give you</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">various usefull perks on the server.</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\">You can obtain King in the coinshop!</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #FFFF55;\">Rank Perks:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Prefix: </span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Access to set Unlimited Homes</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">Kit King</span></div><br><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #FFFF55;\">Rank Commands:</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Nick</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Back</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Recipe</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Feed</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Disposal</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Near</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Craft</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Enderchest</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Ptime</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Heal</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Fly</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Pweather</span></div><div style=\"text-align: left; padding-left: 10px;\"><span style=\"color: #AAAAAA;\"> </span><span style=\"color: #555555;\">▪ </span><span style=\"color: #FFFFFF;\">/Repair</span></div></div>",
     "priceGold": 90000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "badge": "TOP RANK",
-    "command": "t-vouchers:voucher give divine-rank {player} 1"
+    "commands": [
+      "t-vouchers:voucher give king-rank {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &rKing Rank Voucher&a!"
+    ],
+    "badge": "TOP RANK"
   },
-
   {
     "id": "100k_xp_voucher",
     "name": "100,000 XP Bottle",
@@ -65,7 +84,10 @@
     "priceGold": 8000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 100kxpvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 100kxpvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b100,000 XP Bottle&a!"
+    ]
   },
   {
     "id": "30k_xp_voucher",
@@ -76,7 +98,10 @@
     "priceGold": 3000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 30kxpvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 30kxpvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b30,000 XP Bottle&a!"
+    ]
   },
   {
     "id": "15k_xp_voucher",
@@ -87,7 +112,10 @@
     "priceGold": 1500,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 15kxpvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 15kxpvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b15,000 XP Bottle&a!"
+    ]
   },
   {
     "id": "5k_xp_voucher",
@@ -98,53 +126,67 @@
     "priceGold": 600,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 5kxpvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 5kxpvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b5,000 XP Bottle&a!"
+    ]
   },
   {
     "id": "150k_money_voucher",
     "name": "$150,000 Voucher",
-    "category": "items",
+    "category": "currency",
     "icon": "fa-money-bill-wave",
     "description": "Redeem for $150,000 in-game money.",
-    "priceGold": 6000,
+    "priceGold": 2250,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 150kmoneyvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 150kmoneyvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b$150,000 Voucher&a!"
+    ]
   },
   {
     "id": "100k_money_voucher",
     "name": "$100,000 Voucher",
-    "category": "items",
+    "category": "currency",
     "icon": "fa-money-bill-wave",
     "description": "Redeem for $100,000 in-game money.",
-    "priceGold": 4000,
+    "priceGold": 1500,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 100kmoneyvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 100kmoneyvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b$100,000 Voucher&a!"
+    ]
   },
   {
     "id": "70k_money_voucher",
     "name": "$70,000 Voucher",
-    "category": "items",
+    "category": "currency",
     "icon": "fa-money-bill-wave",
     "description": "Redeem for $70,000 in-game money.",
-    "priceGold": 3000,
+    "priceGold": 1050,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 70kmoneyvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 70kmoneyvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b$70,000 Voucher&a!"
+    ]
   },
   {
     "id": "30k_money_voucher",
     "name": "$30,000 Voucher",
-    "category": "items",
+    "category": "currency",
     "icon": "fa-money-bill-wave",
     "description": "Redeem for $30,000 in-game money.",
-    "priceGold": 1500,
+    "priceGold": 450,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 30kmoneyvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 30kmoneyvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b$30,000 Voucher&a!"
+    ]
   },
-
   {
     "id": "25_shulkers_voucher",
     "name": "25 Shulkers Voucher",
@@ -154,7 +196,10 @@
     "priceGold": 3500,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 25shulckersvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 25shulckersvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b25 Shulkers Voucher&a!"
+    ]
   },
   {
     "id": "15_shulkers_voucher",
@@ -165,7 +210,10 @@
     "priceGold": 2200,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 15shulckersvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 15shulckersvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b15 Shulkers Voucher&a!"
+    ]
   },
   {
     "id": "5_shulkers_voucher",
@@ -176,51 +224,10 @@
     "priceGold": 900,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give 5shulckersvoucher {player} 1"
-  },
-  {
-    "id": "500_claim_blocks",
-    "name": "+500 Claim Blocks",
-    "category": "items",
-    "icon": "fa-cube",
-    "description": "Expand your protected land by 500 blocks.",
-    "priceGold": 5000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give 500claimblocksvoucher {player} 1"
-  },
-  {
-    "id": "200_claim_blocks",
-    "name": "+200 Claim Blocks",
-    "category": "items",
-    "icon": "fa-cube",
-    "description": "Expand your protected land by 200 blocks.",
-    "priceGold": 2500,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give 200claimblocksvoucher {player} 1"
-  },
-  {
-    "id": "100_claim_blocks",
-    "name": "+100 Claim Blocks",
-    "category": "items",
-    "icon": "fa-cube",
-    "description": "Expand your protected land by 100 blocks.",
-    "priceGold": 1500,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give 100claimblocksvoucher {player} 1"
-  },
-  {
-    "id": "50_claim_blocks",
-    "name": "+50 Claim Blocks",
-    "category": "items",
-    "icon": "fa-cube",
-    "description": "Expand your protected land by 50 blocks.",
-    "priceGold": 800,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give 50claimblocksvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give 5shulckersvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &b5 Shulkers Voucher&a!"
+    ]
   },
   {
     "id": "skill_xp_voucher",
@@ -231,7 +238,10 @@
     "priceGold": 4000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give skilllvlxpvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give skilllvlxpvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &bSkill XP Voucher&a!"
+    ]
   },
   {
     "id": "trim_crate",
@@ -242,17 +252,9 @@
     "priceGold": 5000,
     "pricePoints": 0,
     "currencyType": "gold",
-    "command": "t-vouchers:voucher give trimvoucher {player} 1"
-  },
-  {
-    "id": "100_gold_voucher",
-    "name": "100 Gold Voucher",
-    "category": "currency",
-    "icon": "fa-coins",
-    "description": "Receive 100 Gold.",
-    "priceGold": 1000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "command": "t-vouchers:voucher give 100goldvoucher {player} 1"
+    "commands": [
+      "t-vouchers:voucher give trimvoucher {player} 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased &bMaster Smith's Trim Crate&a!"
+    ]
   }
 ]
