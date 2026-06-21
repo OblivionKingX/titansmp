@@ -45,14 +45,21 @@
             minlength="6" required>
         </div>
         <button id="login-btn" class="btn" type="submit">Login</button>
+        <div style="text-align: center; margin: 15px 0; color: #8fd3ff; font-size: 0.9rem;">OR</div>
+        <button class="btn google-btn" type="button" onclick="window.googleLogin(event)"
+          style="width:100%;background:white;color:#333;font-weight:700;border-radius:var(--radius-md);padding:0.75rem;display:flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer;">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
+            style="width:20px;">
+          Sign in with Google
+        </button>
       </form>
 
       <form id="register-form" class="auth-form">
         <div id="register-message" class="form-message"></div>
         <div class="form-group">
-          <label for="register-username">Username</label>
-          <input id="register-username" type="text" class="form-control" placeholder="Choose a username" minlength="3"
-            maxlength="20" required>
+          <label for="register-username">Your Minecraft Username</label>
+          <input id="register-username" type="text" class="form-control" placeholder="Your Minecraft Username"
+            minlength="3" maxlength="20" required>
         </div>
         <div class="form-group">
           <label for="register-email">Email</label>
@@ -69,6 +76,13 @@
             placeholder="Re-enter your password" minlength="6" required>
         </div>
         <button id="register-btn" class="btn" type="submit">Create Account</button>
+        <div style="text-align: center; margin: 15px 0; color: #8fd3ff; font-size: 0.9rem;">OR</div>
+        <button class="btn google-btn" type="button" onclick="window.googleLogin(event)"
+          style="width:100%;background:white;color:#333;font-weight:700;border-radius:var(--radius-md);padding:0.75rem;display:flex;align-items:center;justify-content:center;gap:10px;border:none;cursor:pointer;">
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google"
+            style="width:20px;">
+          Sign in with Google
+        </button>
       </form>
     </div>
   </div>
@@ -187,7 +201,7 @@
       <div class="server-info">
         <div class="jartex-ip-box" onclick="copyIP()">
           <div class="click-to-copy-badge">Click to Copy IP</div>
-          <div class="server-ip-text">titannetwork.eu</div>
+          <div class="server-ip-text">play.titannetwork.eu</div>
           <div class="player-count" id="player-count">Loading players...</div>
         </div>
         <p class="server-motto">Join the ultimate premium experience</p>
@@ -250,8 +264,9 @@
             <div class="user-info">
               <div class="user-name" id="user-name">Guest</div>
               <div class="user-role" id="user-role">Guest</div>
-              <div class="user-gold" id="user-gold" style="color: #ffd700; font-weight: 800; font-size: 0.85rem; margin-top: 5px; display: none;">
-                <i class="fas fa-coins"></i> <span id="user-gold-val">0</span> Gold
+              <div class="user-gold" id="user-gold"
+                style="color: #ffd700; font-weight: 800; font-size: 0.85rem; margin-top: 5px; display: none;">
+                <i class="fas fa-coins"></i> <span id="user-gold-val">0</span> Coins
               </div>
               <div class="user-path-role" id="user-path-role">Path: Not selected</div>
             </div>
@@ -279,7 +294,8 @@
     </div>
   </nav>
 
-  <button id="create-news-fab" class="create-news-fab" onclick="createNews()" style="display:none;" title="Create News Post">
+  <button id="create-news-fab" class="create-news-fab" onclick="createNews()" style="display:none;"
+    title="Create News Post">
     <i class="fas fa-plus"></i>
   </button>
 
@@ -386,7 +402,7 @@
     <div class="container">
       <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
       <div class="footer-links">
-        <span class="footer-link" onclick="copyIP()">IP: titannetwork.eu</span>
+        <span class="footer-link" onclick="copyIP()">IP: play.titannetwork.eu</span>
         <a href="https://discord.gg/ExFhgvtFng" class="footer-link" onclick="joinDiscord()">Join Discord</a>
         <a href="privacy.html" class="footer-link">Privacy Policy</a>
         <a href="terms.html" class="footer-link">Terms of Service</a>

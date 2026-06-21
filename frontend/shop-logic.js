@@ -129,7 +129,7 @@ function renderItems() {
       priceClass = 'points';
       iconColor = 'color: #00ccff;';
     } else {
-      priceHtml = `<i class="fas fa-coins"></i> ${item.priceGold.toLocaleString()} Gold`;
+      priceHtml = `<i class="fas fa-coins"></i> ${item.priceGold.toLocaleString()} Coins`;
       priceClass = 'gold';
     }
 
@@ -173,10 +173,10 @@ window.openClaimModal = (itemId) => {
   currencySelector.style.display = 'none';
 
   if (currencyType === 'both') {
-    priceDisplay.innerHTML = `Price: <i class="fas fa-coins"></i> ${currentItem.priceGold.toLocaleString()} Gold & <i class="fas fa-star" style="color: #00ccff;"></i> ${currentItem.pricePoints.toLocaleString()} Points`;
+    priceDisplay.innerHTML = `Price: <i class="fas fa-coins"></i> ${currentItem.priceGold.toLocaleString()} Coins & <i class="fas fa-star" style="color: #00ccff;"></i> ${currentItem.pricePoints.toLocaleString()} Points`;
     priceDisplay.style.color = "var(--gold-color)";
   } else if (currencyType === 'either') {
-    priceDisplay.innerHTML = `Price: <i class="fas fa-coins"></i> ${currentItem.priceGold.toLocaleString()} Gold OR <i class="fas fa-star" style="color: #00ccff;"></i> ${currentItem.pricePoints.toLocaleString()} Points`;
+    priceDisplay.innerHTML = `Price: <i class="fas fa-coins"></i> ${currentItem.priceGold.toLocaleString()} Coins OR <i class="fas fa-star" style="color: #00ccff;"></i> ${currentItem.pricePoints.toLocaleString()} Points`;
     priceDisplay.style.color = "var(--gold-color)";
     currencySelector.style.display = 'block';
   } else if ((currencyType === 'points' && currentItem.pricePoints === 0) || (currencyType !== 'points' && currentItem.priceGold === 0)) {
@@ -186,7 +186,7 @@ window.openClaimModal = (itemId) => {
     priceDisplay.innerHTML = `Price: <i class="fas fa-star"></i> ${currentItem.pricePoints.toLocaleString()} Points`;
     priceDisplay.style.color = '#00ccff';
   } else {
-    priceDisplay.innerHTML = `Price: <i class="fas fa-coins"></i> ${currentItem.priceGold.toLocaleString()} Gold`;
+    priceDisplay.innerHTML = `Price: <i class="fas fa-coins"></i> ${currentItem.priceGold.toLocaleString()} Coins`;
     priceDisplay.style.color = 'var(--gold-color)';
   }
 
@@ -211,7 +211,7 @@ window.updateModalBalance = () => {
     if (userGold < currentItem.priceGold || userPoints < currentItem.pricePoints) {
       btn.disabled = true;
       btn.innerText = `Insufficient Funds`;
-      status.innerText = `❌ You need ${currentItem.priceGold} Gold AND ${currentItem.pricePoints} Points.`;
+      status.innerText = `❌ You need ${currentItem.priceGold} Coins AND ${currentItem.pricePoints} Points.`;
       status.style.color = "var(--error-color)";
     } else {
       btn.disabled = false;
@@ -221,7 +221,7 @@ window.updateModalBalance = () => {
     const selectedMethod = document.querySelector('input[name="payment_method"]:checked').value;
     const requiredAmount = selectedMethod === 'gold' ? currentItem.priceGold : currentItem.pricePoints;
     const balance = selectedMethod === 'gold' ? userGold : userPoints;
-    const currencyName = selectedMethod === 'gold' ? 'Gold' : 'Points';
+    const currencyName = selectedMethod === 'gold' ? 'Coins' : 'Points';
 
     if (balance < requiredAmount) {
       btn.disabled = true;
@@ -235,7 +235,7 @@ window.updateModalBalance = () => {
   } else {
     const isPoints = currencyType === 'points';
     const userBalance = isPoints ? userPoints : userGold;
-    const currencyName = isPoints ? 'Points' : 'Gold';
+    const currencyName = isPoints ? 'Points' : 'Coins';
     const requiredAmount = isPoints ? currentItem.pricePoints : currentItem.priceGold;
     if (userBalance < requiredAmount) {
       btn.disabled = true;

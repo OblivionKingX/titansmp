@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TitanNetwork - Store</title>
   <meta name="description"
-    content="Browse and claim premium rewards, ranks and items in the TitanNetwork Titan Store. Spend your Gold and dominate the server!">
+    content="Browse and claim premium rewards, ranks and items in the TitanNetwork Titan Store. Spend your Coins and dominate the server!">
   <link rel="icon" href="supreme_logo1.webp" type="image/x-icon">
   <meta name="theme-color" content="#ff8c00">
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -467,7 +467,7 @@
               <div class="user-role" id="user-role">Guest</div>
               <div class="user-gold" id="user-gold"
                 style="color: #ffd700; font-weight: 800; font-size: 0.85rem; margin-top: 5px; display: none;">
-                <i class="fas fa-coins"></i> <span id="user-gold-val">0</span> Gold
+                <i class="fas fa-coins"></i> <span id="user-gold-val">0</span> Coins
               </div>
               <div class="user-path-role" id="user-path-role">Path: Not selected</div>
             </div>
@@ -502,15 +502,15 @@
     <!-- Store header / balance display -->
     <div class="shop-section-header">
       <h2><i class="fas fa-store" style="color: var(--accent-color); margin-right: 12px;"></i>Titan Store</h2>
-      <p>Premium rewards for our dedicated players. Spend your Gold and dominate the server!</p>
+      <p>Premium rewards for our dedicated players. Spend your Coins and dominate the server!</p>
 
       <!-- Live currency balances (shown when logged in) -->
       <div class="balance-row" id="gold-balance-container">
         <div class="balance-wrapper">
-          <div class="balance-label">Gold Balance</div>
+          <div class="balance-label">Coins Balance</div>
           <div class="balance-value">
             <i class="fas fa-coins" style="color: #ffd700;"></i>
-            <span id="user-gold-balance">0</span> Gold
+            <span id="user-gold-balance">0</span> Coins
           </div>
         </div>
         <div class="balance-wrapper" id="points-balance-wrapper" style="display: none;">
@@ -577,7 +577,7 @@
 
       <div id="modal-price-display"
         style="text-align: center; margin-bottom: 10px; font-size: 1.3rem; font-weight: 800; color: #ffd700;">
-        Price: 50 Gold
+        Price: 50 Coins
       </div>
 
       <div id="currency-selector" style="display: none; text-align: center; margin-bottom: 28px;">
@@ -585,7 +585,7 @@
         <div style="display: flex; justify-content: center; gap: 15px;">
           <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
             <input type="radio" name="payment_method" value="gold" checked onchange="updateModalBalance()">
-            <span style="color: #ffd700; font-weight: 700;"><i class="fas fa-coins"></i> Gold</span>
+            <span style="color: #ffd700; font-weight: 700;"><i class="fas fa-coins"></i> Coins</span>
           </label>
           <label style="cursor: pointer; display: flex; align-items: center; gap: 5px;">
             <input type="radio" name="payment_method" value="points" onchange="updateModalBalance()">
