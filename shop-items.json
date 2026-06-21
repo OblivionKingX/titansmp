@@ -76,185 +76,75 @@
     "badge": "TOP RANK"
   },
   {
-    "id": "100k_xp_voucher",
-    "name": "100,000 XP Bottle",
-    "category": "xp",
-    "icon": "fa-flask",
-    "description": "Instantly gain 100,000 XP.",
-    "priceGold": 8000,
-    "pricePoints": 0,
-    "currencyType": "gold",
+    "id": "vote_key",
+    "name": "Vote Key",
+    "category": "crates",
+    "icon": "fa-key",
+    "description": "Open the Vote Crate and win exciting rewards!",
+    "priceGold": 200,
+    "pricePoints": 50,
+    "currencyType": "either",
     "commands": [
-      "t-vouchers:voucher give 100kxpvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b100,000 XP Bottle&a!"
+      "crate key give {player} vote 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased a &bVote Key&a!"
     ]
   },
   {
-    "id": "30k_xp_voucher",
-    "name": "30,000 XP Bottle",
-    "category": "xp",
-    "icon": "fa-flask",
-    "description": "Instantly gain 30,000 XP.",
-    "priceGold": 3000,
-    "pricePoints": 0,
-    "currencyType": "gold",
+    "id": "rare_key",
+    "name": "Rare Key",
+    "category": "crates",
+    "icon": "fa-key",
+    "description": "Open the Rare Crate for uncommon prizes and gear!",
+    "priceGold": 300,
+    "pricePoints": 70,
+    "currencyType": "either",
     "commands": [
-      "t-vouchers:voucher give 30kxpvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b30,000 XP Bottle&a!"
+      "crate key give {player} rare 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased a &5Rare Key&a!"
     ]
   },
   {
-    "id": "15k_xp_voucher",
-    "name": "15,000 XP Bottle",
-    "category": "xp",
-    "icon": "fa-flask",
-    "description": "Instantly gain 15,000 XP.",
-    "priceGold": 1500,
-    "pricePoints": 0,
-    "currencyType": "gold",
+    "id": "common_key",
+    "name": "Common Key",
+    "category": "crates",
+    "icon": "fa-key",
+    "description": "Open the Common Crate and see what you get!",
+    "priceGold": 400,
+    "pricePoints": 100,
+    "currencyType": "either",
     "commands": [
-      "t-vouchers:voucher give 15kxpvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b15,000 XP Bottle&a!"
+      "crate key give {player} common 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased a &fCommon Key&a!"
     ]
   },
   {
-    "id": "5k_xp_voucher",
-    "name": "5,000 XP Bottle",
-    "category": "xp",
-    "icon": "fa-flask",
-    "description": "Instantly gain 5,000 XP.",
-    "priceGold": 600,
-    "pricePoints": 0,
-    "currencyType": "gold",
+    "id": "epic_key",
+    "name": "Epic Key",
+    "category": "crates",
+    "icon": "fa-key",
+    "badge": "POPULAR",
+    "description": "Open the Epic Crate for powerful loot and rare drops!",
+    "priceGold": 500,
+    "pricePoints": 150,
+    "currencyType": "either",
     "commands": [
-      "t-vouchers:voucher give 5kxpvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b5,000 XP Bottle&a!"
+      "crate key give {player} epic 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased an &dEpic Key&a!"
     ]
   },
   {
-    "id": "150k_money_voucher",
-    "name": "$150,000 Voucher",
-    "category": "currency",
-    "icon": "fa-money-bill-wave",
-    "description": "Redeem for $150,000 in-game money.",
-    "priceGold": 2250,
-    "pricePoints": 0,
-    "currencyType": "gold",
+    "id": "superior_key",
+    "name": "Superior Key",
+    "category": "crates",
+    "icon": "fa-key",
+    "badge": "BEST VALUE",
+    "description": "Open the Superior Crate — the ultimate crate with the rarest rewards on the server!",
+    "priceGold": 1000,
+    "pricePoints": 170,
+    "currencyType": "either",
     "commands": [
-      "t-vouchers:voucher give 150kmoneyvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b$150,000 Voucher&a!"
-    ]
-  },
-  {
-    "id": "100k_money_voucher",
-    "name": "$100,000 Voucher",
-    "category": "currency",
-    "icon": "fa-money-bill-wave",
-    "description": "Redeem for $100,000 in-game money.",
-    "priceGold": 1500,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give 100kmoneyvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b$100,000 Voucher&a!"
-    ]
-  },
-  {
-    "id": "70k_money_voucher",
-    "name": "$70,000 Voucher",
-    "category": "currency",
-    "icon": "fa-money-bill-wave",
-    "description": "Redeem for $70,000 in-game money.",
-    "priceGold": 1050,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give 70kmoneyvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b$70,000 Voucher&a!"
-    ]
-  },
-  {
-    "id": "30k_money_voucher",
-    "name": "$30,000 Voucher",
-    "category": "currency",
-    "icon": "fa-money-bill-wave",
-    "description": "Redeem for $30,000 in-game money.",
-    "priceGold": 450,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give 30kmoneyvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b$30,000 Voucher&a!"
-    ]
-  },
-  {
-    "id": "25_shulkers_voucher",
-    "name": "25 Shulkers Voucher",
-    "category": "items",
-    "icon": "fa-box",
-    "description": "Receive 25 red shulker boxes.",
-    "priceGold": 3500,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give 25shulckersvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b25 Shulkers Voucher&a!"
-    ]
-  },
-  {
-    "id": "15_shulkers_voucher",
-    "name": "15 Shulkers Voucher",
-    "category": "items",
-    "icon": "fa-box",
-    "description": "Receive 15 red shulker boxes.",
-    "priceGold": 2200,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give 15shulckersvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b15 Shulkers Voucher&a!"
-    ]
-  },
-  {
-    "id": "5_shulkers_voucher",
-    "name": "5 Shulkers Voucher",
-    "category": "items",
-    "icon": "fa-box",
-    "description": "Receive 5 red shulker boxes.",
-    "priceGold": 900,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give 5shulckersvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &b5 Shulkers Voucher&a!"
-    ]
-  },
-  {
-    "id": "skill_xp_voucher",
-    "name": "Skill XP Voucher",
-    "category": "xp",
-    "icon": "fa-scroll",
-    "description": "Gain 20,000 XP in your Defense skill.",
-    "priceGold": 4000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give skilllvlxpvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &bSkill XP Voucher&a!"
-    ]
-  },
-  {
-    "id": "trim_crate",
-    "name": "Master Smith's Trim Crate",
-    "category": "items",
-    "icon": "fa-box-open",
-    "description": "Contains a variety of rare armor trims.",
-    "priceGold": 5000,
-    "pricePoints": 0,
-    "currencyType": "gold",
-    "commands": [
-      "t-vouchers:voucher give trimvoucher {player} 1",
-      "broadcast &6[Shop] &e{player} &ajust purchased &bMaster Smith's Trim Crate&a!"
+      "crate key give {player} superior 1",
+      "broadcast &6[Shop] &e{player} &ajust purchased a &6&lSuperior Key&a!"
     ]
   }
 ]
