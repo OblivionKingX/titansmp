@@ -171,8 +171,8 @@ class SyncManager {
       for (const playerName of players) {
         try {
           // Combined placeholder string:
-          // money (%vault_eco_balance_fixed%) | gold (%playerpoints_points%) | kills (%statistic_player_kills%) | deaths (%statistic_deaths%) | playtime (%statistic_seconds_played%) | rank (%luckperms_prefix%)
-          const papiQuery = `%vault_eco_balance_fixed%|%playerpoints_points%|%statistic_player_kills%|%statistic_deaths%|%statistic_seconds_played%|%luckperms_prefix%`;
+          // money (%vault_eco_balance_fixed%) | gold (%coinsengine_balance_coins%) | kills (%statistic_player_kills%) | deaths (%statistic_deaths%) | playtime (%statistic_seconds_played%) | rank (%luckperms_prefix%)
+          const papiQuery = `%vault_eco_balance_fixed%|%coinsengine_balance_coins%|%statistic_player_kills%|%statistic_deaths%|%statistic_seconds_played%|%luckperms_prefix%`;
           const papiResponse = await rcon.sendCommand(`papi parse ${playerName} ${papiQuery}`);
 
           if (!papiResponse || papiResponse.toLowerCase().includes('failed to find player') || papiResponse.toLowerCase().includes('invalid player')) {
@@ -405,7 +405,7 @@ class SyncManager {
 
       for (const key of keys) {
         const purchase = pending[key];
-        const { ign, command, itemId } = purchase;
+        const { ign, command, commands, itemId } = purchase;
 
         if (!onlinePlayers.includes(ign.toLowerCase())) {
           // Player still offline, skip
@@ -415,8 +415,11 @@ class SyncManager {
         // Player is now online — deliver the item
         try {
           console.log(`[PendingShop] Delivering pending item "${itemId}" to ${ign}...`);
-          const result = await rcon.sendCommand(command);
-          console.log(`[PendingShop] Delivered "${itemId}" to ${ign}. RCON response: ${result}`);
+          const cmds = commands || (command ? [command] : []);
+          for (let cmd of cmds) {
+            const result = await rcon.sendCommand(cmd);
+            console.log(`[PendingShop] Delivered "${itemId}" command to ${ign}. RCON response: ${result}`);
+          }
 
           // Mark as delivered in Firebase
           await firebase.db.ref(`pending_purchases/${key}`).update({ delivered: true, deliveredAt: Date.now() });

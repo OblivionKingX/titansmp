@@ -10,6 +10,28 @@ function base64url(buf) {
   return buf.toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
 }
 
+async function verifyIdToken(idToken) {
+  const apiKey = process.env.FIREBASE_API_KEY || "AIzaSyB3FVgVVOAkxXCWUrRJZBdV03jS1KiCcn8";
+  const body = JSON.stringify({ idToken });
+  return new Promise((resolve, reject) => {
+    const req = https.request({
+      hostname: 'identitytoolkit.googleapis.com',
+      path: '/v1/accounts:lookup?key=' + apiKey,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) }
+    }, res => {
+      let d = ''; res.on('data', c => d += c);
+      res.on('end', () => {
+        const parsed = JSON.parse(d || '{}');
+        if (parsed.error) return reject(new Error(parsed.error.message));
+        if (!parsed.users || parsed.users.length === 0) return reject(new Error('User not found'));
+        resolve(parsed.users[0].localId);
+      });
+    });
+    req.on('error', reject); req.write(body); req.end();
+  });
+}
+
 async function getAccessToken() {
   if (_cachedToken && Date.now() < _tokenExpiry - 60000) return _cachedToken;
 
@@ -94,15 +116,58 @@ async function logTransaction(ign, amount, itemId, pointsPrice) {
   await fbRequest('POST', 'point_transactions', entry, token);
 }
 
+async function logShopTransaction(buyerIgn, recipientIgn, itemId, goldDeducted, pointsDeducted, status) {
+  try {
+    const token = await getAccessToken();
+    const entry = {
+      buyerIgn,
+      recipientIgn,
+      itemId,
+      goldDeducted,
+      pointsDeducted,
+      status,
+      timestamp: Date.now()
+    };
+    await fbRequest('POST', 'shop_transactions', entry, token);
+    console.log(`[Shop] Logged shop transaction: ${buyerIgn} bought ${itemId} for ${recipientIgn}`);
+  } catch (err) {
+    console.error('[Shop] Failed to log shop transaction:', err.message);
+  }
+}
+
 
 exports.handler = async (event) => {
   if (event.httpMethod.toUpperCase() !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
 
   try {
+    const authHeader = event.headers.authorization || event.headers.Authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Missing or invalid Authorization header' }) };
+    }
+    const idToken = authHeader.split('Bearer ')[1];
+    
+    let uid;
+    try {
+      uid = await verifyIdToken(idToken);
+    } catch (err) {
+      return { statusCode: 401, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Unauthorized: ' + err.message }) };
+    }
+
     const { ign, itemId, paymentMethod } = JSON.parse(event.body);
 
     if (!ign || !itemId) {
       return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Missing ign or itemId' }) };
+    }
+
+    let buyerIgn;
+    try {
+      const token = await getAccessToken();
+      const userSnap = await fbRequest('GET', `users/${uid}`, undefined, token);
+      if (!userSnap) throw new Error('User not found in database');
+      buyerIgn = userSnap.username || userSnap.displayName;
+      if (!buyerIgn) throw new Error('User has no IGN set');
+    } catch (err) {
+      return { statusCode: 403, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Failed to authenticate buyer IGN: ' + err.message }) };
     }
 
     // Fetch shop items dynamically from Firebase database
@@ -120,7 +185,10 @@ exports.handler = async (event) => {
       return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Invalid itemId' }) };
     }
 
-    const commandTemplate = item.command;
+    const commandsArray = item.commands || (item.command ? [item.command] : []);
+    if (commandsArray.length === 0) {
+      return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Item has no command configured' }) };
+    }
     const itemCurrencyType = item.currencyType || 'gold';
 
     // Determine prices based on currencyType
@@ -141,7 +209,7 @@ exports.handler = async (event) => {
       return { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'RCON config missing on server' }) };
     }
 
-    console.log(`[Shop] Processing purchase: ${itemId} for ${ign} (${itemCurrencyType})`);
+    console.log(`[Shop] Processing purchase: ${itemId} for ${ign} (Buyer: ${buyerIgn}, ${itemCurrencyType})`);
 
     let needGoldDeduct = false;
     let needPointsDeduct = false;
@@ -172,16 +240,16 @@ exports.handler = async (event) => {
     // 1. Process Points First (Firebase REST API)
     if (needPointsDeduct) {
       try {
-        const currentPoints = await getPoints(ign);
-        console.log(`[Shop] ${ign} has ${currentPoints} points, needs ${pointsPrice}`);
+        const currentPoints = await getPoints(buyerIgn);
+        console.log(`[Shop] ${buyerIgn} has ${currentPoints} points, needs ${pointsPrice}`);
 
         if (currentPoints < pointsPrice) {
           return { statusCode: 400, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: `Not enough Points! You have ${currentPoints}` }) };
         }
 
-        await setPoints(ign, currentPoints - pointsPrice);
-        await logTransaction(ign, pointsPrice, itemId, pointsPrice);
-        console.log(`[Shop] Deducted ${pointsPrice} points from ${ign}. Remaining: ${currentPoints - pointsPrice}`);
+        await setPoints(buyerIgn, currentPoints - pointsPrice);
+        await logTransaction(buyerIgn, pointsPrice, itemId, pointsPrice);
+        console.log(`[Shop] Deducted ${pointsPrice} points from ${buyerIgn}. Remaining: ${currentPoints - pointsPrice}`);
       } catch (err) {
         console.error('[Shop] Points processing failed:', err.message);
         return { statusCode: 500, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: 'Failed to process points: ' + err.message }) };
@@ -193,8 +261,9 @@ exports.handler = async (event) => {
     async function savePendingPurchase(token) {
       const entry = {
         ign,
+        buyerIgn,
         itemId,
-        command: commandTemplate.replace('{player}', ign),
+        commands: commandsArray.map(c => c.replace(/{player}/g, ign)),
         goldDeducted: goldPrice,
         timestamp: Date.now(),
         delivered: false
@@ -207,32 +276,33 @@ exports.handler = async (event) => {
     return new Promise((resolve) => {
       const conn = new Rcon(host, port, password);
       let finished = false;
-      let step = needGoldDeduct ? 'check_balance' : 'check_online';
+      let expectedResponses = 0;
+      let receivedResponses = 0;
+      let step = needGoldDeduct ? 'check_buyer_balance' : 'check_recipient_slots';
+      let currentGold = 0;
 
       conn.on('auth', () => {
-        if (step === 'check_balance') {
-          conn.send(`papi parse ${ign} %playerpoints_points%`);
+        if (step === 'check_buyer_balance') {
+          conn.send(`papi parse ${buyerIgn} %coinsengine_balance_coins%`);
         } else {
-          // check_online: use /list and see if the player appears
-          conn.send(`list`);
+          conn.send(`papi parse ${ign} %player_empty_slots%`);
         }
       }).on('response', async (str) => {
         if (finished) return;
         
         console.log(`[Shop] RCON Response (${step}): ${str}`);
 
-        if (step === 'check_balance') {
+        if (step === 'check_buyer_balance') {
           const cleanedStr = str.replace(/[§&]./g, '').replace(/,/g, '').replace(/[^\d.-]/g, '').trim();
-          const currentGold = parseInt(cleanedStr);
-          
+          currentGold = parseInt(cleanedStr);
+
           if (isNaN(currentGold) || currentGold < goldPrice) {
             finished = true;
             conn.disconnect();
 
-            // Refund points if they were deducted but gold check failed
             if (needPointsDeduct) {
-              getPoints(ign).then(cur => setPoints(ign, cur + pointsPrice)).catch(() => {});
-              console.log(`[Shop] Refunded ${pointsPrice} points to ${ign} due to failed Gold check.`);
+              getPoints(buyerIgn).then(cur => setPoints(buyerIgn, cur + pointsPrice)).catch(() => {});
+              console.log(`[Shop] Refunded ${pointsPrice} points to ${buyerIgn} due to failed Gold check.`);
             }
 
             resolve({
@@ -243,11 +313,38 @@ exports.handler = async (event) => {
             return;
           }
 
-          step = 'deduct_gold';
-          conn.send(`p take ${ign} ${goldPrice}`);
+          step = 'check_recipient_slots';
+          conn.send(`papi parse ${ign} %player_empty_slots%`);
+        }
+        else if (step === 'check_recipient_slots') {
+          const emptySlotsStr = str.replace(/[§&]./g, '').trim();
+
+          if (emptySlotsStr === '0') {
+            finished = true;
+            conn.disconnect();
+
+            if (needPointsDeduct) {
+              getPoints(buyerIgn).then(cur => setPoints(buyerIgn, cur + pointsPrice)).catch(() => {});
+              console.log(`[Shop] Refunded ${pointsPrice} points to ${buyerIgn} due to full inventory.`);
+            }
+
+            resolve({
+              statusCode: 400,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ error: `The recipient's inventory is full! Please tell them to clear at least one slot before purchasing.` }),
+            });
+            return;
+          }
+
+          if (needGoldDeduct) {
+            step = 'deduct_gold';
+            conn.send(`p take ${buyerIgn} ${goldPrice}`);
+          } else {
+            step = 'check_online';
+            conn.send(`list`);
+          }
         } 
         else if (step === 'deduct_gold') {
-          // Gold deducted — now check if the player is currently online
           step = 'check_online';
           conn.send(`list`);
         }
@@ -262,8 +359,9 @@ exports.handler = async (event) => {
             try {
               const token = await getAccessToken();
               await savePendingPurchase(token);
+              await logShopTransaction(buyerIgn, ign, itemId, needGoldDeduct ? goldPrice : 0, needPointsDeduct ? pointsPrice : 0, 'queued_offline');
             } catch (pendingErr) {
-              console.error('[Shop] Failed to save pending purchase:', pendingErr.message);
+              console.error('[Shop] Failed to save pending purchase or log transaction:', pendingErr.message);
             }
             resolve({
               statusCode: 200,
@@ -275,18 +373,26 @@ exports.handler = async (event) => {
 
           // Player is online — deliver immediately
           step = 'deliver_item';
-          const finalCommand = commandTemplate.replace('{player}', ign);
-          console.log(`[Shop] Executing RCON: ${finalCommand}`);
-          conn.send(finalCommand);
+          expectedResponses = commandsArray.length;
+          for (let cmd of commandsArray) {
+            const finalCommand = cmd.replace(/{player}/g, ign);
+            console.log(`[Shop] Executing RCON: ${finalCommand}`);
+            conn.send(finalCommand);
+          }
         }
         else if (step === 'deliver_item') {
-          finished = true;
-          conn.disconnect();
-          resolve({
-            statusCode: 200,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ success: true, message: 'Purchase successful!' }),
-          });
+          receivedResponses++;
+          if (receivedResponses >= expectedResponses) {
+            finished = true;
+            conn.disconnect();
+            logShopTransaction(buyerIgn, ign, itemId, needGoldDeduct ? goldPrice : 0, needPointsDeduct ? pointsPrice : 0, 'success').then(() => {
+              resolve({
+                statusCode: 200,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ success: true, message: 'Purchase successful!' }),
+              });
+            });
+          }
         }
       }).on('error', (err) => {
         console.error('[Shop] RCON Error:', err.message);
