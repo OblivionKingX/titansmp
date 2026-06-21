@@ -140,7 +140,7 @@ function renderLeaderboard() {
                         if (metadata.rank && !metadata.rank.toLowerCase().includes('failed to find player')) {
                             let rankText = metadata.rank.replace(/§/g, '&').replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim().toLowerCase();
                             if (!rankText.includes('%') && rankText.length > 0) {
-                                leaderRankHtml = `<img src="ranks/${rankText}.png" onerror="this.style.display='none'" class="player-rank-img" style="height: 14px; margin-left: 4px; vertical-align: middle;" alt="${rankText}">`;
+                                leaderRankHtml = `<img src="ranks/${rankText}.png" onerror="this.style.display='none'" class="player-rank-img" style="height: 11px; margin-left: 4px; vertical-align: middle;" alt="${rankText}">`;
                             }
                         }
 
@@ -169,7 +169,7 @@ function renderLeaderboard() {
                     if (metadata.rank && !metadata.rank.toLowerCase().includes('failed to find player')) {
                         let rankText = metadata.rank.replace(/§/g, '&').replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim().toLowerCase();
                         if (!rankText.includes('%') && rankText.length > 0) {
-                            rankHtml = `<img src="ranks/${rankText}.png" onerror="this.style.display='none'" class="player-rank-img" style="height: 18px; margin-right: 6px; vertical-align: middle;" alt="${rankText}">`;
+                            rankHtml = `<img src="ranks/${rankText}.png" onerror="this.style.display='none'" class="player-rank-img" style="height: 14px; margin-right: 6px; vertical-align: middle;" alt="${rankText}">`;
                         }
                     }
                     
