@@ -338,7 +338,7 @@ exports.handler = async (event) => {
 
           if (needGoldDeduct) {
             step = 'deduct_gold';
-            conn.send(`p take ${buyerIgn} ${goldPrice}`);
+            conn.send(`coins take ${buyerIgn} ${goldPrice}`);
           } else {
             step = 'check_online';
             conn.send(`list`);

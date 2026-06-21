@@ -10,7 +10,7 @@
     "pricePoints": 0,
     "currencyType": "gold",
     "commands": [
-      "t-vouchers:voucher give knight-rank {player} 1",
+      "voucher give Knight_Rank 1 {player}",
       "broadcast &6[Shop] &e{player} &ajust purchased &rKnight Rank Voucher&a!"
     ]
   },
@@ -25,7 +25,7 @@
     "pricePoints": 0,
     "currencyType": "gold",
     "commands": [
-      "t-vouchers:voucher give lord-rank {player} 1",
+      "voucher give Lord_Rank 1 {player}",
       "broadcast &6[Shop] &e{player} &ajust purchased &rLord Rank Voucher&a!"
     ]
   },
@@ -40,7 +40,7 @@
     "pricePoints": 0,
     "currencyType": "gold",
     "commands": [
-      "t-vouchers:voucher give paladin-rank {player} 1",
+      "voucher give Paladin_Rank 1 {player}",
       "broadcast &6[Shop] &e{player} &ajust purchased &rPaladin Rank Voucher&a!"
     ]
   },
@@ -55,7 +55,7 @@
     "pricePoints": 0,
     "currencyType": "gold",
     "commands": [
-      "t-vouchers:voucher give duke-rank {player} 1",
+      "voucher give Duke_Rank 1 {player}",
       "broadcast &6[Shop] &e{player} &ajust purchased &rDuke Rank Voucher&a!"
     ]
   },
@@ -70,7 +70,7 @@
     "pricePoints": 0,
     "currencyType": "gold",
     "commands": [
-      "t-vouchers:voucher give king-rank {player} 1",
+      "voucher give King_Rank 1 {player}",
       "broadcast &6[Shop] &e{player} &ajust purchased &rKing Rank Voucher&a!"
     ],
     "badge": "TOP RANK"
