@@ -138,17 +138,9 @@ function renderLeaderboard() {
 
                         let leaderRankHtml = '';
                         if (metadata.rank && !metadata.rank.toLowerCase().includes('failed to find player')) {
-                            let rankText = metadata.rank.replace(/§/g, '&');
-                            Object.keys(allPlayerData).forEach(pName => {
-                                if (pName.length < 3) return;
-                                const pNameRegex = new RegExp(`\\s*${pName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*`, 'gi');
-                                rankText = rankText.replace(pNameRegex, ' ');
-                            });
-                            rankText = rankText.replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim();
-                            if (rankText.length > 0 && !rankText.includes('%')) {
-                                let formatted = window.formatRichText ? window.formatRichText(rankText) : rankText;
-                                formatted = formatted.replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
-                                leaderRankHtml = `<span class="player-rank-badge" style="font-size: 0.75rem; padding: 2px 6px;">${formatted}</span>`;
+                            let rankText = metadata.rank.replace(/§/g, '&').replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim().toLowerCase();
+                            if (!rankText.includes('%') && rankText.length > 0) {
+                                leaderRankHtml = `<img src="ranks/${rankText}.png" onerror="this.style.display='none'" class="player-rank-img" style="height: 14px; margin-left: 4px; vertical-align: middle;" alt="${rankText}">`;
                             }
                         }
 
@@ -173,23 +165,11 @@ function renderLeaderboard() {
                         return;
                     }
 
-                    // STANDARD PLAYER RENDERING
                     let rankHtml = '';
                     if (metadata.rank && !metadata.rank.toLowerCase().includes('failed to find player')) {
-                        let rankText = metadata.rank.replace(/§/g, '&');
-                        if (!rankText.includes('%')) {
-                            Object.keys(allPlayerData).forEach(pName => {
-                                if (pName.length < 3) return;
-                                const pNameRegex = new RegExp(`\\s*${pName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*`, 'gi');
-                                rankText = rankText.replace(pNameRegex, ' ').trim();
-                            });
-                            rankText = rankText.replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim();
-
-                            if (rankText.length > 0) {
-                                let formattedRank = window.formatRichText ? window.formatRichText(rankText) : rankText;
-                                formattedRank = formattedRank.replace(/<br\s*\/?>/gi, ' ').replace(/\n/g, ' ');
-                                rankHtml = `<span class="player-rank-badge">${formattedRank}</span>`;
-                            }
+                        let rankText = metadata.rank.replace(/§/g, '&').replace(/^(&[0-9a-fk-or])?[:\-\+\|]\s*/gi, '').trim().toLowerCase();
+                        if (!rankText.includes('%') && rankText.length > 0) {
+                            rankHtml = `<img src="ranks/${rankText}.png" onerror="this.style.display='none'" class="player-rank-img" style="height: 18px; margin-right: 6px; vertical-align: middle;" alt="${rankText}">`;
                         }
                     }
                     
@@ -241,7 +221,7 @@ async function updateServerStatus() {
     if (!playerCount) return;
 
     try {
-        const response = await fetch('https://api.mcsrvstat.us/2/titannetwork.eu');
+        const response = await fetch('https://api.mcsrvstat.us/2/play.titannetwork.eu');
         const data = await response.json();
 
         if (data.online) {
@@ -256,13 +236,13 @@ async function updateServerStatus() {
 }
 
 window.copyIP = function() {
-    navigator.clipboard.writeText('titannetwork.eu').then(() => {
+    navigator.clipboard.writeText('play.titannetwork.eu').then(() => {
         alert('IP copied to clipboard!');
     });
 };
 
 window.joinServer = function() {
-    alert('To join TitanNetwork:\n1. Open Minecraft\n2. Click "Multiplayer"\n3. Click "Add Server"\n4. Enter: titannetwork.eu\n5. Click "Done" and join!');
+    alert('To join TitanNetwork:\n1. Open Minecraft\n2. Click "Multiplayer"\n3. Click "Add Server"\n4. Enter: play.titannetwork.eu\n5. Click "Done" and join!');
     window.copyIP();
 };
 

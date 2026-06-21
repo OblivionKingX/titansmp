@@ -171,8 +171,8 @@ class SyncManager {
       for (const playerName of players) {
         try {
           // Combined placeholder string:
-          // money (%vault_eco_balance_fixed%) | gold (%coinsengine_balance_coins%) | kills (%statistic_player_kills%) | deaths (%statistic_deaths%) | playtime (%statistic_seconds_played%) | rank (%luckperms_prefix%)
-          const papiQuery = `%vault_eco_balance_fixed%|%coinsengine_balance_coins%|%statistic_player_kills%|%statistic_deaths%|%statistic_seconds_played%|%luckperms_prefix%`;
+          // money (%vault_eco_balance_fixed%) | gold (%coinsengine_balance_coins%) | kills (%statistic_player_kills%) | deaths (%statistic_deaths%) | playtime (%statistic_seconds_played%) | rank (%luckperms_primary_group_name%)
+          const papiQuery = `%vault_eco_balance_fixed%|%coinsengine_balance_coins%|%statistic_player_kills%|%statistic_deaths%|%statistic_seconds_played%|%luckperms_primary_group_name%`;
           const papiResponse = await rcon.sendCommand(`papi parse ${playerName} ${papiQuery}`);
 
           if (!papiResponse || papiResponse.toLowerCase().includes('failed to find player') || papiResponse.toLowerCase().includes('invalid player')) {
@@ -354,7 +354,7 @@ class SyncManager {
           };
 
           if (leaderName && leaderName.length > 0) {
-            const prefixResponse = await rcon.sendCommand(`papi parse ${leaderName} %luckperms_prefix%`);
+            const prefixResponse = await rcon.sendCommand(`papi parse ${leaderName} %luckperms_primary_group_name%`);
             const cleanPrefix = this.cleanPrefix(prefixResponse);
             
             if (cleanPrefix) {
