@@ -292,6 +292,23 @@
       color: var(--text-secondary);
       margin-bottom: 28px;
       font-size: 0.95rem;
+      max-height: 40vh;
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .modal-desc::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .modal-desc::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.1);
+      border-radius: 4px;
+    }
+
+    .modal-desc::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 4px;
     }
 
     .form-group {
@@ -385,7 +402,7 @@
       <div class="server-info">
         <div class="jartex-ip-box" onclick="copyIP()">
           <div class="click-to-copy-badge">Click to Copy IP</div>
-          <div class="server-ip-text">titannetwork.eu</div>
+          <div class="server-ip-text">play.titannetwork.eu</div>
           <div class="player-count" id="player-count">Loading players...</div>
         </div>
         <p class="server-motto">Join the ultimate premium experience</p>
@@ -535,7 +552,7 @@
     <div class="container">
       <p>&copy; 2026 TitanNetwork. All rights reserved.</p>
       <div class="footer-links">
-        <span class="footer-link" onclick="copyIP()">IP: titannetwork.eu</span>
+        <span class="footer-link" onclick="copyIP()">IP: play.titannetwork.eu</span>
         <a href="https://discord.gg/ExFhgvtFng" class="footer-link" onclick="joinDiscord()">Join Discord</a>
         <a href="privacy.html" class="footer-link">Privacy Policy</a>
         <a href="terms.html" class="footer-link">Terms of Service</a>
